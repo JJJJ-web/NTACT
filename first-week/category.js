@@ -1,4 +1,4 @@
-class Category{
+class MenuPage{
     constructor(name) {
         this._name = name;
         this._menus=[];
@@ -35,10 +35,10 @@ class Menu{
 }
 
 //카테고리 생성
-let coffee = new Category("COFFEE");
-let milkBeverage = new Category("MILK BEVERAGE");
-let ade = new Category("ADE");
-let shake = new Category("SHAKE");
+let coffee = new MenuPage("COFFEE");
+let milkBeverage = new MenuPage("MILK BEVERAGE");
+let ade = new MenuPage("ADE");
+let shake = new MenuPage("SHAKE");
 
 let categories=[coffee,milkBeverage,ade,shake];
 let page=0;
