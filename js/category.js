@@ -89,7 +89,7 @@ let total, cartImages;
 
 //메뉴 생성
 let americano = new Menu(categories[0].name, "ICED Americano", 3200, "ICED Americano.png");
-let cafaMocha = new Menu(categories[0].name, "ICED Cafa Mocha", 3900, "ICED Cafa Mocha.png");
+let cafeMocha = new Menu(categories[0].name, "ICED Cafe Mocha", 3900, "ICED Cafe Mocha.png");
 let cafeLatte = new Menu(categories[0].name, "ICED Cafe Latte", 3500, "ICED Cafe Latte.png");
 let cappuccino = new Menu(categories[0].name, "ICED Cappuccino", 3700, "ICED Cappuccino.png");
 
@@ -110,7 +110,7 @@ let strawberryShake = new Menu(categories[3].name, "Strawberry Shake", 3700, "St
 
 function init() {
     categories[0].menus = americano;
-    categories[0].menus = cafaMocha;
+    categories[0].menus = cafeMocha;
     categories[0].menus = cafeLatte;
     categories[0].menus = cappuccino;
 
