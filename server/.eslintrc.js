@@ -15,6 +15,7 @@ module.exports = {
         'no-multiple-empty-lines': 0,
         'space-before-function-paren': 0,
         'eol-last': 0,
+        'linebreak-style': 0,
     },
     'env': {
         'es6': true,
