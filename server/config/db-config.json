@@ -1,0 +1,6 @@
+{
+  "host": "put your host name here",
+  "user": "put your user name here",
+  "password": "put your password here",
+  "database": "put your database here"
+}
