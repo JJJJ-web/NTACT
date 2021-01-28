@@ -9,6 +9,10 @@ const dbConfig = require('../config/db-config.json');
 const app = new Koa();
 const router = new Router();
 
+//sequelize 버전
+//const sequelize = require('../models').sequelize;   // mysql 시퀄라이저 모델
+
+
 // 데이터베이스 연결
 const database = mysql.createConnection(dbConfig);
 database.connect();
