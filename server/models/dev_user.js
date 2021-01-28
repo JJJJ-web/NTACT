@@ -1,21 +1,21 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('user', {
-    name: {
-      type: DataTypes.STRING(20),
+  return sequelize.define('dev_user', {
+    username: {
+      type: DataTypes.STRING(16),
       allowNull: true
     },
     email: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.STRING(100),
       allowNull: false
     },
     password: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(32),
       allowNull: false
     },
     create_time: {
       type: DataTypes.DATE,
-      allowNull: true,
+      allowNull: false,
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     },
     userid: {
@@ -27,15 +27,10 @@ module.exports = function(sequelize, DataTypes) {
     gender: {
       type: DataTypes.STRING(10),
       allowNull: true
-    },
-    age: {
-      type: DataTypes.INTEGER,
-      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'user',
-    hasTrigger: true,
+    tableName: 'dev_user',
     timestamps: false,
     indexes: [
       {
