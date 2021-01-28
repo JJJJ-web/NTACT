@@ -8,10 +8,7 @@ const dbConfig = require('../config/db-config.json');
 
 const app = new Koa();
 const router = new Router();
-
-//sequelize 버전
-//const sequelize = require('../models').sequelize;   // mysql 시퀄라이저 모델
-
+const models = require('../models');
 
 // 데이터베이스 연결
 const database = mysql.createConnection(dbConfig);
@@ -32,11 +29,21 @@ router.get('/payment', (ctx, next) => {
     ctx.body = '결제';
 });
 
+
 // app 인스턴스에 라우터 적용
 app.use(router.routes()).use(router.allowedMethods());
 
 // 정적 파일 제공
 app.use(serve(path.join(__dirname, '../../client')));
+
+//sequelize 버전으로 dev_user 테이블 db 가져오기
+// router.get('/users', async (ctx, next) => {
+//    await models.dev_user.findAll({})
+//    .then(users => {
+//         //console 출력 까지 성공.. 
+//         console.log(users);
+//    });
+// });
 
 app.listen(4000, () => {
     console.log('Listening to port 4000');

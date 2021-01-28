@@ -15,11 +15,13 @@ fs
   .filter(function(file) {
     return (file.indexOf(".") !== 0) && (file !== "index.js");
   })
-  .forEach(function(file) {
-    var model = sequelize.import(path.join(__dirname, file));
-    db[model.name] = model;
-    console.log('model.name:' + model.name);  // 테스트로그 model명..
-  });
+  .forEach((file) => {
+    const model = require(path.join(__dirname, file))(
+      sequelize,
+      Sequelize.DataTypes
+    )
+    db[model.name] = model
+  })
 
 Object.keys(db).forEach(function(modelName) {
   if ("associate" in db[modelName]) {
