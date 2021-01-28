@@ -2,3 +2,4 @@
 server/node_modules/
 server/config/db-config.json
 client/node_modules/
+client/.eslintcache
