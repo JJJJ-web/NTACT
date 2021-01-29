@@ -9,6 +9,7 @@ module.exports = {
       'error',
       'always',
     ],
+    'max-len': 0,
     'no-trailing-spaces': 0,
     'keyword-spacing': 0,
     'no-unused-vars': 1,
