@@ -3,6 +3,7 @@ import {GoogleLogin} from 'react-google-login';
 import KakaoLogin from 'react-kakao-login';
 import styled from 'styled-components';
 import {withRouter} from 'react-router-dom';
+import axios from 'axios';
 
 class Login extends Component {
     constructor(props) {
@@ -14,6 +15,7 @@ class Login extends Component {
         };
         this.responseGoogle = this.responseGoogle.bind(this);
         this.responseKakao = this.responseKakao.bind(this);
+        this.doSignUp = this.doSignUp.bind(this);
     }
 
     // Google Login
@@ -47,8 +49,37 @@ class Login extends Component {
         window.sessionStorage.setItem('id', id);
         window.sessionStorage.setItem('name', name);
         window.sessionStorage.setItem('provider', provider);
-        this.props.onLogin();
-        this.props.history.push('/');
+
+        axios.post('http://localhost:3000/menu', JSON.stringify(this.state), {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+        }).then((res) => {
+            if (res.status === 200) { // 가입된 사용자일 경우 로그인 성공 처리
+                window.alert('login completed');
+            }
+        }).catch((err) => console.log(err),
+            window.alert('post 실패'),
+        );
+
+        /* 백에서 json사용안하면 아래 코드 사용
+        axios.post('http://localhost:3000/menu', {
+            data: {
+                id: id,
+                name: name,
+                provider: provider,
+            },
+            withCredentials: true,
+        }).then((res) => {
+            if (res.status === 200) { // 가입된 사용자일 경우 로그인 성공 처리
+                window.alert('login completed');
+            }
+        }).catch((err) => console.log(err),
+            window.alert('post 실패'),
+        );
+        */
+        this.props.history.push('/menu');
     }
 
     render() {
