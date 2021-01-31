@@ -3,6 +3,9 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const serve = require('koa-static');
 const path = require('path');
+// user api module
+const user = require('../api/user');
+
 // const mysql = require('mysql');
 // const dbConfig = require('../config/db-config.json');
 
@@ -34,6 +37,9 @@ app.use(router.routes()).use(router.allowedMethods());
 
 // 정적 파일 제공
 app.use(serve(path.join(__dirname, '../../client')));
+
+// /users/~ 모든 API들은 전부 user 모듈에서 사용 
+app.use('/users', user);
 
 //sequelize 버전으로 dev_user 테이블 db 가져오기
 // router.get('/users', async (ctx, next) => {
