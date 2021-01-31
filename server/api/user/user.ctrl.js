@@ -82,7 +82,11 @@ const update = (req, res) => {
     //                 res.status(500).end();
     //             })
     //     })
-
 }
 
-module.exports = { index, show, destroy, create, update };
+
+const loginKakao = (req, res) => {
+   console.log('카카오로그인 요청 성공');
+}
+
+module.exports = { index, show, destroy, create, update , loginKakao};
