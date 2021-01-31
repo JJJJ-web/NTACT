@@ -11,5 +11,6 @@ router.get('/:id', ctrl.show);
 router.delete('/:id', ctrl.destroy);
 router.post('/', ctrl.create);
 router.put('/:id',ctrl.update);
+router.post('/loginKakao', ctrl.loginKakao);
 
 module.exports = router;
