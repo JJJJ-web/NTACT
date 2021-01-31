@@ -31,23 +31,14 @@ router.get('/payment', (ctx, next) => {
     ctx.body = '결제';
 });
 
+// /users/~ 모든 API들은 전부 user 모듈에서 사용 
+router.use('/users', user.routes());
+
 
 // app 인스턴스에 라우터 적용
 app.use(router.routes()).use(router.allowedMethods());
 
 // 정적 파일 제공
 app.use(serve(path.join(__dirname, '../../client')));
-
-// /users/~ 모든 API들은 전부 user 모듈에서 사용 
-app.use('/users', user);
-
-//sequelize 버전으로 dev_user 테이블 db 가져오기
-// router.get('/users', async (ctx, next) => {
-//    await models.dev_user.findAll({})
-//    .then(users => {
-//         //console 출력 까지 성공.. 
-//         console.log(users);
-//    });
-// });
 
 module.exports = app;
