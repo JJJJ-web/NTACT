@@ -50,7 +50,7 @@ class Login extends Component {
         window.sessionStorage.setItem('name', name);
         window.sessionStorage.setItem('provider', provider);
 
-        axios.post('http://localhost:3000/menu', JSON.stringify(this.state), {
+        axios.post('http://localhost:3000/coffee', JSON.stringify(this.state), {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -79,7 +79,7 @@ class Login extends Component {
             window.alert('post 실패'),
         );
         */
-        this.props.history.push('/menu');
+        this.props.history.push('/coffee');
     }
 
     render() {
