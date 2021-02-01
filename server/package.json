@@ -16,7 +16,7 @@
     "eslint-config-google": "^0.14.0"
   },
   "scripts": {
-    "start": "node src/www.js",
-    "start:dev": "nodemon --watch src/ src/index.js"
+    "start": "nodemon src/www.js",
+    "start:dev": "nodemon --watch server/ src/www.js"
   }
 }
