@@ -1,6 +1,8 @@
 const models = require('../../models');
 
-const index = function (req, res) {
+exports.index = (ctx, next) => {
+    ctx.body = `${ctx.request.method} ${ctx.request.path}`
+
     // req.query.limit = req.query.limit || 10;
     // const limit = parseInt(req.query.limit, 10);
     // if (Number.isNaN(limit)) {
@@ -16,7 +18,9 @@ const index = function (req, res) {
     //     });
 };
 
-const show = function (req, res) {
+exports.show = (ctx, next) => {
+    ctx.body = `${ctx.request.method} ${ctx.request.path}`
+
     // const id = parseInt(req.params.id, 10);
     // if (Number.isNaN(id)) return res.status(400).end();
 
@@ -26,9 +30,11 @@ const show = function (req, res) {
     //     if (!user) return res.status(404).end();
     //     res.json(user);
     // });
-}
+};
 
-const destroy = (req, res) => {
+exports.destroy = (ctx, next) => {
+    ctx.body = `${ctx.request.method} ${ctx.request.path}`
+
     // const id = parseInt(req.params.id, 10);
     // if (Number.isNaN(id)) return res.status(400).end();
 
@@ -37,9 +43,11 @@ const destroy = (req, res) => {
     // }).then(() => {
     //     res.status(204).end();
     // });
-}
+};
 
-const create = (req, res) => {
+exports.create = (ctx, next) => {
+    ctx.body = `${ctx.request.method} ${ctx.request.path}`
+
     // const name = req.body.name;
     // if (!name) return res.status(400).end();
 
@@ -53,9 +61,11 @@ const create = (req, res) => {
     //         }
     //         res.status(500).end();
     //     })
-}
+};
 
-const update = (req, res) => {
+exports.update = (ctx, next) => {
+    ctx.body = `${ctx.request.method} ${ctx.request.path}`
+
     // const id = parseInt(req.params.id, 10);
     // if (Number.isNaN(id)) return res.status(400).end();
 
@@ -82,11 +92,13 @@ const update = (req, res) => {
     //                 res.status(500).end();
     //             })
     //     })
-}
+};
 
 
-const loginKakao = (req, res) => {
-   console.log('카카오로그인 요청 성공');
-}
+exports.loginKakao = (ctx, next) => {
+    ctx.body = `${ctx.request.method} ${ctx.request.path}`
 
-module.exports = { index, show, destroy, create, update , loginKakao};
+//    const { code } =  ctx.request.query;
+//    ctx.body = `${ctx.request.method} ${ctx.request.path} 카카오 인증코드: ` + code;
+//    console.log(code); 
+};
