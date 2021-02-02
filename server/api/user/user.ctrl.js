@@ -1,7 +1,7 @@
 const models = require('../../models');
 
 exports.index = (ctx, next) => {
-    ctx.body = `${ctx.request.method} ${ctx.request.path}`
+    ctx.body = `${ctx.request.method} ${ctx.request.path}`;
 
     // req.query.limit = req.query.limit || 10;
     // const limit = parseInt(req.query.limit, 10);
@@ -19,7 +19,7 @@ exports.index = (ctx, next) => {
 };
 
 exports.show = (ctx, next) => {
-    ctx.body = `${ctx.request.method} ${ctx.request.path}`
+    ctx.body = `${ctx.request.method} ${ctx.request.path}`;
 
     // const id = parseInt(req.params.id, 10);
     // if (Number.isNaN(id)) return res.status(400).end();
@@ -33,7 +33,7 @@ exports.show = (ctx, next) => {
 };
 
 exports.destroy = (ctx, next) => {
-    ctx.body = `${ctx.request.method} ${ctx.request.path}`
+    ctx.body = `${ctx.request.method} ${ctx.request.path}`;
 
     // const id = parseInt(req.params.id, 10);
     // if (Number.isNaN(id)) return res.status(400).end();
@@ -46,7 +46,7 @@ exports.destroy = (ctx, next) => {
 };
 
 exports.create = (ctx, next) => {
-    ctx.body = `${ctx.request.method} ${ctx.request.path}`
+    ctx.body = `${ctx.request.method} ${ctx.request.path}`;
 
     // const name = req.body.name;
     // if (!name) return res.status(400).end();
@@ -64,7 +64,7 @@ exports.create = (ctx, next) => {
 };
 
 exports.update = (ctx, next) => {
-    ctx.body = `${ctx.request.method} ${ctx.request.path}`
+    ctx.body = `${ctx.request.method} ${ctx.request.path}`;
 
     // const id = parseInt(req.params.id, 10);
     // if (Number.isNaN(id)) return res.status(400).end();
@@ -96,7 +96,7 @@ exports.update = (ctx, next) => {
 
 
 exports.loginKakao = (ctx, next) => {
-    ctx.body = `${ctx.request.method} ${ctx.request.path}`
+    ctx.body = `${ctx.request.method} ${ctx.request.path}`;
 
 //    const { code } =  ctx.request.query;
 //    ctx.body = `${ctx.request.method} ${ctx.request.path} 카카오 인증코드: ` + code;
