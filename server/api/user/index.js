@@ -10,7 +10,7 @@ users.get('/', ctrl.index);
 users.get('/:id', ctrl.show);
 users.delete('/:id', ctrl.destroy);
 users.post('/', ctrl.create);
-users.put('/:id',ctrl.update);
+users.put('/:id', ctrl.update);
 users.get('/loginKakao', ctrl.loginKakao);
 
 module.exports = users;
