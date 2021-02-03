@@ -24,6 +24,10 @@
 * 아직 장바구니나 onClick 이벤트 처리하지 않았습니다.
 * 메뉴 페이지 순서는 coffee > milk beverage > ade > shake > coffee 순 입니다.
 
+(21.02.04)
+* 카카오 로그인 엑세스토큰 받아오는 구조로 수정 완료. (component/KakaoLogin.js)
+
+
 3. 구글 로그인
    * Google Login을 사용하실 경우에는 학교 이메일로 로그인 부탁드립니다! (조직만 사용 가능하게 했더니 학교 이메일만 로그인이 됩니다!)
    * Google Login에서도 페북과 같이 아이디, 이메일, 이름 등만 수집 가능합니다.
