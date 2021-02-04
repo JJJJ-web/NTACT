@@ -5,7 +5,7 @@ exports.index = (ctx) => {
 };
 
 exports.loginKakao = (ctx) => {
-    const {code} = ctx.request.query;
-    ctx.body = `${ctx.method} ${ctx.path} 카카오코드: ${code}`;
-    console.log(code); 
+    // header로 보낸 request payload를 접근하려면 body로 접근
+    const token = ctx.request.body.headers.Authorization;
+    console.log(`access token : ${token}`);
 };

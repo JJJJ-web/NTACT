@@ -3,12 +3,17 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const serve = require('koa-static');
 const path = require('path');
-
+const cors = require('@koa/cors');
+const bodyParser = require('koa-bodyparser');
 // api module
 const api = require('../api');
 
 const app = new Koa();
 const router = new Router();
+
+// HTTP header 부분을 text로 변환해줍니다. ctx.body로 접근가능합니다.
+// json, text 형태로 반환해줍니다.
+app.use(bodyParser({enableTypes: ['json', 'text']}));
 
 // /api/~ 경로들은 api 모듈에서 사용
 router.use('/api', api.routes());
@@ -18,5 +23,10 @@ app.use(router.routes()).use(router.allowedMethods());
 
 // 정적 파일 제공
 app.use(serve(path.join(__dirname, '../../client')));
+
+// cors()를 사용하여 현재는 모든 경로에 대한 cors 접근을 허용했습니다. 
+// 추후 저희 프론트 경로만 접근 허용하는 옵션을 설정해야합니다.
+app.use(cors());
+
 
 module.exports = app;
