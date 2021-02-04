@@ -63,7 +63,7 @@ class Login extends Component {
     render() {
         return (
             <div>
-                <button onClick={this.loginWithKakao}>카카오 로그인</button>
+                <button onClick={this.loginWithKakao} method='POST'>카카오 로그인</button>
             </div>
         );
     }
