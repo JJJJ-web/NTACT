@@ -15,17 +15,18 @@ class Login extends Component {
                 window.Kakao.Auth.login({
                     success: (auth) => {
                         console.log('정상적으로 로그인 되었습니다.', auth);
-                        axios.post('http://localhost:4000/api/users/loginKakao', {
-                            headers: {
-                                'Authorization': auth.access_token,
-                            },
-                        }).then((res) => {
+                        axios.post('http://localhost:4000/api/users/loginKakao',
+                            {
+                                headers: {
+                                    'Authorization': auth.access_token,
+                                },
+                            }).then((res) => {
                             console.log('res.status: ' + res.status);
                             if (res.status === 200) { // 가입된 사용자일 경우 로그인 성공 처리
                                 window.alert('login completed');
                             }
                         }).catch((err) => {
-                            console.log(error);
+                            console.log(err);
                         });
                     },
                     fail: (err) => {
