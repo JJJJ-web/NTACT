@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import Cart from '../component/Cart';
 
 class MilkBeverage extends Component {
     handleOnClick = (e) => {
@@ -65,6 +66,7 @@ class MilkBeverage extends Component {
                 <div>
                     {menuList}
                 </div>
+                <Cart />
             </div>
         );
     }
