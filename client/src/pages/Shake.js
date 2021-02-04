@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import Cart from '../component/Cart';
 
 class Shake extends Component {
     handleOnClick = (e) => {
@@ -47,6 +48,7 @@ class Shake extends Component {
                 <div>
                     {menuList}
                 </div>
+                <Cart />
             </div>
         );
     };
