@@ -3,6 +3,7 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const serve = require('koa-static');
 const path = require('path');
+const cors = require('@koa/cors');
 
 // api module
 const api = require('../api');
@@ -19,4 +20,5 @@ app.use(router.routes()).use(router.allowedMethods());
 // 정적 파일 제공
 app.use(serve(path.join(__dirname, '../../client')));
 
+app.use(cors());
 module.exports = app;

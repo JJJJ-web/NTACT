@@ -5,7 +5,7 @@ exports.index = (ctx) => {
 };
 
 exports.loginKakao = (ctx) => {
-    const {code} = ctx.request.query;
-    ctx.body = `${ctx.method} ${ctx.path} 카카오코드: ${code}`;
-    console.log(code); 
+    const Authorization = ctx.request.headers[Authorization];
+    ctx.body = `${ctx.method} ${ctx.path} 헤더: ${Authorization}`;
+    console.log(Authorization); 
 };
