@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 
 class Ade extends Component {
+    handleOnClick = (e) => {
+        console.log(e.currentTarget.className);
+    };
+    
     render() {
         const ade = [
             {
@@ -25,7 +29,7 @@ class Ade extends Component {
         ];
 
         const menuList = ade.map((menu) =>
-            <div key={menu.id}>
+            <div key={menu.id} className={menu.id +' '+ menu.price} onClick={this.handleOnClick}>
                 <img src={menu.image} />
                 <div>{menu.name}</div>
                 <div>{menu.price}</div>
