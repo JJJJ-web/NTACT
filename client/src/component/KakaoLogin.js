@@ -6,6 +6,13 @@ import axios from 'axios';
 import Kakao from 'kakaojs';
 
 class Login extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            Authorization: '',
+        };
+        this.loginWithKakao = this.loginWithKakao.bind(this);
+    }
     loginWithKakao() {
         try {
             return new Promise((resolve, reject) => {
@@ -15,6 +22,7 @@ class Login extends Component {
                 window.Kakao.Auth.login({
                     success: (auth) => {
                         console.log('정상적으로 로그인 되었습니다.', auth);
+                        this.props.history.push('/Coffee');
                         axios.post('http://localhost:4000/api/users/loginKakao',
                             {
                                 headers: {
@@ -23,7 +31,7 @@ class Login extends Component {
                             }).then((res) => {
                             console.log('res.status: ' + res.status);
                             if (res.status === 200) { // 가입된 사용자일 경우 로그인 성공 처리
-                                window.alert('login completed');
+                                window.alert('가입된 사용자');
                             }
                         }).catch((err) => {
                             console.log(err);
@@ -37,8 +45,6 @@ class Login extends Component {
         } catch (err) {
             console.error(err);
         }
-
-        this.props.history.push('/');
     };
 
     /*
