@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import Cart from '../component/Cart';
 
 class Ade extends Component {
     handleOnClick = (e) => {
@@ -35,7 +36,7 @@ class Ade extends Component {
                 <div>{menu.price}</div>
             </div>);
 
-        return (
+        return ( 
             <div>
                 <Link to='/milkbeverage'>
                     <button>MILK BEVERAGE</button>
@@ -47,6 +48,7 @@ class Ade extends Component {
                 <div>
                     {menuList}
                 </div>
+                <Cart />
             </div>
         );
     };
