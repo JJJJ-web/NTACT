@@ -22,7 +22,7 @@ class Login extends Component {
                 window.Kakao.Auth.login({
                     success: (auth) => {
                         console.log('정상적으로 로그인 되었습니다.', auth);
-                        this.props.history.push('/Coffee');
+                        this.props.history.push('/coffee');
                         axios.post('http://localhost:4000/api/users/loginKakao',
                             {
                                 headers: {
