@@ -13,6 +13,7 @@ class Login extends Component {
         };
         this.loginWithKakao = this.loginWithKakao.bind(this);
     }
+
     loginWithKakao() {
         try {
             return new Promise((resolve, reject) => {
@@ -28,11 +29,15 @@ class Login extends Component {
                                 headers: {
                                     'Authorization': auth.access_token,
                                 },
+                                withCredentials: true,
                             }).then((res) => {
                             console.log('res.status: ' + res.status);
+                            console.log(res.data.name); // 백에서 사용자정보(이름) 받아옴
                             if (res.status === 200) { // 가입된 사용자일 경우 로그인 성공 처리
                                 window.alert('가입된 사용자');
                             }
+                            console.log('res=', res);
+                            console.log('auth=', auth);
                         }).catch((err) => {
                             console.log(err);
                         });
@@ -60,7 +65,6 @@ class Login extends Component {
      */
 
     componentDidMount() {
-        window.Kakao.init('c921a1d3b75cd0acbf7c854d5ae184d3');
         if (window.Kakao.Auth.getAccessToken()) {
             console.log('액세스 토큰이 존재합니다. 세션을 유지합니다.');
         }
