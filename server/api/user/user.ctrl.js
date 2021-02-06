@@ -8,6 +8,8 @@ exports.index = (ctx) => {
 
 exports.loginKakao = async (ctx) => {
     let jwtToken;
+    let username;
+
     // header로 보낸 request payload를 접근하려면 body로 접근
     const kakaoToken = ctx.request.body.headers.Authorization;
     // console.log(`access token : ${kakaoToken}`);
@@ -40,12 +42,16 @@ exports.loginKakao = async (ctx) => {
             jwtToken = jwt.sign({
                 name: `${kakaoUserDB.properties.nickname}`,
             }, 'qlalfqjsgh');
+            
+            // 토큰으로 보내기 성공시 삭제
+            username = `${kakaoUserDB.properties.nickname}`;
         })
         .catch(function (error) {
             console.log(error);
         });
-   
-    ctx.response.body = jwtToken;
+        
+    // 이름을 직접 보내는 방식
+    ctx.response.body = {name: `${username}`};
     ctx.response.status = 200;
 };
 
