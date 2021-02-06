@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import Login from './Login';
 import KakaoLogin from './KakaoLogin';
+import GoogleLogin from './GoogleLogin';
 
 class Home extends Component {
     render() {
@@ -8,6 +8,7 @@ class Home extends Component {
             <div>
                 <h2>메인 화면</h2>
                 <KakaoLogin />
+                <GoogleLogin />
             </div>
         );
     }
