@@ -1,12 +1,12 @@
 const kakaoUserModel = require('../../models').dev_user;
 const axios = require('axios');
+const jwt = require('jsonwebtoken');
 
 exports.index = (ctx) => {
     ctx.body = `${ctx.request.method} ${ctx.request.path}`;
 };
 
-exports.loginKakao = (ctx) => {
-
+exports.loginKakao = async (ctx) => {
     // header로 보낸 request payload를 접근하려면 body로 접근
     const kakaoToken = ctx.request.body.headers.Authorization;
     //console.log(`access token : ${kakaoToken}`);
@@ -34,12 +34,19 @@ exports.loginKakao = (ctx) => {
                 }
             })
             console.log(`유저DB 저장 완료`);
+
+            //jwt 토큰 생성
+            const jwtToken = jwt.sign({
+                name: `${kakaoUserDB.properties.nickname}`
+            }, 'qlalfqjsgh');
+            // 프론트로 jwt토큰 보내기
+            ctx.status = 200;
+            ctx.body = jwtToken;
         })
         .catch(function (error) {
             console.log(error);
         })
-        
-        // 프론트로 jwt토큰 보내기
+
 
 };
 
