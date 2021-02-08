@@ -1,47 +1,32 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import Cart from '../component/Cart';
+import axios from 'axios';
 
 class Coffee extends Component {
-    handleOnClick = (e) => {
-        console.log(e.currentTarget.className);
+    constructor(props) {
+        super(props);
+    }
+
+    state = {
+        data: [],
     };
-    
+
+    async getMyData() {
+        let data = await axios.get('/api/menus');
+        data = data.data;
+        data = data.filter((r) => {
+            return r.category_id === 100;
+        });
+        // console.log('data is ' + JSON.stringify(data));
+        this.setState({data});
+    }
+
+    componentDidMount() {
+        this.getMyData();
+    }
+
     render() { 
-        const coffee = [
-            {
-                id: 'ICEDAmericano',
-                name: 'ICED Americano',
-                price: 3200,
-                image: '/img/COFFEE/ICEDAmericano.png',
-            },
-            {
-                id: 'ICEDCafeMocha',
-                name: 'ICED Cafe Mocha',
-                price: 3900,
-                image: '/img/COFFEE/ICEDCafeMocha.png',
-            },
-            {
-                id: 'ICEDCafeLatte',
-                name: 'ICED Cafe Latte',
-                price: 3500,
-                image: '/img/COFFEE/ICEDCafeLatte.png',
-            },
-            {
-                id: 'ICEDCappuccino',
-                name: 'ICED Cappuccino',
-                price: 3700,
-                image: '/img/COFFEE/ICEDCappuccino.png',
-            },
-        ];
-
-        const menuList = coffee.map((menu) => 
-            <div key={menu.id} className={menu.id +' '+ menu.price} onClick={this.handleOnClick}>
-                <img src={menu.image} />
-                <div>{menu.name}</div>
-                <div>{menu.price}</div>
-            </div>);
-
         return (
             <div>
                 <Link to='/shake'>
@@ -52,7 +37,17 @@ class Coffee extends Component {
                     <button>MILK BEVERAGE</button>
                 </Link>
                 <div>
-                    {menuList}
+                    {
+                        this.state.data.map((menu) => {
+                            return(
+                                <div key={menu.id}>
+                                    <img src={menu.img_url} />
+                                    <p>{menu.name_kor}</p>
+                                    <p>{menu.price}</p>
+                                </div>
+                            );
+                        })
+                    }
                 </div>
                 <Cart />
             </div>
