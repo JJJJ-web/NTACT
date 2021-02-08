@@ -1,41 +1,32 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import Cart from '../component/Cart';
+import axios from 'axios';
 
 class Ade extends Component {
-    handleOnClick = (e) => {
-        console.log(e.currentTarget.className);
+    constructor(props) {
+        super(props);
+    }
+
+    state = {
+        data: [],
     };
-    
+
+    async getMyData() {
+        let data = await axios.get('/api/menus');
+        data = data.data;
+        data = data.filter((r) => {
+            return r.category_id === 300;
+        });
+        // console.log('data is ' + JSON.stringify(data));
+        this.setState({data});
+    }
+
+    componentDidMount() {
+        this.getMyData();
+    }
+
     render() {
-        const ade = [
-            {
-                id: 'Grapefruit',
-                name: 'Grape fruit',
-                price: 3800,
-                image: '/img/ADE/Grapefruit.png',
-            },
-            {
-                id: 'GreenGrape',
-                name: 'Green Grape',
-                price: 3700,
-                image: '/img/ADE/GreenGrape.png',
-            },
-            {
-                id: 'Lemon',
-                name: 'Lemon',
-                price: 3700,
-                image: '/img/ADE/Lemon.png',
-            },
-        ];
-
-        const menuList = ade.map((menu) =>
-            <div key={menu.id} className={menu.id +' '+ menu.price} onClick={this.handleOnClick}>
-                <img src={menu.image} />
-                <div>{menu.name}</div>
-                <div>{menu.price}</div>
-            </div>);
-
         return ( 
             <div>
                 <Link to='/milkbeverage'>
@@ -46,7 +37,17 @@ class Ade extends Component {
                     <button>SHAKE</button>
                 </Link>
                 <div>
-                    {menuList}
+                    {
+                        this.state.data.map((menu) => {
+                            return(
+                                <div key={menu.id}>
+                                    <img src={menu.img_url} />
+                                    <p>{menu.name_kor}</p>
+                                    <p>{menu.price}</p>
+                                </div>
+                            );
+                        })
+                    }
                 </div>
                 <Cart />
             </div>
