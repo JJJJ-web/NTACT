@@ -4,7 +4,7 @@ exports.list = async (ctx) => {
     let menus;
     try {
         menus = await menuModel.findAll({
-            attributes: ['id', 'name_kor', 'name_eng', 'price'],
+            attributes: ['id', 'name_kor', 'name_eng', 'price', 'img_url', 'sales_stat', 'category_id'],
         });
     } catch (e) {
         ctx.throw(500, e);
