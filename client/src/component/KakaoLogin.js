@@ -39,6 +39,7 @@ function Login(props) {
                             console.log('username=', user.username, ' id=',
                                 user.id, ' iat=', user.iat);
                             setUserName(userName = user.username);
+                            props.history.push('/coffee');
                         }).catch((err) => {
                             console.log(err);
                         });
@@ -47,7 +48,6 @@ function Login(props) {
                         console.error(err);
                     },
                 });
-                props.history.push('/coffee');
             });
         } catch (err) {
             console.error(err);
