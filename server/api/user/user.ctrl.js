@@ -1,4 +1,4 @@
-const kakaoUserModel = require('../../models').dev_user;
+const kakaoUserModel = require('../../models').dev_kakao_user;
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
 
