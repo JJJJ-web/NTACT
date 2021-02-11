@@ -26,9 +26,13 @@
     -->
     <title>React App</title>
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
     <script>
         Kakao.init('c921a1d3b75cd0acbf7c854d5ae184d3');
         console.log(Kakao.isInitialized());
+        const IMP = window.IMP; // 생략해도 괜찮습니다.
+        IMP.init("imp92963329"); // "imp00000000" 대신 발급받은 "가맹점 식별코드"를 사용합니다.
     </script>
 </head>
 <body>
