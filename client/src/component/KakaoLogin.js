@@ -1,6 +1,4 @@
 import React, {Component, useEffect, useState} from 'react';
-import KakaoLogin from 'react-kakao-login';
-import styled from 'styled-components';
 import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 import Kakao from 'kakaojs';
