@@ -1,10 +1,13 @@
-const kakaoUserModel = require('../../models').dev_user;
+const kakaoUserModel = require('../../models').dev_kakao_user;
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+// eslint-disable-next-line camelcase
+const password_config = require('../../config/password-config.json');
 
 exports.index = (ctx) => {
     ctx.body = `${ctx.request.method} ${ctx.request.path}`;
 };
+
 
 exports.loginKakao = async (ctx) => {
     // header로 보낸 request payload를 접근하려면 body로 접근
@@ -26,7 +29,7 @@ exports.loginKakao = async (ctx) => {
                     username: kakaoUserDB.properties.nickname,
                     id: kakaoUserDB.id, // 유저 정보
                 },
-                'qlalfqjsgh', // secrec Key
+                password_config.jwt_password, // secrec Key
             );    
             
             /*
