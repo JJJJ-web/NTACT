@@ -1,58 +1,44 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
+import axois from 'axios';
 import {Link} from 'react-router-dom';
 import Cart from '../component/Cart';
-import axios from 'axios';
 
-class MilkBeverage extends Component {
-    constructor(props) {
-        super(props);
-    }
+function MilkBeverage() {
+    const [products, setProducts] = useState([]);
 
-    state = {
-        data: [],
-    };
+    useEffect(() => {
+        axois.get('/api/menus')
+            .then((res) => setProducts(res.data));
+    }, []);
 
-    async getMyData() {
-        let data = await axios.get('/api/menus');
-        data = data.data;
-        data = data.filter((r) => {
-            return r.category_id === 200;
-        });
-        // console.log('data is ' + JSON.stringify(data));
-        this.setState({data});
-    }
+    const milk = products.filter((res) => {
+        return res.category_id === 200;
+    });
 
-    componentDidMount() {
-        this.getMyData();
-    }
-
-    render() {
-        return (
-            <div>
-                <Link to='/coffee'>
-                    <button>COFFEE</button>
-                </Link>
-                <button>MILK BEVERAGE</button>
-                <Link to ='/ade'>
-                    <button>ADE</button>
-                </Link>
-                <div>
-                    {
-                        this.state.data.map((menu) => {
-                            return(
-                                <div key={menu.id}>
-                                    <img src={menu.img_url} />
-                                    <p>{menu.name_kor}</p>
-                                    <p>{menu.price}</p>
-                                </div>
-                            );
-                        })
-                    }
-                </div>
-                <Cart />
-            </div>
-        );
-    }
+    return (
+        <div>
+            <Link to = '/coffee'>
+                <button>COFFEE</button>
+            </Link>
+            <button>MILK BEVERAGE</button>
+            <Link to = '/ade'>
+                <button>ADE</button>
+            </Link>
+            {
+                milk.map((item) => {
+                    return (
+                        <div key={item.id}>
+                            <img src={item.img_url} />
+                            <div>{item.name_kor}</div>
+                            <div>{item.price.toLocaleString()}원</div>
+                            <button>장바구니 담기</button>
+                        </div>
+                    );
+                })
+            }
+            <Cart />
+        </div>
+    );
 }
 
 export default MilkBeverage;
