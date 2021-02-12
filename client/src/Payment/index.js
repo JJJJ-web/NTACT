@@ -5,33 +5,17 @@ import {withRouter} from 'react-router-dom';
 import {withUserAgent} from 'react-useragent';
 import queryString from 'query-string';
 
-import {
-    PGS,
-    METHODS_FOR_INICIS,
-    QUOTAS_FOR_INICIS_AND_KCP,
-} from './constants';
-import {getMethods, getQuotas} from './utils';
-
 const {Item} = Form;
-const {Option} = Select;
 
 function Payment({history, form}) {
-    const [methods, setMethods] = useState(METHODS_FOR_INICIS);
-    const [quotas, setQuotas] = useState(QUOTAS_FOR_INICIS_AND_KCP);
-    const [isQuotaRequired, setIsQuotaRequired] = useState(true);
-    const [isDigitalRequired, setIsDigitalRequired] = useState(false);
-    const [isVbankDueRequired, setIsVbankDueRequired] = useState(false);
-    const [isBizNumRequired, setisBizNumRequired] = useState(false);
     const {
         getFieldDecorator,
         validateFieldsAndScroll,
-        setFieldsValue,
-        getFieldsValue,
     } = form;
     const data = {
         pg: 'html5_inicis', // PG사
         pay_method: 'card', // 결제수단
-        merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
+        merchant_uid: `ntact_${new Date().getTime()}`, // 주문번호
         amount: 1000, // 결제금액
         buyer_name: '홍길동', // 구매자 이름
         buyer_tel: '01012341234', // 구매자 전화번호
@@ -47,38 +31,6 @@ function Payment({history, form}) {
             if (!error) {
                 /* 가맹점 식별코드 */
                 const userCode = 'imp92963329';
-                /* 결제 데이터 */
-                const {
-                    pg,
-                    payMethod,
-                    merchantUid,
-                    amount,
-                    buyerName,
-                    buyerTel,
-                    buyerEmail,
-                    cardQuota,
-                    bizNum,
-                    vbankDue,
-                    digital,
-                } = values;
-
-
-                if (payMethod === 'vbank') {
-                    data.vbankDue = vbankDue;
-                    if (pg === 'danal_tpay') {
-                        data.bizNum = bizNum;
-                    }
-                }
-                if (payMethod === 'card') {
-                    if (cardQuota !== 0) {
-                        data.digital = {
-                            cardQuota: cardQuota === 1 ? [] : cardQuota,
-                        };
-                    }
-                }
-                if (payMethod === 'phone') {
-                    data.digital = digital;
-                }
 
                 /* 웹 환경일때 */
                 const {IMP} = window;
@@ -89,6 +41,7 @@ function Payment({history, form}) {
     }
 
     function callback(response) {
+        console.log(data.merchant_uid);
         const query = queryString.stringify(response);
         if (response.success) { // 결제 성공 시
             axios({
@@ -105,9 +58,6 @@ function Payment({history, form}) {
                 history.push(`/payment/result?${query}`);
             }).then((data) => { // 응답 처리
                 switch(data.status) {
-                case 'vbankIssued':
-                    // 가상계좌 발급 시 로직
-                    break;
                 case 'success':
                     // 결제 성공 시 로직
                     break;
@@ -120,145 +70,36 @@ function Payment({history, form}) {
         }
     }
 
-    function onChangePg(value) {
-        /* 결제수단 */
-        const methods = getMethods(value);
-        setMethods(methods);
-        setFieldsValue({payMethod: methods[0].value});
-
-        /* 할부개월수 설정 */
-        const {payMethod} = getFieldsValue();
-        handleQuotas(value, payMethod);
-
-        /* 사업자번호/입금기한 설정 */
-        let isBizNumRequired = false;
-        let isVbankDueRequired = false;
-        if (payMethod === 'vbank') {
-            if (value === 'danal_tpay') {
-                isBizNumRequired = true;
-            }
-            isVbankDueRequired = true;
-        }
-        setisBizNumRequired(isBizNumRequired);
-        setIsVbankDueRequired(isVbankDueRequired);
-    }
-
-    function onChangePayMethod(value) {
-        const {pg} = getFieldsValue();
-        let isQuotaRequired = false;
-        let isDigitalRequired = false;
-        let isVbankDueRequired = false;
-        let isBizNumRequired = false;
-        switch (value) {
-        case 'card': {
-            isQuotaRequired = true;
-            break;
-        }
-        case 'phone': {
-            isDigitalRequired = true;
-            break;
-        }
-        case 'vbank': {
-            if (pg === 'danal_tpay') {
-                isBizNumRequired = true;
-            }
-            isVbankDueRequired = true;
-            break;
-        }
-        default:
-            break;
-        }
-        setIsQuotaRequired(isQuotaRequired);
-        setIsDigitalRequired(isDigitalRequired);
-        setIsVbankDueRequired(isVbankDueRequired);
-        setisBizNumRequired(isBizNumRequired);
-
-        /* 할부개월수 설정 */
-        handleQuotas(pg, value);
-    }
-
-    function handleQuotas(pg, payMethod) {
-        const {isQuotaRequired, quotas} = getQuotas(pg, payMethod);
-        setIsQuotaRequired(isQuotaRequired);
-        setQuotas(quotas);
-        setFieldsValue({cardQuota: quotas[0].value});
-    }
-
     return (
         <Wrapper>
             <Header>아임포트 결제 테스트</Header>
             <FormContainer onSubmit={handleSubmit}>
                 <Item label="PG사">
-                    {getFieldDecorator('pg', {
-                        initialValue: data.pg,
-                    })(
-                        <Select
-                            size="large"
-                            onChange={onChangePg}
-                            suffixIcon={<Icon type="caret-down"/>}
-                        >
-                            {PGS.map((pg) => {
-                                const {value, label} = pg;
-                                return <Option value={value} key={value}>{label}</Option>;
-                            })}
-                        </Select>,
-                    )}
+                    {data.pg}
                 </Item>
                 <Item label="결제수단">
-                    {getFieldDecorator('payMethod', {
-                        initialValue: 'card',
+                    {data.pay_method}
+                </Item>
+                <Item label="결제금액">
+                    {data.amount}
+                </Item>
+                <Item label="구매자 이름">
+                    {data.buyer_name}
+                </Item>
+                <Item label="전화번호">
+                    {getFieldDecorator('buyer_tel', {
+                        initialValue: '',
+                        rules: [{required: true, message: '전화번호 입력은 필수입니다.'}],
                     })(
-                        <Select
-                            size="large"
-                            onChange={onChangePayMethod}
-                            suffixIcon={<Icon type="caret-down"/>}
-                        >
-                            {methods.map((method) => {
-                                const {value, label} = method;
-                                return <Option value={value} key={value}>{label}</Option>;
-                            })}
-                        </Select>,
+                        <Input size="large" type="number"/>,
                     )}
                 </Item>
-
-                <Item>
-                    {getFieldDecorator('amount', {
-                        initialValue: '39000',
-                        rules: [{required: true, message: '결제금액은 필수입력입니다'}],
+                <Item label="이메일">
+                    {getFieldDecorator('buyer_email', {
+                        initialValue: '',
+                        rules: [{required: false}],
                     })(
-                        <Input size="large" type="number" addonBefore="결제금액"/>,
-                    )}
-                </Item>
-                <Item>
-                    {getFieldDecorator('merchantUid', {
-                        initialValue: `min_${new Date().getTime()}`,
-                        rules: [{required: true, message: '주문번호는 필수입력입니다'}],
-                    })(
-                        <Input size="large" addonBefore="주문번호"/>,
-                    )}
-                </Item>
-                <Item>
-                    {getFieldDecorator('buyerName', {
-                        initialValue: '홍길동',
-                        rules: [{required: true, message: '구매자 이름은 필수입력입니다'}],
-                    })(
-                        <Input size="large" addonBefore="이름"/>,
-                    )}
-                </Item>
-                <Item>
-                    {getFieldDecorator('buyerTel', {
-                        initialValue: '01012341234',
-                        rules: [{required: true, message: '구매자 전화번호는 필수입력입니다'}],
-                    })(
-                        <Input size="large" type="number" addonBefore="전화번호"/>,
-                    )}
-                </Item>
-                <Item>
-                    {getFieldDecorator('buyerEmail', {
-                        initialValue: 'example@example.com',
-                        rules: [{required: true, message: '구매자 이메일은 필수입력입니다'}],
-                    })(
-                        <Input size="large" addonBefore="이메일"/>,
+                        <Input size="large"/>,
                     )}
                 </Item>
                 <Button type="primary" htmlType="submit" size="large">
@@ -286,7 +127,7 @@ const Header = styled.div`
 `;
 
 const FormContainer = styled(Form)`
-  width: 350px;
+  width: 500px;
   border-radius: 3px;
 
   .ant-row {
@@ -319,39 +160,6 @@ const FormContainer = styled(Form)`
 
   .ant-col.ant-form-item-label > label::after {
     display: none;
-  }
-
-  .ant-row.ant-form-item.toggle-container .ant-form-item-control {
-    padding: 0 11px;
-    height: 4rem;
-    display: flex;
-    align-items: center;
-
-    .ant-switch {
-      margin: 0;
-    }
-  }
-
-  .ant-form-explain {
-    margin-top: 0.5rem;
-    margin-left: 9rem;
-  }
-
-  .ant-input-group-addon:first-child {
-    width: 9rem;
-    text-align: left;
-    color: #888;
-    font-size: 1.2rem;
-    border: none;
-    background-color: inherit;
-  }
-
-  .ant-input-group > .ant-input:last-child {
-    border-radius: 4px;
-  }
-
-  .ant-col {
-    width: 100%;
   }
 
   button[type='submit'] {
