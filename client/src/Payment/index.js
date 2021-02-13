@@ -4,6 +4,7 @@ import {Form, Select, Icon, Input, Switch, Button} from 'antd';
 import {withRouter} from 'react-router-dom';
 import {withUserAgent} from 'react-useragent';
 import queryString from 'query-string';
+import impCode from '../config/payment.json';
 
 const {Item} = Form;
 
@@ -30,8 +31,8 @@ function Payment({history, form}) {
         validateFieldsAndScroll((error, values) => {
             if (!error) {
                 /* 가맹점 식별코드 */
-                const userCode = 'imp92963329';
-
+                const userCode = impCode.imp_user_code;
+                console.log(userCode);
                 /* 웹 환경일때 */
                 const {IMP} = window;
                 IMP.init(userCode);
@@ -45,7 +46,7 @@ function Payment({history, form}) {
         const query = queryString.stringify(response);
         if (response.success) { // 결제 성공 시
             axios({
-                url: 'http://localhost:4000/api/payment/index', // 가맹점 서버
+                url: 'https://localhost:4000/payments/complete', // 가맹점 서버에 전달할 파라미터에 필요한 서버 URL
                 method: 'post',
                 headers: {'Content-Type': 'application/json'},
                 data: {

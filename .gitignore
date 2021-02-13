@@ -4,3 +4,4 @@ server/config/*-config.json
 server/models/dev_*.js
 client/node_modules/
 client/.eslintcache
+client/src/config
