@@ -2,9 +2,12 @@ import React, {useState, useEffect} from 'react';
 import axois from 'axios';
 import {Link} from 'react-router-dom';
 import Cart from '../component/Cart';
+import {useDispatch} from 'react-redux';
+import {addCart} from '../store/actions';
 
 function Ade() {
     const [products, setProducts] = useState([]);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         axois.get('/api/menus')
@@ -31,7 +34,7 @@ function Ade() {
                             <img src={item.img_url} />
                             <div>{item.name_kor}</div>
                             <div>{item.price.toLocaleString()}원</div>
-                            <button>장바구니 담기</button>
+                            <button onClick={() => dispatch(addCart(item))}>장바구니 담기</button>
                         </div>
                     );
                 })
