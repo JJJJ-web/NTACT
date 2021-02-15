@@ -1,2 +1,5 @@
 *       text=auto
+
+*.js    text
+
 *.png   -text
