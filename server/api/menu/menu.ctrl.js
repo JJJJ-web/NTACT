@@ -1,4 +1,4 @@
-const menuModel = require('../../models').Menu;
+const menuModel = require('../../models').dev_menu;
 
 exports.list = async (ctx) => {
     let menus;
