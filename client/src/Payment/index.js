@@ -5,6 +5,7 @@ import {withRouter} from 'react-router-dom';
 import {withUserAgent} from 'react-useragent';
 import queryString from 'query-string';
 import impCode from '../config/payment.json';
+import axios from 'axios';
 
 const {Item} = Form;
 
@@ -46,7 +47,7 @@ function Payment({history, form}) {
         const query = queryString.stringify(response);
         if (response.success) { // 결제 성공 시
             axios({
-                url: 'https://localhost:4000/payments/complete', // 가맹점 서버에 전달할 파라미터에 필요한 서버 URL
+                url: 'http://localhost:4000/api/payments/complete', // 가맹점 서버에 전달할 파라미터에 필요한 서버 URL
                 method: 'post',
                 headers: {'Content-Type': 'application/json'},
                 data: {
@@ -58,7 +59,7 @@ function Payment({history, form}) {
             }).then((data) => { // 가맹점 서버 결제 API 성공시 로직
                 history.push(`/payment/result?${query}`);
             }).then((data) => { // 응답 처리
-                switch(data.status) {
+                switch (data.status) {
                 case 'success':
                     // 결제 성공 시 로직
                     break;

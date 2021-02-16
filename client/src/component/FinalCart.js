@@ -20,12 +20,10 @@ function FinalCart() {
     console.log(cart);
 
     const sendMenuList = () => {
-        axios.post('/api/payment/order', 
+        axios.post('/api/payments/order',
             {
-                data: {
-                    cart: cart,
-                    sum: sum.state.sum,
-                },
+                cart: cart,
+                sum: sum.state.sum,
             }).then((res) => {
             if (res.status === 200) {
                 window.alert('전송 성공');
