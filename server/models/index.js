@@ -31,6 +31,5 @@ Object.keys(db).forEach(function(modelName) {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-db.Menu = require('./dev_menu')(sequelize, Sequelize);
 
 module.exports = db;
