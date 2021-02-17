@@ -1,9 +1,10 @@
 import React from 'react';
-import {Link, useLocation} from 'react-router-dom';
+import {Link, useHistory, useLocation} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
 
 function FinalCart() {
+    const history = useHistory();
     const cart = useSelector((store) => store.cartReducer);
     const sum = useLocation();
 
@@ -27,6 +28,7 @@ function FinalCart() {
             }).then((res) => {
             if (res.status === 200) {
                 window.alert('전송 성공');
+                history.push('/payment');
             }
         });
     };
