@@ -20,12 +20,12 @@ function initModels(sequelize) {
   var menu = _menu(sequelize, DataTypes);
   var user = _user(sequelize, DataTypes);
 
-  menu.belongsTo(category, { as: "category", foreignKey: "category_id"});
-  category.hasMany(menu, { as: "menus", foreignKey: "category_id"});
   dev_menu.belongsTo(dev_category, { as: "category", foreignKey: "category_id"});
   dev_category.hasMany(dev_menu, { as: "dev_menus", foreignKey: "category_id"});
   dev_orders.belongsTo(dev_merchant, { as: "dev_merchant", foreignKey: "dev_merchant_id"});
   dev_merchant.hasMany(dev_orders, { as: "dev_orders", foreignKey: "dev_merchant_id"});
+  menu.belongsTo(category, { as: "category", foreignKey: "category_id"});
+  category.hasMany(menu, { as: "menus", foreignKey: "category_id"});
 
   return {
     category,
