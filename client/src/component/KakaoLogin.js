@@ -3,6 +3,7 @@ import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 import Kakao from 'kakaojs';
 import jwt from 'jsonwebtoken';
+import loginInfo from '../config/loginInfo.json';
 
 function Login(props) {
     let [userName, setUserName] = useState('');
@@ -32,11 +33,10 @@ function Login(props) {
                             if (res.status === 200) { // 가입된 사용자일 경우 로그인 성공 처리
                                 window.alert('가입된 사용자');
                             }
-                            const user = jwt.verify(res.data.jwtToken, // 백에서 jwtToken받아옴
-                                'qlalfqjsgh');
-                            console.log('username=', user.username, ' id=',
-                                user.id, ' iat=', user.iat);
+                            const user = jwt.verify(res.data.jwtToken,
+                                loginInfo.jwt_password); // 백에서 jwtToken받아옴
                             setUserName(userName = user.username);
+                            localStorage.setItem('userInfo', JSON.stringify({userName: user.username, userId: user.id, userIat: user.iat}));
                             props.history.push('/coffee');
                         }).catch((err) => {
                             console.log(err);
@@ -51,7 +51,6 @@ function Login(props) {
             console.error(err);
         }
     };
-
     /*
     logoutWithKakao() {
         if (window.Kakao.Auth.getAccessToken()) {
