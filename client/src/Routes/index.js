@@ -7,3 +7,4 @@ export {default as Shake} from '../pages/Shake';
 export {default as MilkBeverage} from '../pages/MilkBeverage';
 export {default as Payment} from '../Payment/index';
 export {default as PaymentResult} from '../PaymentResult/index';
+export {default as MenuManage} from '../AdminPages/MenuManage';
