@@ -6,6 +6,10 @@ exports.list = async (ctx) => {
         menus = await menuModel.findAll({
             attributes: ['id', 'name_kor', 'name_eng', 'price', 'img_url', 'sales_stat', 'category_id'],
         });
+
+        for(let i=0; i<menus.length; i++) {
+            menus[i].sales_stat = menus[i].sales_stat !== 0;
+        }
     } catch (e) {
         ctx.throw(500, e);
     }
