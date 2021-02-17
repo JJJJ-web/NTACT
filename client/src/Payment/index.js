@@ -1,60 +1,58 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
-import {Form, Select, Icon, Input, Switch, Button} from 'antd';
+import 'antd/dist/antd.css';
+import {Form, Input, Button, Select} from 'antd';
 import {withRouter} from 'react-router-dom';
-import {withUserAgent} from 'react-useragent';
 import queryString from 'query-string';
 import impCode from '../config/payment.json';
 import axios from 'axios';
+import styled from 'styled-components';
 
-const {Item} = Form;
+const tailLayout = {
+    wrapperCol: {
+        offset: 8,
+        span: 16,
+    },
+};
 
-function Payment({history, form}) {
-    const {
-        getFieldDecorator,
-        validateFieldsAndScroll,
-    } = form;
+function Payment({history}) {
     const data = {
         pg: 'html5_inicis', // PG사
         pay_method: 'card', // 결제수단
         merchant_uid: `ntact_${new Date().getTime()}`, // 주문번호
         amount: 1000, // 결제금액
-        buyer_name: '홍길동', // 구매자 이름
+        buyer_name: JSON.parse(localStorage.getItem('userInfo')).userName, // 구매자 이름
         buyer_tel: '01012341234', // 구매자 전화번호
         buyer_email: 'example@example', // 구매자 이메일
-        buyer_addr: '신사동 661-16', // 구매자 주소
-        buyer_postcode: '06018', // 구매자 우편번호
     };
 
-    function handleSubmit(e) {
-        e.preventDefault();
+    function handleSubmit() {
+        const userCode = impCode.imp_user_code;
+        console.log(userCode);
 
-        validateFieldsAndScroll((error, values) => {
-            if (!error) {
-                /* 가맹점 식별코드 */
-                const userCode = impCode.imp_user_code;
-                console.log(userCode);
-                /* 웹 환경일때 */
-                const {IMP} = window;
-                IMP.init(userCode);
-                IMP.request_pay(data, callback);
-            }
-        });
+        /* 웹 환경일때 */
+        const {IMP} = window;
+        IMP.init(userCode);
+        IMP.request_pay(data, callback);
     }
 
     function callback(response) {
-        console.log(data.merchant_uid);
+        console.log(data.buyer_name);
         const query = queryString.stringify(response);
         if (response.success) { // 결제 성공 시
             axios({
                 url: 'http://localhost:4000/api/payments/complete', // 가맹점 서버에 전달할 파라미터에 필요한 서버 URL
                 method: 'post',
-                headers: {'Content-Type': 'application/json'},
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': response.access_token,
+                },
                 data: {
                     imp_uid: response.imp_uid,
                     merchant_uid: response.merchant_uid,
                     amount: response.amount,
-                    buyerName: response.buyerName,
+                    buyer_name: response.buyer_name,
+                    buyer_tel: response.buyer_tel,
+                    buyer_email: response.buyer_email,
                 },
             }).then((data) => { // 가맹점 서버 결제 API 성공시 로직
                 history.push(`/payment/result?${query}`);
@@ -73,105 +71,66 @@ function Payment({history, form}) {
     }
 
     return (
-        <Wrapper>
-            <Header>아임포트 결제 테스트</Header>
-            <FormContainer onSubmit={handleSubmit}>
-                <Item label="PG사">
-                    {data.pg}
-                </Item>
-                <Item label="결제수단">
-                    {data.pay_method}
-                </Item>
-                <Item label="결제금액">
-                    {data.amount}
-                </Item>
-                <Item label="구매자 이름">
-                    {data.buyer_name}
-                </Item>
-                <Item label="전화번호">
-                    {getFieldDecorator('buyer_tel', {
-                        initialValue: '',
-                        rules: [{required: true, message: '전화번호 입력은 필수입니다.'}],
-                    })(
-                        <Input size="large" type="number"/>,
-                    )}
-                </Item>
-                <Item label="이메일">
-                    {getFieldDecorator('buyer_email', {
-                        initialValue: '',
-                        rules: [{required: false}],
-                    })(
-                        <Input size="large"/>,
-                    )}
-                </Item>
-                <Button type="primary" htmlType="submit" size="large">
-                    결제하기
-                </Button>
-            </FormContainer>
-        </Wrapper>
+        <Container>
+            <Form onFinish={handleSubmit} name="dynamic_rule">
+                <Form.Item label="결제금액">
+                    <inputText>{data.amount}</inputText>
+                </Form.Item>
+                <Form.Item label="구매자 이름">
+                    <inputText>{data.buyer_name}</inputText>
+                </Form.Item>
+                <Form.Item
+                    name="번호"
+                    label="번호"
+                    rules={[
+                        {
+                            required: true,
+                            message: '핸드폰 번호는 필수입력입니다.',
+                        },
+                    ]}
+                >
+                    <inputText><Input placeholder="번호를 입력하세요." maxLength={11} /></inputText>
+                </Form.Item>
+                <Form.Item
+                    name="email"
+                    label="E-mail"
+                    rules={[
+                        {
+                            type: 'email',
+                            message: '이메일 형식(example@example.com)으로 입력하세요.',
+                            required: false,
+                        },
+                    ]}
+                >
+                    <inputText><Input placeholder="이메일을 입력하세요." /></inputText>
+                </Form.Item>
+                <Form.Item {...tailLayout}>
+                    <Button type="primary" htmlType="submit">
+                        결제하기
+                    </Button>
+                </Form.Item>
+            </Form>
+        </Container>
     );
 }
 
-const Wrapper = styled.div`
-  padding: 5rem 0;
+const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-`;
-
-const Header = styled.div`
-  font-weight: bold;
-  text-align: center;
+  background-color: #fff;
+  border-radius: 4px;
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  right: 2rem;
+  bottom: 2rem;
   padding: 2rem;
-  padding-top: 0;
-  font-size: 3rem;
-`;
-
-const FormContainer = styled(Form)`
-  width: 500px;
-  border-radius: 3px;
-
-  .ant-row {
-    margin-bottom: 1rem;
-  }
-
-  .ant-form-item {
-    display: flex;
-    align-items: center;
-  }
-
-  .ant-col.ant-form-item-label {
-    padding: 0 11px;
-    width: 9rem;
-    text-align: left;
-
-    label {
-      color: #888;
-      font-size: 1.2rem;
-    }
-
-    & + .ant-col.ant-form-item-control-wrapper {
-      width: 26rem;
-
-      .ant-form-item-control {
-        line-height: inherit;
-      }
-    }
-  }
-
-  .ant-col.ant-form-item-label > label::after {
-    display: none;
-  }
-
-  button[type='submit'] {
-    width: 100%;
-    height: 5rem;
-    font-size: 1.6rem;
-    margin-top: 2rem;
+  
+  inputText{
+    padding-left: 2rem;
   }
 `;
 
-const PaymentForm = Form.create({name: 'payment'})(Payment);
-
-export default withUserAgent(withRouter(PaymentForm));
+export default withRouter(Payment);
