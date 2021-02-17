@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Icon, Button} from 'antd';
+import {Button} from 'antd';
 import {withRouter} from 'react-router-dom';
 import queryString from 'query-string';
+import Icon, {CheckCircleOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 /*eslint-disable */
 function PaymentResult({history}) {
     const {location} = history;
@@ -20,7 +21,7 @@ function PaymentResult({history}) {
         if (typeof success === 'boolean') return success === true;
     }
 
-    const iconType = isSuccessed ? 'check-circle' : 'exclamation-circle';
+    const iconType = isSuccessed ? CheckCircleOutlined : ExclamationCircleOutlined;
     const resultType = isSuccessed ? '성공' : '실패';
     const colorType = isSuccessed ? '#52c41a' : '#f5222d';
     return (
@@ -75,13 +76,6 @@ const Container = styled.div`
   right: 2rem;
   bottom: 2rem;
   padding: 2rem;
-
-  > .anticon {
-    font-size: 10rem;
-    text-align: center;
-    margin-bottom: 2rem;
-    color: ${props => props.colorType};
-  }
 
   p {
     font-size: 2rem;
