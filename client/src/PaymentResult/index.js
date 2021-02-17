@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {Button} from 'antd';
 import {withRouter} from 'react-router-dom';
 import queryString from 'query-string';
-import Icon, {CheckCircleOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 /*eslint-disable */
 function PaymentResult({history}) {
     const {location} = history;
@@ -21,13 +20,11 @@ function PaymentResult({history}) {
         if (typeof success === 'boolean') return success === true;
     }
 
-    const iconType = isSuccessed ? CheckCircleOutlined : ExclamationCircleOutlined;
     const resultType = isSuccessed ? '성공' : '실패';
     const colorType = isSuccessed ? '#52c41a' : '#f5222d';
     return (
         <Wrapper>
             <Container colorType={colorType}>
-                <Icon type={iconType} theme="filled"/>
                 <p>{`결제에 ${resultType}하였습니다`}</p>
                 <ul>
                     <li>
@@ -47,7 +44,6 @@ function PaymentResult({history}) {
                     )}
                 </ul>
                 <Button size="large" onClick={() => history.push('/')}>
-                    <Icon type="arrow-left"/>
                     돌아가기
                 </Button>
             </Container>
@@ -76,7 +72,7 @@ const Container = styled.div`
   right: 2rem;
   bottom: 2rem;
   padding: 2rem;
-
+  
   p {
     font-size: 2rem;
     font-weight: bold;
