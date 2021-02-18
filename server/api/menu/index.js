@@ -4,8 +4,10 @@ const menusCtrl = require('./menu.ctrl');
 
 const menus = new Router();
 
-// 메뉴 조회
+// 판매 중인 메뉴 조회
 menus.get('/', menusCtrl.list);
+// 전체 메뉴 조회
+menus.get('/all', menusCtrl.all);
 // 특정 메뉴에 대한 상세 정보 조회
 menus.get('/:id', menusCtrl.get);
 

@@ -5,11 +5,20 @@ exports.list = async (ctx) => {
     try {
         menus = await menuModel.findAll({
             attributes: ['id', 'name_kor', 'name_eng', 'price', 'img_url', 'sales_stat', 'category_id'],
+            where: {sales_stat: 1},
         });
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+    ctx.body = menus;
+};
 
-        for(let i=0; i<menus.length; i++) {
-            menus[i].sales_stat = menus[i].sales_stat !== 0;
-        }
+exports.all = async (ctx) => {
+    let menus;
+    try {
+        menus = await menuModel.findAll({
+            attributes: ['id', 'name_kor', 'name_eng', 'price', 'img_url', 'sales_stat', 'category_id'],
+        });
     } catch (e) {
         ctx.throw(500, e);
     }
