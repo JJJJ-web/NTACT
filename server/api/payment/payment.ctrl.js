@@ -52,7 +52,7 @@ exports.complete = async (ctx) => {
             method: 'get',
             headers: {'Authorization': accessToken},
         });
-        const paymentData = getPaymentData.data.resource;
+        const paymentData = getPaymentData.data.response;
         console.log(paymentData);
     } catch (e) {
         ctx.status = 400;
