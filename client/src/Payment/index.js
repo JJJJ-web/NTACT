@@ -30,7 +30,6 @@ async function sendCartData(sumAmount, cartItems) {
 async function sendOrderData(data) {
     await axios.post('http://localhost:4000/api/payments/order',
         {
-            id: data.id,
             name: data.name,
             amount: data.amount,
             buyer_name: data.buyer_name,
