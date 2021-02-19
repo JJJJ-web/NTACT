@@ -43,7 +43,7 @@ function PaymentResult({history}) {
                         </li>
                     )}
                 </ul>
-                <Button size="large" onClick={() => history.push('/')}>
+                <Button size="large" onClick={() => history.goBack()}>
                     돌아가기
                 </Button>
             </Container>

@@ -10,33 +10,72 @@ import styled from 'styled-components';
 const tailLayout = {
     wrapperCol: {
         offset: 8,
-        span: 16,
     },
 };
 
-function Payment({history}) {
+async function sendCartData(sumAmount, cartItems) {
+    await axios.post('http://localhost:4000/api/payments/order',
+        {
+            cart: cartItems,
+            sum: sumAmount,
+        }).then((res) => {
+        if (res.status === 200) {
+            window.alert('전송 성공111');
+        } else {
+            window.alert('전송 실패111');
+        }
+    });
+}
+
+async function sendOrderData(data) {
+    await axios.post('http://localhost:4000/api/payments/order',
+        {
+            id: data.id,
+            name: data.name,
+            amount: data.amount,
+            buyer_name: data.buyer_name,
+            buyer_tel: data.buyer_tel,
+            buyer_email: data.buyer_email,
+        }).then((res) => {
+        if (res.status === 200) {
+            window.alert('전송 성공222');
+        }
+    }).then((data) => { // 응답 처리
+        window.alert(data.id);
+        return data.id;
+    });
+}
+
+function Payment({history, sumAmount, cartItems}) {
+    let [phoneNumber, setPhoneNumber] = useState('');
+    let [email, setEmail] = useState('');
+    const date = new Date().toISOString().substr(0, 10).split('-').join('').toString();
+
     const data = {
         pg: 'html5_inicis', // PG사
         pay_method: 'card', // 결제수단
-        merchant_uid: `ntact_${new Date().getTime()}`, // 주문번호
-        amount: 1000, // 결제금액
+        name: '{itemName}', // 상품 이름
+        merchant_uid: `${date}_${new Date().getTime()}`, // 주문번호
+        amount: sumAmount, // 결제금액
         buyer_name: JSON.parse(localStorage.getItem('userInfo')).userName, // 구매자 이름
-        buyer_tel: '01012341234', // 구매자 전화번호
-        buyer_email: 'example@example', // 구매자 이메일
+        buyer_tel: phoneNumber, // 구매자 전화번호
+        buyer_email: email, // 구매자 이메일
     };
 
-    function handleSubmit() {
+    async function handleSubmit() {
         const userCode = impCode.imp_user_code;
-        console.log(userCode);
+        await sendCartData(sumAmount, cartItems); // cart, 가격 전달
+        const merchant = await sendOrderData(data); // 주문정보 전달
+        data.merchant_uid = merchant;
 
         /* 웹 환경일때 */
         const {IMP} = window;
         IMP.init(userCode);
-        IMP.request_pay(data, callback);
+        await IMP.request_pay(data, callback);
     }
 
     function callback(response) {
-        console.log(data.buyer_name);
+        console.log(data);
         const query = queryString.stringify(response);
         if (response.success) { // 결제 성공 시
             axios({
@@ -49,10 +88,6 @@ function Payment({history}) {
                 data: {
                     imp_uid: response.imp_uid,
                     merchant_uid: response.merchant_uid,
-                    amount: response.amount,
-                    buyer_name: response.buyer_name,
-                    buyer_tel: response.buyer_tel,
-                    buyer_email: response.buyer_email,
                 },
             }).then((data) => { // 가맹점 서버 결제 API 성공시 로직
                 history.push(`/payment/result?${query}`);
@@ -70,67 +105,57 @@ function Payment({history}) {
         }
     }
 
+    function onInputPhonenumber(e) {
+        let value = e.target.value;
+        value = value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+        setPhoneNumber(phoneNumber = value);
+        console.log(phoneNumber);
+    }
+
+    function onInputEmail(e) {
+        setEmail(email = e.target.value);
+    }
+
     return (
-        <Container>
-            <Form onFinish={handleSubmit} name="dynamic_rule">
-                <Form.Item label="결제금액">
-                    <inputText>{data.amount}</inputText>
-                </Form.Item>
-                <Form.Item label="구매자 이름">
-                    <inputText>{data.buyer_name}</inputText>
-                </Form.Item>
-                <Form.Item
-                    name="번호"
-                    label="번호"
-                    rules={[
-                        {
-                            required: true,
-                            message: '핸드폰 번호는 필수입력입니다.',
-                        },
-                    ]}
-                >
-                    <inputText><Input placeholder="번호를 입력하세요." maxLength={11} /></inputText>
-                </Form.Item>
-                <Form.Item
-                    name="email"
-                    label="E-mail"
-                    rules={[
-                        {
-                            type: 'email',
-                            message: '이메일 형식(example@example.com)으로 입력하세요.',
-                            required: false,
-                        },
-                    ]}
-                >
-                    <inputText><Input placeholder="이메일을 입력하세요." /></inputText>
-                </Form.Item>
-                <Form.Item {...tailLayout}>
-                    <Button type="primary" htmlType="submit">
-                        결제하기
-                    </Button>
-                </Form.Item>
-            </Form>
-        </Container>
+        <Form onFinish={handleSubmit} name="paymentForm">
+            <Form.Item label="구매자 이름">
+                <span className='inputForm'>{data.buyer_name}</span>
+            </Form.Item>
+            <Form.Item
+                name="번호"
+                label="번호"
+                rules={[
+                    {
+                        required: true,
+                        message: '핸드폰 번호는 필수입력입니다.',
+                    },
+                ]}
+            >
+                <span className='inputForm'><Input onChange={onInputPhonenumber}
+                    placeholder="번호를 입력하세요."
+                    maxLength={11}
+                    value={phoneNumber}/></span>
+            </Form.Item>
+            <Form.Item
+                name="email"
+                label="E-mail"
+                rules={[
+                    {
+                        type: 'email',
+                        message: '이메일 형식(example@example.com)으로 입력하세요.',
+                        required: false,
+                    },
+                ]}
+            >
+                <span className='inputForm'><Input onChange={onInputEmail} placeholder="이메일을 입력하세요."/></span>
+            </Form.Item>
+            <Form.Item {...tailLayout}>
+                <Button type="primary" htmlType="submit">
+                    결제하기
+                </Button>
+            </Form.Item>
+        </Form>
     );
 }
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background-color: #fff;
-  border-radius: 4px;
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
-  right: 2rem;
-  bottom: 2rem;
-  padding: 2rem;
-  
-  inputText{
-    padding-left: 2rem;
-  }
-`;
 
 export default withRouter(Payment);
