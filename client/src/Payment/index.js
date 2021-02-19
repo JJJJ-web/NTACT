@@ -13,15 +13,49 @@ const tailLayout = {
     },
 };
 
+async function sendCartData(sumAmount, cartItems) {
+    await axios.post('http://localhost:4000/api/payments/order',
+        {
+            cart: cartItems,
+            sum: sumAmount,
+        }).then((res) => {
+        if (res.status === 200) {
+            window.alert('전송 성공111');
+        } else {
+            window.alert('전송 실패111');
+        }
+    });
+}
+
+async function sendOrderData(data) {
+    await axios.post('http://localhost:4000/api/payments/order',
+        {
+            id: data.id,
+            name: data.name,
+            amount: data.amount,
+            buyer_name: data.buyer_name,
+            buyer_tel: data.buyer_tel,
+            buyer_email: data.buyer_email,
+        }).then((res) => {
+        if (res.status === 200) {
+            window.alert('전송 성공222');
+        }
+    }).then((data) => { // 응답 처리
+        window.alert(data.id);
+        return data.id;
+    });
+}
+
 function Payment({history, sumAmount, cartItems}) {
     let [phoneNumber, setPhoneNumber] = useState('');
     let [email, setEmail] = useState('');
-    console.log('결제창', cartItems);
+    const date = new Date().toISOString().substr(0, 10).split('-').join('').toString();
+
     const data = {
         pg: 'html5_inicis', // PG사
         pay_method: 'card', // 결제수단
         name: '{itemName}', // 상품 이름
-        merchant_uid: `ntact_${new Date().getTime()}`, // 주문번호
+        merchant_uid: `${date}_${new Date().getTime()}`, // 주문번호
         amount: sumAmount, // 결제금액
         buyer_name: JSON.parse(localStorage.getItem('userInfo')).userName, // 구매자 이름
         buyer_tel: phoneNumber, // 구매자 전화번호
@@ -30,38 +64,18 @@ function Payment({history, sumAmount, cartItems}) {
 
     async function handleSubmit() {
         const userCode = impCode.imp_user_code;
-        await axios.post('http://localhost:4000/api/payments/order',
-            {
-                cart: cartItems,
-                sum: sumAmount,
-            }).then((res) => {
-            if (res.status === 200) {
-                window.alert('전송 성공111');
-                return true;
-            }
-        });
-        // await axios.post('http://localhost:4000/api/payments/order',
-        //     {
-        //         name: data.name,
-        //         amount: data.amount,
-        //         buyer_name: data.buyer_name,
-        //         buyer_tel: data.buyer_tel,
-        //         buyer_email: data.buyer_email,
-        //     }).then((res) => {
-        //     if (res.status === 200) {
-        //         window.alert('전송 성공222');
-        //         history.push('/payment');
-        //     }
-        // });
+        await sendCartData(sumAmount, cartItems); // cart, 가격 전달
+        const merchant = await sendOrderData(data); // 주문정보 전달
+        data.merchant_uid = merchant;
 
         /* 웹 환경일때 */
         const {IMP} = window;
         IMP.init(userCode);
-        IMP.request_pay(data, callback);
+        await IMP.request_pay(data, callback);
     }
 
     function callback(response) {
-        console.log(data.buyer_name);
+        console.log(data);
         const query = queryString.stringify(response);
         if (response.success) { // 결제 성공 시
             axios({
@@ -94,11 +108,12 @@ function Payment({history, sumAmount, cartItems}) {
     function onInputPhonenumber(e) {
         let value = e.target.value;
         value = value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
-        setPhoneNumber(phoneNumber=value);
+        setPhoneNumber(phoneNumber = value);
         console.log(phoneNumber);
     }
+
     function onInputEmail(e) {
-        setEmail(email=e.target.value);
+        setEmail(email = e.target.value);
     }
 
     return (
@@ -116,7 +131,10 @@ function Payment({history, sumAmount, cartItems}) {
                     },
                 ]}
             >
-                <span className='inputForm'><Input onChange={onInputPhonenumber}placeholder="번호를 입력하세요." maxLength={11} value={phoneNumber}/></span>
+                <span className='inputForm'><Input onChange={onInputPhonenumber}
+                    placeholder="번호를 입력하세요."
+                    maxLength={11}
+                    value={phoneNumber}/></span>
             </Form.Item>
             <Form.Item
                 name="email"
@@ -129,7 +147,7 @@ function Payment({history, sumAmount, cartItems}) {
                     },
                 ]}
             >
-                <span className='inputForm'><Input onChange={onInputEmail} placeholder="이메일을 입력하세요." /></span>
+                <span className='inputForm'><Input onChange={onInputEmail} placeholder="이메일을 입력하세요."/></span>
             </Form.Item>
             <Form.Item {...tailLayout}>
                 <Button type="primary" htmlType="submit">
