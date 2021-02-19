@@ -1,30 +1,43 @@
-import React, {Component} from 'react';
-import KakaoLogin from 'react-kakao-login';
-import styled from 'styled-components';
+import React, {Component, useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 import Kakao from 'kakaojs';
+import jwt from 'jsonwebtoken';
+import loginInfo from '../config/loginInfo.json';
 
-class Login extends Component {
-    loginWithKakao() {
+function Login(props) {
+    let [userName, setUserName] = useState('');
+    let [Authorization, setAuthorization] = useState('');
+
+    const loginWithKakao = () => {
         try {
             return new Promise((resolve, reject) => {
                 if (!Kakao) {
                     reject(new Error('Kakao 인스턴스가 존재하지 않습니다.'));
                 }
+                if (window.Kakao.Auth.getAccessToken()) {
+                    console.log('액세스 토큰이 존재합니다. 세션을 유지합니다.');
+                }
                 window.Kakao.Auth.login({
                     success: (auth) => {
                         console.log('정상적으로 로그인 되었습니다.', auth);
+                        setAuthorization(Authorization = auth.access_token);
                         axios.post('http://localhost:4000/api/users/loginKakao',
                             {
                                 headers: {
                                     'Authorization': auth.access_token,
                                 },
+                                withCredentials: true,
                             }).then((res) => {
                             console.log('res.status: ' + res.status);
                             if (res.status === 200) { // 가입된 사용자일 경우 로그인 성공 처리
-                                window.alert('login completed');
+                                window.alert('가입된 사용자');
                             }
+                            const user = jwt.verify(res.data.jwtToken,
+                                loginInfo.jwt_password); // 백에서 jwtToken받아옴
+                            setUserName(userName = user.username);
+                            localStorage.setItem('userInfo', JSON.stringify({userName: user.username, userId: user.id, userIat: user.iat}));
+                            props.history.push('/coffee');
                         }).catch((err) => {
                             console.log(err);
                         });
@@ -37,10 +50,7 @@ class Login extends Component {
         } catch (err) {
             console.error(err);
         }
-
-        this.props.history.push('/');
     };
-
     /*
     logoutWithKakao() {
         if (window.Kakao.Auth.getAccessToken()) {
@@ -53,20 +63,11 @@ class Login extends Component {
     };
      */
 
-    componentDidMount() {
-        window.Kakao.init('c921a1d3b75cd0acbf7c854d5ae184d3');
-        if (window.Kakao.Auth.getAccessToken()) {
-            console.log('액세스 토큰이 존재합니다. 세션을 유지합니다.');
-        }
-    }
-
-    render() {
-        return (
-            <div>
-                <button onClick={this.loginWithKakao} method='POST'>카카오 로그인</button>
-            </div>
-        );
-    }
+    return (
+        <div>
+            <button onClick={loginWithKakao}>카카오 로그인</button>
+        </div>
+    );
 }
 
 export default withRouter(Login);

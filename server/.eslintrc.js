@@ -1,4 +1,9 @@
 module.exports = {
+    'parser': 'babel-eslint',
+    'parserOptions': {
+        'jsx': true,
+        'ecmaVersion': 2020,
+    },
     'extends': 'google',
     'rules': {
         'indent': [
@@ -19,6 +24,7 @@ module.exports = {
         'max-len': 0,
         'new-cap': 0,
         'require-jsdoc': 0,
+        'no-throw-literal': 0,
     },
     'env': {
         'es6': true,

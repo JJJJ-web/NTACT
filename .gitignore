@@ -1,6 +1,8 @@
 .idea/
+node_modules/
 server/node_modules/
-server/config/db-config.json
+server/config/*-config.json
 server/models/dev_*.js
 client/node_modules/
 client/.eslintcache
+client/src/config

@@ -1,61 +1,47 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import {Link} from 'react-router-dom';
+import Cart from '../component/Cart';
+import {useDispatch} from 'react-redux';
+import {addCart} from '../store/actions';
 
-class Coffee extends Component {
-    handleOnClick = (e) => {
-        console.log(e.currentTarget.className);
-    };
-    
-    render() { 
-        const coffee = [
-            {
-                id: 'ICEDAmericano',
-                name: 'ICED Americano',
-                price: 3200,
-                image: '/img/COFFEE/ICEDAmericano.png',
-            },
-            {
-                id: 'ICEDCafeMocha',
-                name: 'ICED Cafe Mocha',
-                price: 3900,
-                image: '/img/COFFEE/ICEDCafeMocha.png',
-            },
-            {
-                id: 'ICEDCafeLatte',
-                name: 'ICED Cafe Latte',
-                price: 3500,
-                image: '/img/COFFEE/ICEDCafeLatte.png',
-            },
-            {
-                id: 'ICEDCappuccino',
-                name: 'ICED Cappuccino',
-                price: 3700,
-                image: '/img/COFFEE/ICEDCappuccino.png',
-            },
-        ];
+function Coffee() {
+    const [products, setProducts] = useState([]);
+    const dispatch = useDispatch();
 
-        const menuList = coffee.map((menu) => 
-            <div key={menu.id} className={menu.id +' '+ menu.price} onClick={this.handleOnClick}>
-                <img src={menu.image} />
-                <div>{menu.name}</div>
-                <div>{menu.price}</div>
-            </div>);
+    useEffect(() => {
+        axios.get('/api/menus')
+            .then((res) => setProducts(res.data));
+    }, []);
 
-        return (
-            <div>
-                <Link to='/shake'>
-                    <button>SHAKE</button>
-                </Link>
-                <button>COFFEE</button>
-                <Link to ='/milkbeverage'>
-                    <button>MILK BEVERAGE</button>
-                </Link>
-                <div>
-                    {menuList}
-                </div>
-            </div>
-        );
-    };
+    const coffee = products.filter((res) => {
+        return res.category_id === 100;
+    });
+
+    return (
+        <div>
+            <Link to='/shake'>
+                <button>SHAKE</button>
+            </Link>
+            <button>COFFEE</button>
+            <Link to ='/milkbeverage'>
+                <button>MILK BEVERAGE</button>
+            </Link>
+            {
+                coffee.map((item) => {
+                    return (
+                        <div key={item.id}>
+                            <img src={item.img_url} />
+                            <div>{item.name_kor}</div>
+                            <div>{item.price.toLocaleString()}원</div>
+                            <button onClick={() => dispatch(addCart(item))}>장바구니 담기</button>
+                        </div>
+                    );
+                })
+            }
+            <Cart />
+        </div>
+    );
 }
 
 export default Coffee;
