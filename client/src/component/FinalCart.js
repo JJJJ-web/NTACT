@@ -20,18 +20,6 @@ function FinalCart() {
         );
     }) : <div>장바구니가 비어있습니다.</div>;
 
-    const sendMenuList = () => {
-        axios.post('/api/payments/order',
-            {
-                cart: cart,
-                sum: sum.state.sum,
-            }).then((res) => {
-            if (res.status === 200) {
-                window.alert('전송 성공');
-            }
-        });
-    };
-    console.log('기존', cart);
     return (
         <>
             <div>
@@ -40,7 +28,6 @@ function FinalCart() {
                 <div>총 금 액 : {JSON.stringify(sum.state.sum)}</div>
                 <br />
                 <hr />
-                <div><button onClick={sendMenuList}>결제하기</button></div>
             </div>,
             <Payment sumAmount={sum.state.sum} cartItems={cart} />
         </>
