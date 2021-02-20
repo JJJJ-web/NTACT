@@ -16,8 +16,12 @@ import {
 import AddMenu from './AddMenu';
 import {DeleteFilled, FormOutlined} from '@ant-design/icons';
 
+const {Option} = Select;
+
 function MenuManage() {
+    const formRef = React.createRef();
     const [products, setProducts] = useState([]);
+    const [category, setCategory] = useState([]);
     // const [menu, setMenu] = useState([]);
     let [stat, setStat] = useState(true);
     const [visible, setVisible] = useState(false);
@@ -26,6 +30,9 @@ function MenuManage() {
         setVisible(false);
     };
 
+    function getCategory() {
+
+    }
     function onCategoryChange(value) {
         console.log(`selected ${value}`);
         switch (value) {
@@ -59,6 +66,10 @@ function MenuManage() {
 
     useState(() => {
         axois.get('/api/menus').then((res) => setProducts(res.data));
+        axois.get('/api/categories').then((res) => {
+            setCategory(res.data);
+            console.log(res.data);
+        });
     }, []);
 
     function CollectionCreateForm({menu, visible, onCreate, onCancel}) {
