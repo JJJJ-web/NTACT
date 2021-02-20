@@ -115,7 +115,6 @@ function MenuManage() {
                             style={{width: 200}}
                             defaultValue={menu.category_id}
                             optionFilterProp="children"
-                            onChange={onCategoryChange}
                             filterOption={(input, option) =>
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
