@@ -1,10 +1,15 @@
+const {Sequelize} = require('sequelize');
 const menuModel = require('../../models').dev_menu;
+const categoryModel = require('../../models').dev_category;
+
+menuModel.belongsTo(categoryModel, {foreignKey: 'category_id', sourceKey: 'id'});
+categoryModel.hasMany(menuModel, {foreignKey: 'category_id', targetKey: 'id'});
 
 exports.list = async (ctx) => {
     let menus;
     try {
         menus = await menuModel.findAll({
-            attributes: ['id', 'name_kor', 'name_eng', 'price', 'img_url', 'sales_stat', 'category_id'],
+            attributes: {exclude: 'descriptions'},
             where: {sales_stat: 1},
         });
     } catch (e) {
@@ -15,12 +20,33 @@ exports.list = async (ctx) => {
 
 exports.all = async (ctx) => {
     let menus;
-    try {
-        menus = await menuModel.findAll({
-            attributes: ['id', 'name_kor', 'name_eng', 'price', 'img_url', 'sales_stat', 'category_id'],
-        });
-    } catch (e) {
-        ctx.throw(500, e);
+    const {category} = ctx.request.query;
+    JSON.stringify(category);
+
+    if (category === 'true') {
+        try {
+            menus = await menuModel.findAll({
+                attributes: ['id', ['name_kor', 'menu_kor'], ['name_eng', 'menu_eng'], 'price',
+                    'description', 'img_url', 'sales_stat', 'category_id',
+                    [Sequelize.col('dev_category.name_kor'), 'category_kor'],
+                    [Sequelize.col('dev_category.name_eng'), 'category_eng']],
+                include: [{
+                    model: categoryModel,
+                    attributes: [],
+                    required: true,
+                }],
+            });
+        } catch (e) {
+            ctx.throw(500, e);
+        }
+    } else {
+        try {
+            menus = await menuModel.findAll({
+                attributes: {exclude: 'descriptions'},
+            });
+        } catch (e) {
+            ctx.throw(500, e);
+        }
     }
     ctx.body = menus;
 };
