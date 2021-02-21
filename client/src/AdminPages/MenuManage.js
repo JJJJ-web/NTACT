@@ -50,8 +50,22 @@ function MenuManage() {
                 },
             }).then((res) => {
             if (res.status === 200) {
-                window.alert('토글 성공111');
-                product.sales_stat === 1 ? setProducts(product.sales_stat = 0) : setProducts(product.sales_stat = 1);
+                console.log(product.menu_kor, product.sales_stat);
+                product.sales_stat === 1 ? setProducts(products.sales_stat = 0) : setProducts(products.sales_stat = 1);
+            } else {
+                window.alert('토글 실패111');
+            }
+        });
+    }
+    async function editMenuClickHandler() {
+        await axios.put('/api/menus/updateAllStat',
+            {
+                headers: {
+                    menu: JSON.stringify(selectThisMenu),
+                },
+            }).then((res) => {
+            if (res.status === 200) {
+                console.log(JSON.stringify(selectThisMenu));
             } else {
                 window.alert('토글 실패111');
             }
@@ -65,6 +79,17 @@ function MenuManage() {
     function onChangeCategory(e) {
         selectThisMenu.category_kor=e;
         console.log(selectThisMenu);
+    }
+    function onChangeKorName(e) {
+        setSelectThisMenu(selectThisMenu.menu_kor = e.target.value);
+    }
+    function onChangeEngName(e) {
+        setSelectThisMenu(selectThisMenu.menu_eng = e.target.value);
+    }
+    function onChanePrice(e) {
+        let value = e.target.value;
+        value = value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+        setSelectThisMenu(selectThisMenu.price = value);
     }
 
     function CollectionCreateForm({menu, visible, onCreate, onCancel}) {
@@ -80,8 +105,14 @@ function MenuManage() {
                     form
                         .validateFields()
                         .then((values) => {
+                            setSelectThisMenu(selectThisMenu.menu_kor=values.MenuNameKorean);
+                            setSelectThisMenu(selectThisMenu.menu_eng=values.MenuNameEnglish);
+                            setSelectThisMenu(selectThisMenu.price=Number(values.MenuPrice));
+                            console.log('폼', selectThisMenu);
+                            console.log('values', Number(values.MenuPrice));
                             form.resetFields();
-                            onCreate(values);
+                            editMenuClickHandler();
+                            onCancel();
                         })
                         .catch((info) => {
                             console.log('Validate Failed:', info);
@@ -97,8 +128,50 @@ function MenuManage() {
                     }}
                 >
                     <Form.Item
+                        name="MenuNameKorean"
+                        label="메뉴이름(한글)"
+                        initialValue={selectThisMenu.menu_kor}
+                        rules={[
+                            {
+                                required: true,
+                                message: '메뉴이름은 필수입력입니다.',
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        name="MenuNameEnglish"
+                        label="메뉴이름(영어)"
+                        initialValue={selectThisMenu.menu_eng}
+                        rules={[
+                            {
+                                required: true,
+                                message: '메뉴이름은 필수입력입니다.',
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        name="MenuPrice"
+                        label="가격"
+                        initialValue={selectThisMenu.price}
+                        rules={[
+                            {
+                                required: true,
+                                message: '가격은 필수입력입니다.',
+                            },
+                        ]}
+                    >
+                        <Input
+                            placeholder="가격을 입력하세요."
+                            maxLength={11} />
+                    </Form.Item>
+                    <Form.Item
                         name="category"
                         label="카테고리"
+                        initialValue={selectThisMenu.category_kor}
                         rules={[
                             {
                                 required: true,
@@ -118,7 +191,7 @@ function MenuManage() {
                             {
                                 getCategory().map((item) => {
                                     return(
-                                        <Option
+                                        <Option key={item}
                                             value={item}
                                         >{item}</Option>
                                     );
@@ -149,12 +222,6 @@ function MenuManage() {
                     <Form.Item name="description" label="Description">
                         <Input type="textarea" />
                     </Form.Item>
-                    <Form.Item name="modifier" className="collection-create-form_last-form-item">
-                        <Radio.Group>
-                            <Radio value="public">Public</Radio>
-                            <Radio value="private">Private</Radio>
-                        </Radio.Group>
-                    </Form.Item>
                 </Form>
             </Modal>
         );
@@ -172,7 +239,7 @@ function MenuManage() {
                                 <Col className="gutter-row" span={1}>{product.category_kor}</Col>
                                 <Col className="gutter-row" span={4}>{product.menu_kor}</Col>
                                 <Col className="gutter-row" span={4}>{product.menu_eng}</Col>
-                                <Col className="gutter-row" span={2}><Switch checkedChildren="판매중" unCheckedChildren="숨기기" onChange={() => statClickHandler(product)} checked={product.sales_stat==true?true:false}/></Col>
+                                <Col className="gutter-row" span={2}><Switch checkedChildren="판매중" unCheckedChildren="숨기기" onClick={() => statClickHandler(product)} checked={product.sales_stat==true?true:false}/></Col>
                                 <Col className="gutter-row" span={3}>{product.price.toLocaleString()}원</Col>
                                 <Button
                                     type="primary"
