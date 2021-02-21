@@ -96,3 +96,25 @@ exports.updateST = async (ctx) => {
         }
     } ctx.status = 200;
 };
+
+exports.updateAllStat = async (ctx) => {
+    // id 파라미터를 받아 해당 메뉴 찾아오기 
+    const menu = ctx.request.body.headers.menu;
+    console.log(menu);
+
+    // try {
+    //     await menuModel.findOne({where: {id: 2}})
+    //         .then((findMenu) => {
+    //             findMenu.name_kor = '아이스 카페 아메리카노 수정';
+    //             findMenu.name_eng = 'ICED Cafe Americano dif';
+    //             findMenu.price = 1;
+    //             findMenu.save()
+    //                 .then(() => {
+    //                     ctx.status = 200;
+    //                     console.log('메뉴수정성공');
+    //                 });
+    //         });
+    // } catch (e) {
+    //     ctx.throw(500, e);
+    // }
+};
