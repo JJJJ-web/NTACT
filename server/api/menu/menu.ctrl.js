@@ -70,13 +70,17 @@ exports.get = async (ctx) => {
 
 exports.updateST = async (ctx) => {
     // id 파라미터를 받아 해당 메뉴 찾아오기 
-    const {id} = ctx.params;
+    const {id} = ctx.request.query;
+    console.log('업데이트 세일 스텟 변경');
+
+    console.log(id);
     let menu;
     try {
         menu = await menuModel.findByPk(id);
     } catch (e) {
         ctx.throw(500, e);
     }
+    console.log(menu.sales_stat);
 
     // 해당 메뉴 ST가 1일 경우 sales_stat 0으로 변경
     if(menu.sales_stat) {
@@ -87,7 +91,7 @@ exports.updateST = async (ctx) => {
         }
     } else {
         try {
-            menuModel.update({sales_stat: 0}, {where: {id: id}});
+            menuModel.update({sales_stat: 1}, {where: {id: id}});
         } catch (e) {
             ctx.throw(500, e);
         }
