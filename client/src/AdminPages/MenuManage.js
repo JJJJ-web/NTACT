@@ -15,62 +15,57 @@ import {
 } from 'antd';
 import AddMenu from './AddMenu';
 import {DeleteFilled, FormOutlined} from '@ant-design/icons';
+import axios from 'axios';
 
 const {Option} = Select;
 
 function MenuManage() {
-    const formRef = React.createRef();
     const [products, setProducts] = useState([]);
-    const [category, setCategory] = useState([]);
-    // const [menu, setMenu] = useState([]);
-    let [stat, setStat] = useState(true);
     const [visible, setVisible] = useState(false);
+    const [selectThisMenu, setSelectThisMenu] = useState([]);
     const onCreate = (values) => {
         console.log('수정 Received values of form: ', values);
         setVisible(false);
     };
 
-    function getCategory() {
-
-    }
-    function onCategoryChange(value) {
-        console.log(`selected ${value}`);
-        switch (value) {
-        case 'Ade':
-            formRef.current.setFieldsValue({
-                note: 'Ade',
-            });
-            return;
-        case 'Coffee':
-            formRef.current.setFieldsValue({
-                note: 'Coffee',
-            });
-            return;
-        case 'MilkBeverage':
-            formRef.current.setFieldsValue({
-                note: 'MilkBeverage',
-            });
-            return;
-        case 'Shake':
-            formRef.current.setFieldsValue({
-                note: 'Shake',
-            });
-            return;
-        case '카테고리 추가':
-            formRef.current.setFieldsValue({
-                note: '카테고리 추가',
-            });
-            return;
-        }
-    };
-
     useState(() => {
-        axois.get('/api/menus').then((res) => setProducts(res.data));
-        axois.get('/api/categories').then((res) => {
-            setCategory(res.data);
-            console.log(res.data);
-        });
+        // axois한번으로 메뉴+카테고리명 데이터 받아오기
+        axois.get('/api/menus/all?category=true').then((res) => setProducts(res.data));
     }, []);
+
+    function getCategory() {
+        const list=[];
+        products.map((item) => {
+            list.push(item.category_kor);
+        });
+        const c = list.filter((item, index)=> list.indexOf(item)===index);
+        return c;
+    }
+
+    async function statClickHandler(product) {
+        await axios.patch('/api/menus/updateST',
+            {
+                headers: {
+                    id: product.id,
+                },
+            }).then((res) => {
+            if (res.status === 200) {
+                window.alert('토글 성공111');
+                product.sales_stat === 1 ? setProducts(product.sales_stat = 0) : setProducts(product.sales_stat = 1);
+            } else {
+                window.alert('토글 실패111');
+            }
+        });
+    }
+
+    function getThisMenu(menu) {
+        setSelectThisMenu(menu);
+    }
+
+    function onChangeCategory(e) {
+        selectThisMenu.category_kor=e;
+        console.log(selectThisMenu);
+    }
 
     function CollectionCreateForm({menu, visible, onCreate, onCancel}) {
         const [form] = Form.useForm();
@@ -113,17 +108,22 @@ function MenuManage() {
                         <Select
                             showSearch
                             style={{width: 200}}
-                            defaultValue={menu.category_id}
+                            defaultValue={selectThisMenu.category_kor}
                             optionFilterProp="children"
                             filterOption={(input, option) =>
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
+                            onChange={onChangeCategory}
                         >
-                            <Option value="Ade">Ade</Option>
-                            <Option value="Coffee">Coffee</Option>
-                            <Option value="MilkBeverage">MilkBeverage</Option>
-                            <Option value="Shake">Shake</Option>
-                            <Option value="카테고리 추가">...카테고리 추가</Option>
+                            {
+                                getCategory().map((item) => {
+                                    return(
+                                        <Option
+                                            value={item}
+                                        >{item}</Option>
+                                    );
+                                })
+                            }
                         </Select>
                     </Form.Item>
                     <Form.Item
@@ -159,12 +159,6 @@ function MenuManage() {
             </Modal>
         );
     }
-    function statClickHandler(product) {
-        stat = product;
-        stat.sales_stat === 1 ? setStat(stat.sales_stat = 0) : setStat(
-            stat.sales_stat = 1);
-        console.log(stat.name_kor, stat.sales_stat);
-    }
 
     return (
         <>
@@ -173,17 +167,18 @@ function MenuManage() {
                 {
                     products.map((product) => {
                         return (
-                            <Row key={product.id} justify="start" gutter={{xs: 16, sm: 16, md: 16, lg: 16}}>
+                            <Row key={product.id} justify="start" gutter={[10, 20]}>
                                 <Col className="gutter-row" span={2}><img src={product.img_url} width='50vw'/></Col>
-                                <Col className="gutter-row" span={1}>{product.category_id}</Col>
-                                <Col className="gutter-row" span={4}>{product.name_kor}</Col>
-                                <Col className="gutter-row" span={4}>{product.name_eng}</Col>
+                                <Col className="gutter-row" span={1}>{product.category_kor}</Col>
+                                <Col className="gutter-row" span={4}>{product.menu_kor}</Col>
+                                <Col className="gutter-row" span={4}>{product.menu_eng}</Col>
                                 <Col className="gutter-row" span={2}><Switch checkedChildren="판매중" unCheckedChildren="숨기기" onChange={() => statClickHandler(product)} checked={product.sales_stat==true?true:false}/></Col>
                                 <Col className="gutter-row" span={3}>{product.price.toLocaleString()}원</Col>
                                 <Button
                                     type="primary"
                                     onClick={() => {
                                         setVisible(true);
+                                        getThisMenu(product);
                                     }}
                                 >
                                     <FormOutlined style={{fontSize: '18px', color: '#fff'}}/>
