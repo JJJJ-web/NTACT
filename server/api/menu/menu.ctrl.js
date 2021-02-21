@@ -70,9 +70,9 @@ exports.get = async (ctx) => {
 
 exports.updateST = async (ctx) => {
     // id 파라미터를 받아 해당 메뉴 찾아오기 
-    const {id} = ctx.request.body.headers.id;
+    const id = ctx.request.body.headers.id;
     console.log(id);
-    
+
     let menu;
     try {
         menu = await menuModel.findByPk(id);
