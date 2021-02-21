@@ -1,36 +1,69 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useHistory, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import axios from 'axios';
 import Payment from '../Payment/index';
 
 function FinalCart() {
-    const history = useHistory();
     const cart = useSelector((store) => store.cartReducer);
     const sum = useLocation();
-    // let [sumAmount, setSumAmount] = useState(1);
+    const list = []; 
+    const res = []; 
+    const arr = Object.create(null); 
+    const [finalSum, setfinalSum] = useState(0); 
+    const [finalRes, setfinalRes] = useState([]); 
 
-    const cartItem = cart.length >= 1 ? cart.map((item, idx) => {
-        return (
-            <div key={item.id} item={item} idx={idx}>
-                <div>{item.name_kor}</div>
-                <div>{item.price}</div>
-                <br />
-            </div>
-        );
-    }) : <div>장바구니가 비어있습니다.</div>;
+    for(let i = 0; i < cart.length; i++) { 
+        const json = Object.create(null);
+        json.Id = cart[i].id;
+        json.Name = cart[i].name_kor;
+        json.Price = cart[i].price;
+
+        list.push(json);
+    }
+
+    for(let i = 0; i < list.length; i++) {
+        if(!arr[list[i].Id]) {
+            res.push(list[i]);
+        }
+        arr[list[i].Id] = ((arr[list[i].Id] || 0) + 1);
+    }
+
+    for (let j = 0; j < res.length; j++) {
+        res[j].Quantity = arr[res[j].Id];
+    }
+
+    useEffect(() => {
+        setfinalSum(sum.state.sum);
+        setfinalRes(res);
+    }, []);
+
+    console.log(finalRes); 
 
     return (
-        <>
+        <div>
+            <h3>최종 장바구니 화면입니다.</h3>
+            <div>총 금 액 : {finalSum}</div>
+            <br />
+            <hr />
             <div>
-                <h3>최종 장바구니 화면입니다.</h3>
-                <div>{cartItem}</div>
-                <div>총 금 액 : {JSON.stringify(sum.state.sum)}</div>
-                <br />
-                <hr />
-            </div>,
-            <Payment sumAmount={sum.state.sum} cartItems={cart} />
-        </>
+                {
+                    res.map((item, idx) => {
+                        return (
+                            <div key={idx}>
+                                <div>{item.Name}</div>
+                                <div>{item.Price}</div>
+                                <div>{item.Quantity}</div>
+                                <button>+</button>
+                                <button>-</button>
+                                <br /><br />
+                            </div>
+                        );
+                    })
+                }
+                
+            </div>
+            <Payment sumAmount={finalSum} cartItems={finalRes} />
+        </div>
     );
 }
 
