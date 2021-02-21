@@ -67,3 +67,29 @@ exports.get = async (ctx) => {
     }
     ctx.body = menu;
 };
+
+exports.updateST = async (ctx) => {
+    // id 파라미터를 받아 해당 메뉴 찾아오기 
+    const {id} = ctx.params;
+    let menu;
+    try {
+        menu = await menuModel.findByPk(id);
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+
+    // 해당 메뉴 ST가 1일 경우 sales_stat 0으로 변경
+    if(menu.sales_stat) {
+        try {
+            menuModel.update({sales_stat: 0}, {where: {id: id}});
+        } catch (e) {
+            ctx.throw(500, e);
+        }
+    } else {
+        try {
+            menuModel.update({sales_stat: 0}, {where: {id: id}});
+        } catch (e) {
+            ctx.throw(500, e);
+        }
+    } ctx.status = 200;
+};
