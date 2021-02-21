@@ -53,7 +53,27 @@ exports.complete = async (ctx) => {
             headers: {'Authorization': accessToken},
         });
         const paymentData = getPaymentData.data.response;
-        console.log(paymentData);
+
+        // DB에서 결제되어야 하는 금액 조회
+        const order = await orderModel.findByPk(paymentData.merchant_uid);
+        const amountToBePaid = order.amount;
+
+        // 결제 검증하기
+        const amount = paymentData.amount;
+        if (amount === amountToBePaid) { // 위변조 되지 않았으면 DB에 결제 정보 업데이트
+            const order = await orderModel.findOne({where: {id: merchantUid}});
+            if (!order) {
+                throw Error(`Order ${id} does not exist.`);
+            }
+            order.buyer_name = paymentData.buyer_name;
+            order.buyer_tel = paymentData.buyer_tel;
+            order.payment = paymentData;
+            await order.save();
+
+            ctx.body = {status: 'success', message: '일반 결제 성공'};
+        } else { // 위변조된 결제
+            throw {status: 'forgery', message: '위조된 결제시도'};
+        }
     } catch (e) {
         ctx.status = 400;
         ctx.body = e;
