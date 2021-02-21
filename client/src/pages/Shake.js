@@ -4,8 +4,6 @@ import {Link} from 'react-router-dom';
 import Cart from '../component/Cart';
 import {useDispatch} from 'react-redux';
 import {addCart} from '../store/actions';
-import {LazyImage} from 'react-lazy-images';
-import {LoadingOutlined} from '@ant-design/icons';
 
 function Shake() {
     const [products, setProducts] = useState([]);
@@ -33,16 +31,7 @@ function Shake() {
                 shake.map((item) => {
                     return (
                         <div key={item.id}>
-                            <LazyImage src={item.img_url} alt={item.name_kor} title={item.name_kor}
-                                placeholder={
-                                    ({imageProps, ref}) =>
-                                        <LoadingOutlined style={{color: 'orange', fontSize: '5rem'}} ref={ref} alt={imageProps.alt} />
-                                }
-                                actual={
-                                    ({imageProps}) =>
-                                        <img {...imageProps} />
-                                }
-                            />
+                            <img src={item.img_url} />
                             <div>{item.name_kor}</div>
                             <div>{item.price.toLocaleString()}원</div>
                             <button onClick={() => dispatch(addCart(item))}>장바구니 담기</button>

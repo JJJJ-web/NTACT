@@ -11,6 +11,10 @@ function imageComponent(menu) {
                     {console.log(cur.img_url)}
                     <LazyImage src={cur.img_url} alt={cur.name_kor}
                         title={cur.name_kor}
+<<<<<<< HEAD
+=======
+                        width={'50%'}
+>>>>>>> 6dfca7c... feat: 이미지 로딩 처리
                         placeholder={
                             ({imageProps, ref}) =>
                                 <LoadingOutlined
