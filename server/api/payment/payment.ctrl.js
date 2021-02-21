@@ -29,7 +29,7 @@ exports.create = async (ctx) => {
     } catch (e) {
         return ctx.throw(500, e);
     }
-    ctx.body = {order_id: order['id'], order_name: order['name']};
+    ctx.body = order['id'];
 };
 
 exports.complete = async (ctx) => {
