@@ -8,12 +8,10 @@ function Cart() {
     let sum = 0;
 
     const cartItem = cart.length >= 1 ? cart.map((item, idx) => {
-        window.sessionStorage.setItem(item.id, item.price);
         sum += item.price;
-        console.log(sum);
 
         return (
-            <div key={item.id} item={item} idx={idx}>
+            <div key={idx} item={item} idx={idx}>
                 <div>{item.name_kor}</div>
             </div>   
         );
