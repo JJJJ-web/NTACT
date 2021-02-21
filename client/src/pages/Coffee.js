@@ -4,6 +4,8 @@ import {Link} from 'react-router-dom';
 import Cart from '../component/Cart';
 import {useDispatch} from 'react-redux';
 import {addCart} from '../store/actions';
+import {LazyImage} from 'react-lazy-images';
+import {LoadingOutlined} from '@ant-design/icons';
 
 function Coffee() {
     const [products, setProducts] = useState([]);
@@ -31,7 +33,16 @@ function Coffee() {
                 coffee.map((item) => {
                     return (
                         <div key={item.id}>
-                            <img src={item.img_url} />
+                            <LazyImage src={item.img_url} alt={item.name_kor} title={item.name_kor}
+                                placeholder={
+                                    ({imageProps, ref}) =>
+                                        <LoadingOutlined style={{color: 'orange', fontSize: '5rem'}} ref={ref} alt={imageProps.alt} />
+                                }
+                                actual={
+                                    ({imageProps}) =>
+                                        <img {...imageProps} />
+                                }
+                            />
                             <div>{item.name_kor}</div>
                             <div>{item.price.toLocaleString()}원</div>
                             <button onClick={() => dispatch(addCart(item))}>장바구니 담기</button>
