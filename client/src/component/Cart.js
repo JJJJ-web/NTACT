@@ -13,11 +13,9 @@ function Cart() {
         return (
             <div key={idx} item={item} idx={idx}>
                 <div>{item.name_kor}</div>
-            </div>   
+            </div>
         );
     }) : <div>장바구니가 비어있습니다.</div>;
-
-    console.log(cartItem);
 
     return (
         <div>
