@@ -11,18 +11,19 @@ import {
     Form,
     Input,
     Radio,
-    Select, Space,
+    Select, Space, InputNumber,
 } from 'antd';
 import AddMenu from './AddMenu';
 import {DeleteFilled, FormOutlined} from '@ant-design/icons';
 import axios from 'axios';
+import {number} from 'prop-types';
 
 const {Option} = Select;
 
 function MenuManage() {
     const [products, setProducts] = useState([]);
     const [visible, setVisible] = useState(false);
-    const [selectThisMenu, setSelectThisMenu] = useState([]);
+    let [selectThisMenu, setSelectThisMenu] = useState([]);
     const onCreate = (values) => {
         console.log('수정 Received values of form: ', values);
         setVisible(false);
@@ -43,6 +44,7 @@ function MenuManage() {
     }
 
     async function statClickHandler(product) {
+        getThisMenu(product);
         await axios.patch('/api/menus/updateST',
             {
                 headers: {
@@ -50,8 +52,8 @@ function MenuManage() {
                 },
             }).then((res) => {
             if (res.status === 200) {
-                console.log(product.menu_kor, product.sales_stat);
-                product.sales_stat === 1 ? setProducts(products.sales_stat = 0) : setProducts(products.sales_stat = 1);
+                product.sales_stat === 1 ? setSelectThisMenu(selectThisMenu.sales_stat = 0) : setSelectThisMenu(selectThisMenu.sales_stat = 1);
+                console.log(selectThisMenu.menu_kor, selectThisMenu.sales_stat);
             } else {
                 window.alert('토글 실패111');
             }
@@ -65,31 +67,16 @@ function MenuManage() {
                 },
             }).then((res) => {
             if (res.status === 200) {
+                window.alert('폼 전송 성공111');
                 console.log(JSON.stringify(selectThisMenu));
             } else {
-                window.alert('토글 실패111');
+                window.alert('폼 전송 실패111');
             }
         });
     }
 
     function getThisMenu(menu) {
-        setSelectThisMenu(menu);
-    }
-
-    function onChangeCategory(e) {
-        selectThisMenu.category_kor=e;
-        console.log(selectThisMenu);
-    }
-    function onChangeKorName(e) {
-        setSelectThisMenu(selectThisMenu.menu_kor = e.target.value);
-    }
-    function onChangeEngName(e) {
-        setSelectThisMenu(selectThisMenu.menu_eng = e.target.value);
-    }
-    function onChanePrice(e) {
-        let value = e.target.value;
-        value = value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
-        setSelectThisMenu(selectThisMenu.price = value);
+        setSelectThisMenu(selectThisMenu = menu);
     }
 
     function CollectionCreateForm({menu, visible, onCreate, onCancel}) {
@@ -108,8 +95,7 @@ function MenuManage() {
                             setSelectThisMenu(selectThisMenu.menu_kor=values.MenuNameKorean);
                             setSelectThisMenu(selectThisMenu.menu_eng=values.MenuNameEnglish);
                             setSelectThisMenu(selectThisMenu.price=Number(values.MenuPrice));
-                            console.log('폼', selectThisMenu);
-                            console.log('values', Number(values.MenuPrice));
+
                             form.resetFields();
                             editMenuClickHandler();
                             onCancel();
@@ -129,7 +115,7 @@ function MenuManage() {
                 >
                     <Form.Item
                         name="MenuNameKorean"
-                        label="메뉴이름(한글)"
+                        label="메뉴이름 (한글)"
                         initialValue={selectThisMenu.menu_kor}
                         rules={[
                             {
@@ -142,7 +128,7 @@ function MenuManage() {
                     </Form.Item>
                     <Form.Item
                         name="MenuNameEnglish"
-                        label="메뉴이름(영어)"
+                        label="메뉴이름 (영어)"
                         initialValue={selectThisMenu.menu_eng}
                         rules={[
                             {
@@ -159,17 +145,21 @@ function MenuManage() {
                         initialValue={selectThisMenu.price}
                         rules={[
                             {
+                                type: 'number',
                                 required: true,
-                                message: '가격은 필수입력입니다.',
+                                message: '숫자를 입력하세요.',
                             },
                         ]}
                     >
-                        <Input
-                            placeholder="가격을 입력하세요."
-                            maxLength={11} />
+                        <InputNumber
+                            placeholder={selectThisMenu.price}
+                            maxLength={7}
+                            style={{width: '7rem'}}
+                            step={100}
+                        />
                     </Form.Item>
                     <Form.Item
-                        name="category"
+                        name="MenuCategory"
                         label="카테고리"
                         initialValue={selectThisMenu.category_kor}
                         rules={[
@@ -181,12 +171,11 @@ function MenuManage() {
                         <Select
                             showSearch
                             style={{width: 200}}
-                            defaultValue={selectThisMenu.category_kor}
+                            value={selectThisMenu.category_kor}
                             optionFilterProp="children"
                             filterOption={(input, option) =>
                                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
-                            onChange={onChangeCategory}
                         >
                             {
                                 getCategory().map((item) => {
@@ -197,14 +186,15 @@ function MenuManage() {
                                     );
                                 })
                             }
+                            <Option value='카테고리 추가'>...카테고리 추가</Option>
                         </Select>
                     </Form.Item>
                     <Form.Item
                         noStyle
-                        shouldUpdate={(prevValues, currentValues) => prevValues.category !== currentValues.category}
+                        shouldUpdate={(prevValues, currentValues) => prevValues.MenuCategory !== currentValues.MenuCategory}
                     >
                         {({getFieldValue}) => {
-                            return getFieldValue('category') === '카테고리 추가' ? (
+                            return getFieldValue('MenuCategory') === '카테고리 추가' ? (
                                 <Form.Item
                                     name="카테고리 새로 추가"
                                     label="카테고리 새로 추가"
@@ -230,11 +220,19 @@ function MenuManage() {
     return (
         <>
             <div className='allMenus'>
-                <div>　　　　카테고리 |　　　한국어　　　|　　　영어　　　|　판매가능상태　|　가격　|</div>
+                <Row key='listTable' justify="space-around" gutter={[10, 20]}>
+                    <Col className="gutter-row" span={2}>이미지</Col>
+                    <Col className="gutter-row" span={2}>카테고리</Col>
+                    <Col className="gutter-row" span={4}>한국어</Col>
+                    <Col className="gutter-row" span={4}>영어</Col>
+                    <Col className="gutter-row" span={3}>판매가능상태</Col>
+                    <Col className="gutter-row" span={5}>가격</Col>
+                </Row>
+                <hr />
                 {
                     products.map((product) => {
                         return (
-                            <Row key={product.id} justify="start" gutter={[10, 20]}>
+                            <Row key={product.id} justify="space-around" gutter={[10, 20]}>
                                 <Col className="gutter-row" span={2}><img src={product.img_url} width='50vw'/></Col>
                                 <Col className="gutter-row" span={1}>{product.category_kor}</Col>
                                 <Col className="gutter-row" span={4}>{product.menu_kor}</Col>
