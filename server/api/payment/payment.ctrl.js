@@ -18,8 +18,7 @@ exports.create = async (ctx) => {
         id: `${date}_${new Date().getTime()}`,
         amount: cart['sum'],
         name: name,
-        buyer_name: '홍길동',
-        buyer_tel: '01012341234',
+        pay_method: 'card',
         order_stat: 0,
         dev_merchant_id: 1,
     });
@@ -34,7 +33,8 @@ exports.create = async (ctx) => {
 
 exports.complete = async (ctx) => {
     try {
-        const {impUid} = ctx.request.body;
+        const impUid = ctx.request.body.imp_uid;
+        const merchantUid = ctx.request.body.merchant_uid;
 
         const getToken = await axios({ // access token 발급
             url: 'https://api.iamport.kr/users/getToken',
@@ -45,10 +45,10 @@ exports.complete = async (ctx) => {
                 imp_secret: paymentConfig.imp_secret,
             },
         });
-        const {accessToken} = getToken.data.response; // 인증 토큰
+        const accessToken = getToken.data.response.access_token; // 인증 토큰
 
         const getPaymentData = await axios({ // 결제 정보 조회
-            url: `https://api.iamport.kr/payments/\${impUid}`,
+            url: `https://api.iamport.kr/payments/${impUid}`,
             method: 'get',
             headers: {'Authorization': accessToken},
         });
