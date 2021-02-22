@@ -63,7 +63,7 @@ function MenuManage() {
         await axios.put('/api/menus/updateAllStat',
             {
                 headers: {
-                    menu: JSON.stringify(selectThisMenu),
+                    menu: selectThisMenu,
                 },
             }).then((res) => {
             if (res.status === 200) {
