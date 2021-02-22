@@ -1,67 +1,66 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
-import {useSelector} from 'react-redux';
 import Payment from '../Payment/index';
 
 function FinalCart() {
-    const cart = useSelector((store) => store.cartReducer);
-    const sum = useLocation();
-    const list = []; 
-    const res = []; 
-    const arr = Object.create(null); 
-    const [finalSum, setfinalSum] = useState(0); 
-    const [finalRes, setfinalRes] = useState([]); 
-
-    for(let i = 0; i < cart.length; i++) { 
-        const json = Object.create(null);
-        json.Id = cart[i].id;
-        json.Name = cart[i].name_kor;
-        json.Price = cart[i].price;
-
-        list.push(json);
-    }
-
-    for(let i = 0; i < list.length; i++) {
-        if(!arr[list[i].Id]) {
-            res.push(list[i]);
-        }
-        arr[list[i].Id] = ((arr[list[i].Id] || 0) + 1);
-    }
-
-    for (let j = 0; j < res.length; j++) {
-        res[j].Quantity = arr[res[j].Id];
-    }
+    const cart = useLocation();
+    const [finalSum, setfinalSum] = useState(cart.state.sum);
+    const [finalRes, setfinalRes] = useState([]);
 
     useEffect(() => {
-        setfinalSum(sum.state.sum);
-        setfinalRes(res);
-    }, []);
+        setfinalSum(finalSum);
+        setfinalRes(cart.state.res);
+    });
 
-    console.log(finalRes); 
+    console.log(finalRes);
 
+    const onIncrease = (idx) => {
+        setfinalRes(finalRes[idx]['Quantity'] += 1);
+        totalSum(finalRes);
+    };
+
+    const onDecrease = (idx) => {
+        if(finalRes[idx].Quantity > 0) {
+            setfinalRes(
+                finalRes[idx]['Quantity'] -= 1,
+            );
+        } else {
+            setfinalRes(
+                finalRes[idx]['Quantity'] = 0,
+            );
+        }
+        totalSum(finalRes);
+    };
+
+    const totalSum = (cart) => {
+        let total = 0;
+
+        Object.keys(cart).map((item) => {
+            total += finalRes[item].Price * finalRes[item].Quantity;
+        });
+        setfinalSum(total);
+    };
+
+    const list = Object.keys(finalRes).map((item, idx) => {
+        return (
+            <div key={idx}>
+                <div>{finalRes[item].Name}</div>
+                <div>{finalRes[item].Price}</div>
+                <div>{finalRes[item].Quantity}</div>
+                <button onClick={() => onIncrease(idx)}>+</button>
+                <button onClick={() => onDecrease(idx)}>-</button>
+                <br /><br />
+            </div>
+        );
+    });
+    
     return (
         <div>
             <h3>최종 장바구니 화면입니다.</h3>
             <div>총 금 액 : {finalSum}</div>
             <br />
             <hr />
-            <div>
-                {
-                    res.map((item, idx) => {
-                        return (
-                            <div key={idx}>
-                                <div>{item.Name}</div>
-                                <div>{item.Price}</div>
-                                <div>{item.Quantity}</div>
-                                <button>+</button>
-                                <button>-</button>
-                                <br /><br />
-                            </div>
-                        );
-                    })
-                }
-                
-            </div>
+            <div>{list}</div>
             <Payment sumAmount={finalSum} cartItems={finalRes} />
         </div>
     );
