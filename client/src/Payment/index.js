@@ -57,7 +57,7 @@ function Payment({history, sumAmount, cartItems}) {
         const query = queryString.stringify(response);
         if (response.success) { // 결제 성공 시
             axios({
-                url: '/api/payments/complete', // 가맹점 서버에 전달할 파라미터에 필요한 서버 URL
+                url: '/api/payments/iamport-webhook', // 가맹점 서버에 전달할 파라미터에 필요한 서버 URL
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
@@ -68,18 +68,19 @@ function Payment({history, sumAmount, cartItems}) {
                     merchant_uid: response.merchant_uid,
                 },
             }).then((data) => { // 가맹점 서버 결제 API 성공시 로직
-                history.push(`/payment/result?${query}`);
-            }).then((data) => { // 응답 처리
-                switch (data.status) {
+                switch (data.data.status) {
                 case 'success':
-                    // 결제 성공 시 로직
+                    history.push(`/payment/result?${query}`);
                     break;
                 }
+            }).catch((err) => { // 에러 처리
+                console.log('성공 후 에러', err);
+                alert('결제에 실패하였습니다.');
+                history.push(`/payment/result?${query}`);
             });
-        } else {
-            console.log(response);
+        } else { // 결제 실패 시
+            alert('결제에 실패하였습니다.222');
             history.push(`/payment/result?${query}`);
-            alert('결제에 실패하였습니다.', response.error_msg);
         }
     }
 
