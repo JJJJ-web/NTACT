@@ -68,10 +68,11 @@ function Payment({history, sumAmount, cartItems}) {
                     merchant_uid: response.merchant_uid,
                 },
             }).then((data) => { // 가맹점 서버 결제 API 성공시 로직
-                switch (data.data.status) {
-                case 'success':
+                if(data.data.status=='success') {
                     history.push(`/payment/result?${query}`);
-                    break;
+                } else {
+                    alert('결제에 실패하였습니다.');
+                    history.push(`/payment/result?${query}`);
                 }
             }).catch((err) => { // 에러 처리
                 console.log('성공 후 에러', err);
