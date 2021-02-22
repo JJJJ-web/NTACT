@@ -102,19 +102,19 @@ exports.updateAllStat = async (ctx) => {
     const menu = ctx.request.body.headers.menu;
     console.log(menu);
 
-    // try {
-    //     await menuModel.findOne({where: {id: 2}})
-    //         .then((findMenu) => {
-    //             findMenu.name_kor = '아이스 카페 아메리카노 수정';
-    //             findMenu.name_eng = 'ICED Cafe Americano dif';
-    //             findMenu.price = 1;
-    //             findMenu.save()
-    //                 .then(() => {
-    //                     ctx.status = 200;
-    //                     console.log('메뉴수정성공');
-    //                 });
-    //         });
-    // } catch (e) {
-    //     ctx.throw(500, e);
-    // }
+    try {
+        await menuModel.findOne({where: {id: menu.id}})
+            .then((findMenu) => {
+                findMenu.name_kor = `${menu.menu_kor}`;
+                findMenu.name_eng = `${menu.menu_eng}`;
+                findMenu.price = `${menu.price}`;
+                findMenu.save()
+                    .then(() => {
+                        ctx.status = 200;
+                        console.log('메뉴수정성공');
+                    });
+            });
+    } catch (e) {
+        ctx.throw(500, e);
+    }
 };
