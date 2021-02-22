@@ -4,13 +4,16 @@ const orderModel = require('../../models').dev_orders;
 
 exports.create = async (ctx) => {
     const cart = ctx.request.body;
-    const totalOrderQuantity = cart['cart'].length;
-
     let name;
+    let totalOrderQuantity = 0;
+    for (let i = 0; i < cart['cart'].length; i++) {
+        totalOrderQuantity += cart['cart'][i].Quantity;
+    }
+
     if (totalOrderQuantity === 1) {
-        name = cart['cart'][0]['name_kor'];
+        name = cart['cart'][0]['Name'];
     } else if (totalOrderQuantity > 1) {
-        name = `${cart['cart'][0]['name_kor']} 외 ${(totalOrderQuantity - 1).toString()}`;
+        name = `${cart['cart'][0]['Name']} 외 ${(totalOrderQuantity - 1).toString()}`;
     }
 
     const date = new Date().toISOString().substr(0, 10).split('-').join('').toString();
@@ -20,6 +23,7 @@ exports.create = async (ctx) => {
         name: name,
         pay_method: 'card',
         order_stat: 0,
+        order_detail: cart,
         dev_merchant_id: 1,
     });
 
