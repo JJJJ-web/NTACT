@@ -4,8 +4,8 @@
     "private": true,
     "dependencies": {
         "@testing-library/jest-dom": "^5.11.4",
-        "@testing-library/react": "^11.1.0",
-        "@testing-library/user-event": "^12.1.10",
+        "@testing-library/react": "^11.2.5",
+        "@testing-library/user-event": "^12.7.1",
         "antd": "^4.12.3",
         "axios": "^0.21.1",
         "global": "^4.4.0",
@@ -50,7 +50,7 @@
     },
     "devDependencies": {
         "@ant-design/icons": "^4.5.0",
-        "eslint": "^7.18.0",
+        "eslint": "^7.20.0",
         "eslint-config-google": "^0.14.0",
         "eslint-plugin-react": "^7.22.0",
         "prop-types": "^15.7.2",
