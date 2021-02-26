@@ -40,6 +40,8 @@ function Cart() {
         res[j].Quantity = arr[res[j].Id];
     }
 
+    console.log(res);
+
     return (
         <div>
             <br />
