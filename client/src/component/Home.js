@@ -5,10 +5,14 @@ import {Button} from 'antd';
 function Home() {
     return (
         <div>
+            <img src='/ntact512.png'/>
+            <br />
             <Link to='/login'>
                 <Button>회원</Button>
             </Link>
-            <Button>비회원</Button>
+            <Link to='/coffee'>
+                <Button>비회원</Button>
+            </Link>
         </div>
     );
 }
