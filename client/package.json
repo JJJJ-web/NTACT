@@ -7,6 +7,7 @@
         "@testing-library/react": "^11.2.5",
         "@testing-library/user-event": "^12.7.1",
         "antd": "^4.12.3",
+        "antd-mobile": "^2.3.4",
         "axios": "^0.21.1",
         "global": "^4.4.0",
         "jsonwebtoken": "^8.5.1",
