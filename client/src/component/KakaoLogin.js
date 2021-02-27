@@ -4,6 +4,7 @@ import axios from 'axios';
 import Kakao from 'kakaojs';
 import jwt from 'jsonwebtoken';
 import loginInfo from '../config/loginInfo.json';
+import styled from 'styled-components';
 
 function Login(props) {
     let [userName, setUserName] = useState('');
@@ -64,10 +65,32 @@ function Login(props) {
      */
 
     return (
-        <div>
-            <button onClick={loginWithKakao}>카카오 로그인</button>
-        </div>
+        <KakaoLoginStyle onClick={loginWithKakao}>
+            <img src="./kakao-logo.png" id="icon-img" />카카오로 로그인
+        </KakaoLoginStyle>
     );
 }
+
+const KakaoLoginStyle = styled.button`
+  width: 300px;
+  height: 44px;
+  border-radius: 5px;
+  border-style: none;
+  margin: auto;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #4a4a4a;
+  background-color: #fff115;
+  box-shadow: 0 2px 1px 0 rgba(155, 155, 155, 0.5);
+  display: flex;
+  align-items: center;
+  
+  #icon-img{
+    margin-left: 50px;
+    margin-right:26px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+`;
 
 export default withRouter(Login);
