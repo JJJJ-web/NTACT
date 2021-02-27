@@ -1,14 +1,30 @@
 import React from 'react';
 import KakaoLogin from './KakaoLogin';
 import GoogleLogin from './GoogleLogin';
+import styled from 'styled-components';
 
-function Home() {
+function Login() {
     return (
-        <div>
+        <LoginButtons>
+            <div className="header">
+                <img height='100%' src='./ntact512.png'/>
+            </div>
             <KakaoLogin/>
             <GoogleLogin/>
-        </div>
+        </LoginButtons>
     );
 }
 
-export default Home;
+const LoginButtons = styled.div`
+  display: table;
+  margin: auto;
+  
+  div{
+    text-align: center;
+  }
+  .header{
+    height: 30vw;
+    margin-bottom: 3rem;
+  }
+`;
+export default Login;
