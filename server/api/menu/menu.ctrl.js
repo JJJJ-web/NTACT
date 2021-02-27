@@ -7,21 +7,8 @@ categoryModel.hasMany(menuModel, {foreignKey: 'category_id', targetKey: 'id'});
 
 exports.list = async (ctx) => {
     let menus;
-    try {
-        menus = await menuModel.findAll({
-            attributes: {exclude: 'descriptions'},
-            where: {sales_stat: 1},
-        });
-    } catch (e) {
-        ctx.throw(500, e);
-    }
-    ctx.body = menus;
-};
-
-exports.all = async (ctx) => {
-    let menus;
-    const {category} = ctx.request.query;
-    JSON.stringify(category);
+    const {category, onSale} = ctx.request.query;
+    JSON.stringify(category, onSale);
 
     if (category === 'true') {
         try {
@@ -39,11 +26,17 @@ exports.all = async (ctx) => {
         } catch (e) {
             ctx.throw(500, e);
         }
-    } else {
+    } else if (onSale === 'true') {
         try {
             menus = await menuModel.findAll({
-                attributes: {exclude: 'descriptions'},
+                where: {sales_stat: 1},
             });
+        } catch (e) {
+            ctx.throw(500, e);
+        }
+    } else {
+        try {
+            menus = await menuModel.findAll();
         } catch (e) {
             ctx.throw(500, e);
         }
