@@ -1,6 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import ReactDOM from 'react-dom';
-import axios from 'axios';
+import React, {useState} from 'react';
 import {Tabs} from 'antd';
 import 'antd/dist/antd.css';
 import {StickyContainer, Sticky} from 'react-sticky';
@@ -13,7 +11,7 @@ function CategoryTabs() {
     const renderTabBar = (props, DefaultTabBar) => (
         <Sticky bottomOffset={80}>
             {({style}) => (
-                <DefaultTabBar {...props} className="site-custom-tab-bar" style={{...style}} />
+                <DefaultTabBar {...props} className="site-custom-tab-bar" style={{...style, backgroundColor: 'white'}} />
             )}
         </Sticky>
     );
@@ -24,7 +22,7 @@ function CategoryTabs() {
 
     return(
         <StickyContainer>
-            <Tabs defaultActiveKey="100" renderTabBar={renderTabBar}>
+            <Tabs defaultActiveKey="100" size="large" centered='true' renderTabBar={renderTabBar}>
                 {
                     categories.map((item)=> {
                         return(

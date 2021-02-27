@@ -1,7 +1,10 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import '../App.css';
+import 'antd/dist/antd.css';
+import {Button} from 'antd';
+import {CreditCardOutlined} from '@ant-design/icons';
 import {useSelector} from 'react-redux';
+import styled from 'styled-components';
 
 function Cart() {
     const cart = useSelector((store) => store.cartReducer);
@@ -14,9 +17,11 @@ function Cart() {
         sum += item.price;
 
         return (
-            <div key={idx} item={item} idx={idx}>
+            <span className="items" key={idx} item={item} idx={idx}>
+                <img src={item.img_url} height='100em'/>
                 <div>{item.name_kor}</div>
-            </div>
+                <div>{item.price}원</div>
+            </span>
         );
     }) : <div>장바구니가 비어있습니다.</div>;
 
@@ -43,25 +48,50 @@ function Cart() {
     console.log(res);
 
     return (
-        <div>
-            <br />
-            <hr />
-            <h3>장바구니 화면입니다.</h3>
-            <div>
+        <>
+            <CartMenus>
                 {cartItem}
-            </div>
+            </CartMenus>
 
-            <div className='cartStyle'>
-                <div>금 액 : {sum}</div><br />
+            <CartSum>
+                <div>금 액 : {sum}원</div><br />
                 <Link to= {{
                     pathname: '/finalcart',
                     state: {sum, res},
                 }}>
-                    <div><button>결제하기</button></div>
+                    <Button type="primary" shape="round" icon={<CreditCardOutlined />} size="large">
+                        결제하기
+                    </Button>
                 </Link>
-            </div>
-        </div>
+            </CartSum>
+        </>
     );
 }
+const CartMenus = styled.div`
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: calc((100%) - 150px);
+  height: 100%;
+  white-space:nowrap;
+  overflow-x: auto;
+  
+  .items{
+    display: inline-block;
+    padding: 0rem 1rem;
+    border-right: 1px solid gray;
+  }
+`;
 
+const CartSum = styled.div`
+  text-align: right;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 150px;
+  height: 100%;
+  padding-top: 30px;
+  padding-right: 10px;
+  border-left: 1px solid black;
+`;
 export default Cart;
