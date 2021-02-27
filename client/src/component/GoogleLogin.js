@@ -26,7 +26,7 @@ function Google() {
                     {},
                     (googleUser) => {
                         console.log('(구글) 정상적으로 로그인 되었습니다.', googleUser);
-                        history.push('/coffee');
+                        history.push('/menu');
                         axios.post('http://localhost:4000/api/users/loginGoogle', 
                             {
                                 headers: {
