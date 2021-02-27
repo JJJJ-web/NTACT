@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import axios from 'axios';
 import {useHistory, withRouter} from 'react-router-dom';
+import styled from 'styled-components';
 
 function Google() {
     const googleLoginBtn = useRef(null);
@@ -60,10 +61,31 @@ function Google() {
     };
 
     return (
-        <div>
-            <button ref={googleLoginBtn}>Login with Google</button>
-        </div>
+        <GoogleLoginStyle ref={googleLoginBtn}>
+            <img className='icon-img' src='./google-logo.png' /> 구글로 시작하기
+        </GoogleLoginStyle>
     );
 }
 
+const GoogleLoginStyle = styled.button `
+  width: 300px;
+  height: 44px;
+  border-radius: 5px;
+  border-style: none;
+  margin: auto;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  box-shadow: 0 2px 1px 0 rgba(155, 155, 155, 0.5);
+  display: flex;
+  align-items: center;
+
+  .icon-img {
+    margin-left: 50px;
+    margin-right:26px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }  
+`;
 export default withRouter(Google);
