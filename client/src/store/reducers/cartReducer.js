@@ -3,7 +3,11 @@ const cartReducer = (state = [], action) => {
     case 'ADD_ITEM':
         return [...state, action.payload];
     case 'DELETE_ITEM':
-        return state.filter((item) => item.id !== action.payload);
+        const delIdx = action.idx; // Id값임
+        const filteredItem = state.filter((_, idx) => {
+            return state[idx]['Id'] !== state[delIdx]['Id'];
+        });
+        return filteredItem;
     default:
         return state;
     }
