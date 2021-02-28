@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 // eslint-disable-next-line camelcase
 const password_config = require('../../config/password-config.json');
 
+exports.index = (ctx) => {
+    ctx.body = `${ctx.request.method} ${ctx.request.path}`;
+};
 
 // 카카오 로그인
 exports.kakao = async (ctx) => {
