@@ -31,7 +31,7 @@ function MenuManage() {
 
     useState(() => {
         // axois한번으로 메뉴+카테고리명 데이터 받아오기
-        axois.get('/api/menus/all?category=true').then((res) => setProducts(res.data));
+        axois.get('/api/menus?category=true').then((res) => setProducts(res.data));
     }, []);
 
     function getCategory() {
@@ -45,10 +45,9 @@ function MenuManage() {
 
     async function statClickHandler(product) {
         getThisMenu(product);
-        await axios.patch('/api/menus/updateST',
+        await axios.patch(`/api/menus/status/${product.id}`,
             {
                 headers: {
-                    id: product.id,
                 },
             }).then((res) => {
             if (res.status === 200) {
@@ -60,7 +59,7 @@ function MenuManage() {
         });
     }
     async function editMenuClickHandler() {
-        await axios.put('/api/menus/updateAllStat',
+        await axios.put('/api/menus/status',
             {
                 headers: {
                     menu: selectThisMenu,

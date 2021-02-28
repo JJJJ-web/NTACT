@@ -23,7 +23,7 @@ function Login(props) {
                     success: (auth) => {
                         console.log('정상적으로 로그인 되었습니다.', auth);
                         setAuthorization(Authorization = auth.access_token);
-                        axios.post('http://localhost:4000/api/users/loginKakao',
+                        axios.post('/api/users/kakao',
                             {
                                 headers: {
                                     'Authorization': auth.access_token,
