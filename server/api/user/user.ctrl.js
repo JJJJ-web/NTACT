@@ -4,12 +4,9 @@ const jwt = require('jsonwebtoken');
 // eslint-disable-next-line camelcase
 const password_config = require('../../config/password-config.json');
 
-exports.index = (ctx) => {
-    ctx.body = `${ctx.request.method} ${ctx.request.path}`;
-};
 
 // 카카오 로그인
-exports.loginKakao = async (ctx) => {
+exports.kakao = async (ctx) => {
     // header로 보낸 request payload를 접근하려면 body로 접근
     const kakaoToken = ctx.request.body.headers.Authorization;
     let jwtToken;
@@ -58,7 +55,7 @@ exports.loginKakao = async (ctx) => {
 };
 
 // 구글 로그인
-exports.loginGoogle = async (ctx) => {
+exports.google = async (ctx) => {
     // header로 보낸 request payload를 접근하려면 body로 접근
     const GoogleToken = ctx.request.body.headers.Authorization;
     let jwtToken;
