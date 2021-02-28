@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import 'antd/dist/antd.css';
 import {Button} from 'antd';
 import {CreditCardOutlined} from '@ant-design/icons';
 import {useSelector} from 'react-redux';
@@ -93,5 +92,6 @@ const CartSum = styled.div`
   padding-top: 30px;
   padding-right: 10px;
   border-left: 1px solid black;
+  
 `;
 export default Cart;

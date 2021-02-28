@@ -5,9 +5,9 @@ export const addCart = (item) => {
     };
 };
 
-export const deleteCart = (items) => {
+export const deleteCart = (idx) => {
     return {
         type: 'DELETE_ITEM',
-        payload: items,
+        idx,
     };
 };
