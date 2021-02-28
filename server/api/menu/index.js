@@ -11,6 +11,6 @@ menus.get('/:id', menusCtrl.get);
 // 특정 메뉴에 대한 sales_stat 변경 
 menus.patch('/updateST', menusCtrl.updateST);
 // 특정 메뉴에 대한 전체 stat 변경 
-menus.put('/updateAllStat', menusCtrl.updateAllStat);
+menus.put('/status', menusCtrl.status);
 
 module.exports = menus;

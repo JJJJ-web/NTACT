@@ -5,11 +5,12 @@ const ctrl = require('./user.ctrl');
 const users = new Router();
 
 // /users~ 뒤에 추가 된 경로
-users.get('/', ctrl.index);
 
-users.post('/loginKakao', ctrl.loginKakao);
+// 카카오 로그인
+users.post('/kakao', ctrl.kakao);
 
-users.post('/loginGoogle', ctrl.loginGoogle);
+// 구글 로그인
+users.post('/google', ctrl.google);
 
 
 module.exports = users;
