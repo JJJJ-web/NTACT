@@ -6,13 +6,8 @@ import queryString from 'query-string';
 import impCode from '../config/payment.json';
 import axios from 'axios';
 import styled from 'styled-components';
+import {CreditCardOutlined} from '@ant-design/icons';
 import axois from 'axios';
-
-const tailLayout = {
-    wrapperCol: {
-        offset: 8,
-    },
-};
 
 function Payment({history, sumAmount, cartItems}) {
     let [phoneNumber, setPhoneNumber] = useState('');
@@ -97,45 +92,64 @@ function Payment({history, sumAmount, cartItems}) {
     }
 
     return (
-        <Form onFinish={handleSubmit} name="paymentForm">
-            <Form.Item label="구매자 이름">
-                <span className='inputForm'>{data.buyer_name}</span>
-            </Form.Item>
-            <Form.Item
-                name="번호"
-                label="번호"
-                rules={[
-                    {
-                        required: true,
-                        message: '핸드폰 번호는 필수입력입니다.',
-                    },
-                ]}
-            >
-                <span className='inputForm'><Input onChange={onInputPhonenumber}
-                    placeholder="번호를 입력하세요."
-                    maxLength={11}
-                    value={phoneNumber}/></span>
-            </Form.Item>
-            <Form.Item
-                name="email"
-                label="E-mail"
-                rules={[
-                    {
-                        type: 'email',
-                        message: '이메일 형식(example@example.com)으로 입력하세요.',
-                        required: false,
-                    },
-                ]}
-            >
-                <span className='inputForm'><Input onChange={onInputEmail} placeholder="이메일을 입력하세요."/></span>
-            </Form.Item>
-            <Form.Item {...tailLayout}>
-                <Button type="primary" htmlType="submit">
-                    결제하기
-                </Button>
-            </Form.Item>
-        </Form>
+        <FormStyles>
+            <Form onFinish={handleSubmit} name="paymentForm">
+                <Form.Item label="구매자 이름">
+                    <span className='inputForm'>{data.buyer_name}</span>
+                </Form.Item>
+                <Form.Item
+                    name="번호"
+                    label="번호"
+                    rules={[
+                        {
+                            required: true,
+                            message: '핸드폰 번호는 필수입력입니다.',
+                        },
+                    ]}
+                >
+                    <span className='inputForm'><Input onChange={onInputPhonenumber}
+                        placeholder="번호를 입력하세요."
+                        maxLength={11}
+                        value={phoneNumber}/></span>
+                </Form.Item>
+                <Form.Item
+                    name="email"
+                    label="E-mail"
+                    rules={[
+                        {
+                            type: 'email',
+                            message: '이메일 형식(example@example.com)으로 입력하세요.',
+                            required: false,
+                        },
+                    ]}
+                >
+                    <span className='inputForm'><Input onChange={onInputEmail} placeholder="이메일을 입력하세요."/></span>
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" shape="round" size="large" icon={<CreditCardOutlined />}>
+                        결제하기
+                    </Button>
+                </Form.Item>
+            </Form>
+        </FormStyles>
     );
 }
 
+const FormStyles = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: initial;
+  text-align: center;
+
+  .ant-btn-primary {
+    background-color: #ffb400;
+    width: 50vw;
+    padding-bottom: 10px;
+    border: none;
+    &:hover {
+      background-color: white;
+      color: #ffb400;
+    }
+  }
+`;
 export default withRouter(Payment);

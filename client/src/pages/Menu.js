@@ -1,5 +1,4 @@
 import React from 'react';
-import 'antd/dist/antd.css';
 import CategoryTabs from './CategoryTabs';
 import Cart from '../component/Cart';
 import styled from 'styled-components';

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {Tabs} from 'antd';
-import 'antd/dist/antd.css';
 import {StickyContainer, Sticky} from 'react-sticky';
 import axois from 'axios';
 import MenuList from './MenuList';
