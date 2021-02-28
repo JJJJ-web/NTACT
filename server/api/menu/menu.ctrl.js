@@ -61,10 +61,9 @@ exports.get = async (ctx) => {
     ctx.body = menu;
 };
 
-exports.updateST = async (ctx) => {
+exports.saleStat = async (ctx) => {
     // id 파라미터를 받아 해당 메뉴 찾아오기 
-    const id = ctx.request.body.headers.id;
-    console.log(id);
+    const {id} = ctx.params;
 
     let menu;
     try {
@@ -72,7 +71,6 @@ exports.updateST = async (ctx) => {
     } catch (e) {
         ctx.throw(500, e);
     }
-    console.log(menu.sales_stat);
 
     // 해당 메뉴 ST가 1일 경우 sales_stat 0으로 변경
     if(menu.sales_stat) {
@@ -90,8 +88,8 @@ exports.updateST = async (ctx) => {
     } ctx.status = 200;
 };
 
-exports.updateAllStat = async (ctx) => {
-    // id 파라미터를 받아 해당 메뉴 찾아오기 
+exports.status = async (ctx) => {
+    // menu Object를 받아 해당 메뉴를 stat을 수정 
     const menu = ctx.request.body.headers.menu;
     console.log(menu);
 
