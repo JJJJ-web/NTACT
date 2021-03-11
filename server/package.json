@@ -22,7 +22,6 @@
     "eslint-config-google": "^0.14.0"
   },
   "scripts": {
-    "build": "npx sequelize-auto -h  ntactdb.c8obj2inxx2r.ap-northeast-2.rds.amazonaws.com  -d ntactDB -u ntact -x qlalfqjsgh -p 3306 -c ./config/db-config.json -o ./models -C",
     "start": "node src/server.js",
     "start:dev": "nodemon --watch server/ src/server.js"
   }
