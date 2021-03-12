@@ -25,7 +25,7 @@ function MenuList(props) {
             {
                 list.map((item) => {
                     return (
-                        <Space align="center" direction="vertical" wrap>
+                        <Space key={item.id} align="center" direction="vertical" wrap>
                             <Collapse defaultActiveKey='0' expandIconPosition={'right'} className="site-collapse-custom-collapse" key={item.id}>
                                 <div className="menuItem" onClick={() => dispatch(addCart(item))}>
                                     <LazyImage src={item.img_url} alt={item.name_kor} title={item.name_kor} width={'20%'}
