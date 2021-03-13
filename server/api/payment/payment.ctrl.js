@@ -79,6 +79,7 @@ exports.complete = async (ctx) => {
                 message: '일반 결제 성공',
                 buyer_name: order.buyer_name,
                 order_name: order.name,
+                order_detail: order.order_detail.cart,
                 total_price: order.amount,
                 order_date: order.date.toLocaleString(),
             };
