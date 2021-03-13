@@ -1,0 +1,5 @@
+@import '~antd/dist/antd.css';
+.cartStyle {
+    float: right;
+    background-color: rgb(169, 189, 224);
+}

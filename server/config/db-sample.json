@@ -1,0 +1,28 @@
+{
+  "development": {
+    "username": "put your user name here",
+    "password": "put your password here",
+    "database": "put your database here",
+    "host": "put your host name here",
+    "dialect": "mysql",
+    "operatorsAliases": 0,
+    "define": {
+      "timestamps": false,
+      "underscored" : true
+    }
+  },
+  "test": {
+    "username": "put your password here",
+    "password": "put your password here",
+    "database": "put your database here",
+    "host": "put your host name here",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "put your password here",
+    "password": "put your password here",
+    "database": "put your database here",
+    "host": "put your host name here",
+    "dialect": "mysql"
+  }
+}
