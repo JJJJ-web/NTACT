@@ -22,7 +22,7 @@ exports.create = async (ctx) => {
         amount: cart['sum'],
         name: name,
         pay_method: 'card',
-        order_stat: 0,
+        order_stat: 'uncharged',
         order_detail: cart,
         dev_merchant_id: 1,
     });
@@ -71,6 +71,7 @@ exports.complete = async (ctx) => {
             }
             order.buyer_name = paymentData.buyer_name;
             order.buyer_tel = paymentData.buyer_tel;
+            order.order_stat = 'ready';
             order.payment = paymentData;
             await order.save();
 
