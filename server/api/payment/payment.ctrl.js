@@ -74,7 +74,14 @@ exports.complete = async (ctx) => {
             order.payment = paymentData;
             await order.save();
 
-            ctx.body = {status: 'success', message: '일반 결제 성공'};
+            ctx.body = {
+                status: 'success',
+                message: '일반 결제 성공',
+                buyer_name: order.buyer_name,
+                order_name: order.name,
+                total_price: order.amount,
+                order_date: order.date.toLocaleString(),
+            };
         } else { // 위변조된 결제
             throw {status: 'forgery', message: '위조된 결제시도'};
         }
