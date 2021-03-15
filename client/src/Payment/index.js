@@ -1,26 +1,30 @@
 import React, {useState} from 'react';
 import 'antd/dist/antd.css';
-import {Form, Input, Button, Select} from 'antd';
-import {withRouter} from 'react-router-dom';
+import {Form, Input, Button, Select, Radio} from 'antd';
+import {withRouter, useHistory} from 'react-router-dom';
 import queryString from 'query-string';
 import impCode from '../config/payment.json';
+import PaySuccess from './PaySuccess';
 import axios from 'axios';
 import styled from 'styled-components';
 import {CreditCardOutlined} from '@ant-design/icons';
 import axois from 'axios';
 
-function Payment({history, sumAmount, cartItems}) {
+function Payment({sumAmount, cartItems}) {
+    const history = useHistory();
     let [phoneNumber, setPhoneNumber] = useState('');
     let [email, setEmail] = useState('');
+    let [eat, setEat] = useState('');
     const data = {
         pg: 'html5_inicis', // PG사
         pay_method: 'card', // 결제수단
         name: '주문명', // 상품 이름
         merchant_uid: '주문번호', // 주문번호
         amount: sumAmount, // 결제금액
-        buyer_name: JSON.parse(localStorage.getItem('userInfo')).userName, // 구매자 이름
+        buyer_name: JSON.parse(sessionStorage.getItem('userInfo')).userName, // 구매자 이름
         buyer_tel: phoneNumber, // 구매자 전화번호
         buyer_email: email, // 구매자 이메일
+        eat: eat, // 취식
     };
     async function sendCartData(sumAmount, cartItems) {
         await axios.post('/api/payments/order',
@@ -64,19 +68,25 @@ function Payment({history, sumAmount, cartItems}) {
                 },
             }).then((data) => { // 가맹점 서버 결제 API 성공시 로직
                 if(data.data.status=='success') {
-                    history.push(`/payment/result?${query}`);
+                    console.log(data.data);
+                    history.push({
+                        pathname: '/payment_success',
+                        state: {orderData: data.data},
+                    });
                 } else {
                     alert('결제에 실패하였습니다.');
-                    history.push(`/payment/result?${query}`);
+                    history.push(`/payment/result?${data.data.status}`);
                 }
             }).catch((err) => { // 에러 처리
                 console.log('성공 후 에러', err);
                 alert('결제에 실패하였습니다.');
-                history.push(`/payment/result?${query}`);
+                history.push(`/payment/result?${data.data.status}`);
             });
         } else { // 결제 실패 시
             alert('결제에 실패하였습니다.222');
-            history.push(`/payment/result?${query}`);
+            history.push({
+                pathname: '/payment_success',
+            });
         }
     }
 
@@ -84,11 +94,14 @@ function Payment({history, sumAmount, cartItems}) {
         let value = e.target.value;
         value = value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
         setPhoneNumber(phoneNumber = value);
-        console.log(phoneNumber);
     }
 
     function onInputEmail(e) {
         setEmail(email = e.target.value);
+    }
+
+    function onChangeRadio(e) {
+        setEat(eat = e.target.value);
     }
 
     return (
@@ -125,6 +138,10 @@ function Payment({history, sumAmount, cartItems}) {
                 >
                     <span className='inputForm'><Input onChange={onInputEmail} placeholder="이메일을 입력하세요."/></span>
                 </Form.Item>
+                <Radio.Group onChange={onChangeRadio} defaultValue="a">
+                    <Radio.Button value="takeout">포장</Radio.Button>
+                    <Radio.Button value="table">테이블 식사</Radio.Button>
+                </Radio.Group>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" shape="round" size="large" icon={<CreditCardOutlined />}>
                         결제하기
