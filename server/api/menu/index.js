@@ -12,5 +12,9 @@ menus.get('/:id', menusCtrl.get);
 menus.patch('/status/:id', menusCtrl.saleStat);
 // 특정 메뉴에 대한 전체 stat 변경 
 menus.put('/status', menusCtrl.status);
+// 특정 메뉴에 DB 삭제  
+menus.delete('/:id', menusCtrl.delete);
+// 특정 메뉴에 대한 전체 stat 변경 
+menus.post('/menu', menusCtrl.create);
 
 module.exports = menus;

@@ -94,17 +94,58 @@ exports.status = async (ctx) => {
     console.log(menu);
 
     try {
+        // DB 에서 id로 해당 메뉴를 검색
         await menuModel.findOne({where: {id: menu.id}})
             .then((findMenu) => {
+                // 프론트에서 받아온 menu stat으로 DB 수정 
                 findMenu.name_kor = `${menu.menu_kor}`;
                 findMenu.name_eng = `${menu.menu_eng}`;
                 findMenu.price = `${menu.price}`;
+                findMenu.description = `${menu.description}`;
+                findMenu.category_id = `${menu.category_id}`;
+                findMenu.img_url = `${menu.img_url}`;
                 findMenu.save()
                     .then(() => {
                         ctx.status = 200;
                         console.log('메뉴수정성공');
                     });
             });
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+};
+
+exports.delete = async (ctx) => {
+    const {id} = ctx.params;
+    
+    try {
+        await menuModel.destroy({where: {id: id}});
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+};
+
+exports.create = async (ctx) => {
+    // menu Object를 받아 해당 메뉴를 stat을 수정 
+    const menu = ctx.request.body.headers.menu;
+    console.log(menu);
+
+    try {
+        // DB 에서 id로 해당 메뉴를 검색
+        await menuModel.create(
+            {name_kor: `${menu.menu_kor}`,
+                name_eng: `${menu.menu_eng}`,
+                price: `${menu.price}`,
+                description: `${menu.description}`,
+                category_id: `${menu.category_id}`,
+                img_url: `${menu.img_url}`,
+            }).then((menu) => {
+            // isAdmin의 기본값이 false라고 가정하자
+            ctx.status = 200;
+            console.log(menu.get({
+                plain: true,
+            })); // => { username: 'barfooz', isAdmin: false }
+        });
     } catch (e) {
         ctx.throw(500, e);
     }
