@@ -37,7 +37,7 @@ function Login(props) {
                             const user = jwt.verify(res.data.jwtToken,
                                 loginInfo.jwt_password); // 백에서 jwtToken받아옴
                             setUserName(userName = user.username);
-                            localStorage.setItem('userInfo', JSON.stringify({userName: user.username, userId: user.id, userIat: user.iat}));
+                            sessionStorage.setItem('userInfo', JSON.stringify({userName: user.username, userId: user.id}));
                             props.history.push('/menu');
                         }).catch((err) => {
                             console.log(err);
