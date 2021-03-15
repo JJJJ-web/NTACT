@@ -115,6 +115,7 @@ exports.status = async (ctx) => {
     }
 };
 
+// 프론트와 미연동 상태
 exports.delete = async (ctx) => {
     const {id} = ctx.params;
     
@@ -125,6 +126,7 @@ exports.delete = async (ctx) => {
     }
 };
 
+// 프론트와 미연동 상태
 exports.create = async (ctx) => {
     // menu Object를 받아 해당 메뉴를 stat을 수정 
     const menu = ctx.request.body.headers.menu;
