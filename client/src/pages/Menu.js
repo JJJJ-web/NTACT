@@ -1,24 +1,37 @@
 import React from 'react';
 import CategoryTabs from './CategoryTabs';
 import Cart from '../component/Cart';
+import Header from './Header';
 import styled from 'styled-components';
 
 function Menu() {
     return (
         <>
-            <BodyStyles>
-                <CategoryTabs/>
-            </BodyStyles>
+            <HeaderStyles>
+                <TopStyles>
+                    <Header/>
+                </TopStyles>
+                <CategoryStyles>
+                    <CategoryTabs/>
+                </CategoryStyles>
+            </HeaderStyles>
             <BottomCart>
                 <Cart />
             </BottomCart>
         </>
     );
 }
-
-const BodyStyles = styled.div`
+const HeaderStyles = styled.div`
+`;
+const TopStyles = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 2rem;
+  background-color: red;
+`;
+const CategoryStyles = styled.div`
   position:absolute;
-  top: 0;
+  top: 2rem;
   left: 0;
   right: 0;
   bottom: 0;
