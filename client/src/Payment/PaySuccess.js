@@ -26,7 +26,7 @@ function PaySuccess() {
                 <Card title="결제 완료" bordered={false}>
                     <Progress type="circle" percent={20} width={90} format={() => '주문 접수'}/>
                     <div>결제 일시: {orderData.order_date}</div>
-                    <!-- <div>식사: {orderData.eat}</div> -->
+                    <div>식사: {orderData.eat}</div>
                     {
                         orderData.order_detail.map((item) => {
                             return (
