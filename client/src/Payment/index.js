@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import 'antd/dist/antd.css';
-import {Form, Input, Button, Select, Radio} from 'antd';
+import {Form, Input, Button, Select, Radio, Divider} from 'antd';
 import {withRouter, useHistory} from 'react-router-dom';
 import queryString from 'query-string';
 import impCode from '../config/payment.json';
@@ -14,7 +14,7 @@ function Payment({sumAmount, cartItems}) {
     const history = useHistory();
     let [phoneNumber, setPhoneNumber] = useState('');
     let [email, setEmail] = useState('');
-    let [eat, setEat] = useState('');
+    let [orderType, setOrderType] = useState('');
     const data = {
         pg: 'html5_inicis', // PG사
         pay_method: 'card', // 결제수단
@@ -24,13 +24,13 @@ function Payment({sumAmount, cartItems}) {
         buyer_name: JSON.parse(sessionStorage.getItem('userInfo')).userName, // 구매자 이름
         buyer_tel: phoneNumber, // 구매자 전화번호
         buyer_email: email, // 구매자 이메일
-        eat: eat, // 취식
     };
     async function sendCartData(sumAmount, cartItems) {
         await axios.post('/api/payments/order',
             {
                 cart: cartItems,
                 sum: sumAmount,
+                order_type: orderType, // 취식
             }).then((res) => {
             if (res.status === 200) {
                 window.alert('전송 성공111');
@@ -68,24 +68,28 @@ function Payment({sumAmount, cartItems}) {
                 },
             }).then((data) => { // 가맹점 서버 결제 API 성공시 로직
                 if(data.data.status=='success') {
+                    data.data.order_type = orderType;
                     console.log(data.data);
                     history.push({
                         pathname: '/payment_success',
                         state: {orderData: data.data},
                     });
                 } else {
-                    alert('결제에 실패하였습니다.');
-                    history.push(`/payment/result?${data.data.status}`);
+                    history.push({
+                        pathname: '/payment/result',
+                        state: {result: response},
+                    });
                 }
             }).catch((err) => { // 에러 처리
-                console.log('성공 후 에러', err);
-                alert('결제에 실패하였습니다.');
-                history.push(`/payment/result?${data.data.status}`);
+                history.push({
+                    pathname: '/payment/result',
+                    state: {result: response},
+                });
             });
         } else { // 결제 실패 시
-            alert('결제에 실패하였습니다.222');
             history.push({
-                pathname: '/payment_success',
+                pathname: '/payment/result',
+                state: {result: response},
             });
         }
     }
@@ -101,12 +105,27 @@ function Payment({sumAmount, cartItems}) {
     }
 
     function onChangeRadio(e) {
-        setEat(eat = e.target.value);
+        setOrderType(orderType = e.target.value);
     }
 
     return (
         <FormStyles>
             <Form onFinish={handleSubmit} name="paymentForm">
+                <Form.Item
+                    name="식사"
+                    label="식사"
+                    rules={[
+                        {
+                            required: true,
+                            message: '취식 방법을 선택하세요.',
+                        },
+                    ]}
+                >
+                    <Radio.Group onChange={onChangeRadio}>
+                        <Radio.Button value="pick-up">포장</Radio.Button>
+                        <Radio.Button value="dine-in">테이블 식사</Radio.Button>
+                    </Radio.Group>
+                </Form.Item>
                 <Form.Item label="구매자 이름">
                     <span className='inputForm'>{data.buyer_name}</span>
                 </Form.Item>
@@ -138,15 +157,12 @@ function Payment({sumAmount, cartItems}) {
                 >
                     <span className='inputForm'><Input onChange={onInputEmail} placeholder="이메일을 입력하세요."/></span>
                 </Form.Item>
-                <Radio.Group onChange={onChangeRadio} defaultValue="a">
-                    <Radio.Button value="takeout">포장</Radio.Button>
-                    <Radio.Button value="table">테이블 식사</Radio.Button>
-                </Radio.Group>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" shape="round" size="large" icon={<CreditCardOutlined />}>
-                        결제하기
-                    </Button>
-                </Form.Item>
+
+                <Divider />
+
+                <Button type="primary" htmlType="submit" shape="round" size="large" icon={<CreditCardOutlined />}>
+                    결제하기
+                </Button>
             </Form>
         </FormStyles>
     );
