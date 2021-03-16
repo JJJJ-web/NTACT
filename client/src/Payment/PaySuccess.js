@@ -48,8 +48,9 @@ function PaySuccess() {
                             return (
                                 <div>
                                     <span>{item.Name} | </span>
+                                    <span>기본: {item.Price}원 | </span>
                                     <span>{item.Quantity}개 | </span>
-                                    <span>{item.Price}원</span>
+                                    <span>{item.Price * item.Quantity}원</span>
                                 </div>
                             );
                         })
