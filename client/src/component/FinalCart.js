@@ -6,6 +6,7 @@ import {MinusOutlined, PlusOutlined} from '@ant-design/icons';
 import {useDispatch} from 'react-redux';
 import {deleteCart} from '../store/actions';
 import styled from 'styled-components';
+import Header from '../pages/Header';
 
 function FinalCart() {
     const cart = useLocation();
@@ -78,21 +79,24 @@ function FinalCart() {
     });
 
     return (
-        <StepsBar>
-            <Steps type='navigation' size='small' current={2} className='site-navigation-steps'>
-                <Step title='로그인' status='finish' />
-                <Step title='상품 선택' status='finish' />
-                <Step title='상품 확인' status='process' />
-                <Step title='결제' status='wait' />
-            </Steps>
-            <div className='menucnt'>담은 메뉴: {list.length}개</div>
-            <hr />
-            <div>{list}</div>
-            <div className='line' />
-            <div className='finalSum'>총 주문 금액: {finalSum}</div>
-            <div className='line' />
-            <Payment sumAmount={finalSum} cartItems={finalRes} />
-        </StepsBar>
+        <>
+            <Header/>,
+            <StepsBar>
+                <Steps type='navigation' size='small' current={2} className='site-navigation-steps'>
+                    <Step title='로그인' status='finish' />
+                    <Step title='상품 선택' status='finish' />
+                    <Step title='상품 확인' status='process' />
+                    <Step title='결제' status='wait' />
+                </Steps>
+                <div className='menucnt'>담은 메뉴: {list.length}개</div>
+                <hr />
+                <div>{list}</div>
+                <div className='line' />
+                <div className='finalSum'>총 주문 금액: {finalSum}</div>
+                <div className='line' />
+                <Payment sumAmount={finalSum} cartItems={finalRes} />
+            </StepsBar>
+        </>
     );
 }
 
