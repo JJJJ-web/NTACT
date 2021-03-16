@@ -23,6 +23,7 @@ exports.create = async (ctx) => {
         name: name,
         pay_method: 'card',
         order_stat: 'uncharged',
+        order_type: cart['order_type'],
         order_detail: cart,
         dev_merchant_id: 1,
     });
@@ -81,6 +82,7 @@ exports.complete = async (ctx) => {
                 buyer_name: order.buyer_name,
                 order_name: order.name,
                 order_detail: order.order_detail.cart,
+                order_type: order.order_type,
                 total_price: order.amount,
                 order_date: order.date.toLocaleString(),
             };
