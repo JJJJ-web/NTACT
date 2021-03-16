@@ -24,7 +24,7 @@ exports.create = async (ctx) => {
         pay_method: 'card',
         order_stat: 'uncharged',
         order_type: cart['order_type'],
-        order_detail: cart,
+        order_detail: cart['cart'],
         dev_merchant_id: 1,
     });
 
@@ -81,7 +81,7 @@ exports.complete = async (ctx) => {
                 message: '일반 결제 성공',
                 buyer_name: order.buyer_name,
                 order_name: order.name,
-                order_detail: order.order_detail.cart,
+                order_detail: order.order_detail,
                 order_type: order.order_type,
                 total_price: order.amount,
                 order_date: order.date.toLocaleString(),
