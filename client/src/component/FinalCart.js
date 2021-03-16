@@ -80,7 +80,7 @@ function FinalCart() {
 
     return (
         <>
-            <Header/>,
+            <Header/>
             <StepsBar>
                 <Steps type='navigation' size='small' current={2} className='site-navigation-steps'>
                     <Step title='로그인' status='finish' />
