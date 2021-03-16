@@ -1,21 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Button} from 'antd';
-import {withRouter} from 'react-router-dom';
+import {useHistory, useLocation, withRouter} from 'react-router-dom';
 import queryString from 'query-string';
 /*eslint-disable */
-function PaymentResult({history}) {
-    const {location} = history;
-    const {search} = location;
-    const query = queryString.parse(search);
-
-    const {merchant_uid, error_msg, imp_uid} = query;
+function PaymentResult() {
+    const history = useHistory();
+    const location = useLocation();
+    const query = location.state.result;
+    console.log(query);
+    const merchant_uid = query.merchant_uid;
+    const error_msg = query.error_msg;
+    const imp_uid = query.imp_uid;
+    const success = query.success;
     const isSuccessed = getIsSuccessed();
 
     function getIsSuccessed() {
-        const {success, imp_success} = query;
-        if (typeof imp_success === 'string') return imp_success === 'true';
-        if (typeof imp_success === 'boolean') return imp_success === true;
         if (typeof success === 'string') return success === 'true';
         if (typeof success === 'boolean') return success === true;
     }
@@ -43,7 +43,7 @@ function PaymentResult({history}) {
                         </li>
                     )}
                 </ul>
-                <Button size="large" onClick={() => history.goBack()}>
+                <Button size="large" onClick={() => history.push('/menu')}>
                     돌아가기
                 </Button>
             </Container>
