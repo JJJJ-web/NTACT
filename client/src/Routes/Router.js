@@ -1,6 +1,6 @@
 import React from 'react';
 import {Switch, Route} from 'react-router-dom';
-import {Home, FinalCart, Menu, Payment, PaymentResult, PaymentSuccess, MenuManage, Login} from './index';
+import {Home, FinalCart, Menu, Payment, PaymentResult, PaymentSuccess, MenuManage, Login, Shop} from './index';
 
 const Router = () => (
     <Switch>
@@ -12,6 +12,7 @@ const Router = () => (
         <Route exact path="/payment/result" component={PaymentResult} />
         <Route exact path="/payment_success" component={PaymentSuccess} />
         <Route path="/menu_manage" component={MenuManage} />
+        <Route path="/shop" component={Shop} />
     </Switch>
 );
 
