@@ -33,11 +33,10 @@ function PaySuccess() {
         return (
             <>
                 <Header/>
-                <Steps type='navigation' size='small' current={3} className='site-navigation-steps'>
-                    <Step title='로그인' status='finish' />
-                    <Step title='상품 선택' status='finish' />
+                <Steps type='navigation' size='small' current={2} className='site-navigation-steps'>
                     <Step title='상품 확인' status='finish' />
                     <Step title='결제' status='finish' />
+                    <Step title='주문 접수' status='process' />
                 </Steps>
                 <Card title="결제 완료" bordered={false}>
                     <Progress type="circle" percent={20} width={90} format={() => '주문 접수'}/>
