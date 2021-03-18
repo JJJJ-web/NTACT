@@ -12,9 +12,11 @@ import axois from 'axios';
 
 function Payment({sumAmount, cartItems}) {
     const history = useHistory();
+    const userId = JSON.parse(sessionStorage.getItem('userInfo')).userId;
     let [phoneNumber, setPhoneNumber] = useState('');
     let [email, setEmail] = useState('');
     let [orderType, setOrderType] = useState('');
+
     const data = {
         pg: 'html5_inicis', // PG사
         pay_method: 'card', // 결제수단
@@ -31,6 +33,7 @@ function Payment({sumAmount, cartItems}) {
                 cart: cartItems,
                 sum: sumAmount,
                 order_type: orderType, // 취식
+                buyer_id: userId,
             }).then((res) => {
             if (res.status === 200) {
                 window.alert('전송 성공111');
