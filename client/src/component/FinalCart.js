@@ -82,11 +82,10 @@ function FinalCart() {
         <>
             <Header/>
             <StepsBar>
-                <Steps type='navigation' size='small' current={2} className='site-navigation-steps'>
-                    <Step title='로그인' status='finish' />
-                    <Step title='상품 선택' status='finish' />
+                <Steps type='navigation' size='small' current={0} className='site-navigation-steps'>
                     <Step title='상품 확인' status='process' />
                     <Step title='결제' status='wait' />
+                    <Step title='주문 접수' status='wait' />
                 </Steps>
                 <div className='menucnt'>담은 메뉴: {list.length}개</div>
                 <hr />
