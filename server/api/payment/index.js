@@ -12,5 +12,7 @@ payments.post('/iamport-webhook', paymentsCtrl.complete);
 payments.get('/complete/mobile', paymentsCtrl.complete);
 // 결제 내역
 payments.post('/:id', paymentsCtrl.find);
+// 상세 결제 내역
+payments.post('/:id/:selected', paymentsCtrl.find);
 
 module.exports = payments;
