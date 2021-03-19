@@ -101,7 +101,7 @@ exports.find = async (ctx) => {
     let history;
     try {
         history = await orderModel.findAll({
-            attributes: ['name', 'amount', 'date'],
+            attributes: ['id', 'name', 'amount', 'date'],
             where: {
                 buyer_id: id,
             },
