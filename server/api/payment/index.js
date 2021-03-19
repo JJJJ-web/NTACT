@@ -11,6 +11,6 @@ payments.post('/iamport-webhook', paymentsCtrl.complete);
 // 모바일 웹 환경에 대응하는 api 및 서버 로직
 payments.get('/complete/mobile', paymentsCtrl.complete);
 // 결제 내역
-payments.post('/history/:id', paymentsCtrl.find);
+payments.post('/:id/history', paymentsCtrl.find);
 
 module.exports = payments;
