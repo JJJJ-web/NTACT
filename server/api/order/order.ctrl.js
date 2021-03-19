@@ -1,4 +1,4 @@
-const {Sequelize, Op} = require('sequelize');
+const Op = require('sequelize');
 const orderModel = require('../../models').dev_orders;
 
 exports.list = async (ctx) => {
