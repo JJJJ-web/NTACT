@@ -97,23 +97,37 @@ exports.complete = async (ctx) => {
 };
 
 exports.find = async (ctx) => {
-    const {id} = ctx.params;
+    const {id, selected} = ctx.params;
     let history;
-    try {
-        history = await orderModel.findAll({
-            attributes: ['id', 'name', 'amount', 'date'],
-            where: {
-                buyer_id: id,
-            },
-            order: [['date', 'DESC']],
-        });
-    } catch (e) {
-        ctx.throw(500, e);
-    }
-    // 결제 내역이 존재하지 않으면
-    if (history.length === 0) {
-        ctx.status = 204;
-        return;
+    if (typeof selected === 'undefined') {
+        try {
+            history = await orderModel.findAll({
+                attributes: ['id', 'name', 'amount', 'date'],
+                where: {
+                    buyer_id: id,
+                },
+                order: [['date', 'DESC']],
+            });
+        } catch (e) {
+            ctx.throw(500, e);
+        }
+        // 결제 내역이 존재하지 않으면
+        if (history.length === 0) {
+            ctx.status = 204;
+            return;
+        }
+    } else {
+        try {
+            history = await orderModel.findOne({
+                attributes: ['id', 'name', 'amount', 'date', 'order_detail', 'order_stat', 'order_type'],
+                where: {
+                    buyer_id: id,
+                    id: selected,
+                },
+            });
+        } catch (e) {
+            ctx.throw(500, e);
+        }
     }
     ctx.body = history;
 };
