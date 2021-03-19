@@ -21,6 +21,7 @@ exports.create = async (ctx) => {
         id: `${date}_${new Date().getTime()}`,
         amount: cart['sum'],
         name: name,
+        buyer_id: cart['buyer_id'],
         pay_method: 'card',
         order_stat: 'uncharged',
         order_type: cart['order_type'],
@@ -93,4 +94,27 @@ exports.complete = async (ctx) => {
         ctx.status = 400;
         ctx.body = e;
     }
+};
+
+exports.find = async (ctx) => {
+    const {id} = ctx.params;
+    let history;
+    try {
+        history = await orderModel.findAll({
+            attributes: ['name', 'amount', 'date'],
+            where: {
+                order_stat: 0,
+                buyer_id: id,
+            },
+            order: [['date', 'DESC']],
+        });
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+    // 결제 내역이 존재하지 않으면
+    if (history.length === 0) {
+        ctx.status = 204;
+        return;
+    }
+    ctx.body = history;
 };
