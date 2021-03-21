@@ -26,12 +26,11 @@ const HeaderStyles = styled.div`
 const TopStyles = styled.div`
   position: relative;
   width: 100vw;
-  height: 2rem;
-  background-color: red;
+  height: 30px;
 `;
 const CategoryStyles = styled.div`
   position:absolute;
-  top: 2rem;
+  top: 30px;
   left: 0;
   right: 0;
   bottom: 0;
