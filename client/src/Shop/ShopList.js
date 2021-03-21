@@ -14,18 +14,19 @@ function ShopList(props) {
         axios.get(`/api/orders/${status}`).then((res) => setData(res.data.reverse()));
     }, []);
 
-    function changeStaus() {
-        if(status === 'ready') {
+    function changeStaus(item) {
+        if(item.order_stat === 'ready') {
             setChange('in-progress');
-        } else if(status === 'in-progress') {
+        } else if(item.order_stat === 'in-progress') {
             setChange('completed');
         }
     }
 
     async function changeStateHandler(item) {
-        changeStaus();
+        changeStaus(item);
         console.log(change);
-        await axios.patch(`/api/orders/${status}/${item.id}`, {
+
+        await axios.patch(`/api/orders/${item.id}`, {
             headers: {
                 status: change,
             },
