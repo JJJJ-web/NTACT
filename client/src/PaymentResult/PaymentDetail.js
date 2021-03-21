@@ -1,9 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {Card, Layout, Menu, Progress, List, Row, Col} from 'antd';
+import React, {useState} from 'react';
+import {Card, Layout, Menu, Progress, List} from 'antd';
 import {Link, withRouter} from 'react-router-dom';
-import styled from 'styled-components';
 import {LeftOutlined} from '@ant-design/icons';
-import Header from '../pages/Header';
 import axios from 'axios';
 
 function PaymentDetail({match}, {orderId =[]}) {
@@ -59,14 +57,17 @@ function PaymentDetail({match}, {orderId =[]}) {
 
     function formatDate(date) {
         if(date != undefined) {
-            const yyyy = date.slice(0, 4);
-            const mm = date.slice(5, 7);
-            const dd = date.slice(8, 10);
-            const h = date.slice(11, 13);
-            const m = date.slice(14, 16);
-            const s = date.slice(17, 19);
-
-            return (yyyy + '년 ' + mm + '월 ' + dd + '일 ' + h + ':' + m );
+            const time = new Date(date);
+            const yyyy = time.getFullYear();
+            const mm = time.getMonth() + 1;
+            const dd = time.getDate();
+            let h = time.getHours();
+            const ampm = h >= 12 ? '오후 ' : '오전 ';
+            h = h >= 10 ? h : '0' + h;
+            let m = time.getMinutes();
+            m = m >= 10 ? m : '0' + m;
+            const s = time.getSeconds();
+            return (yyyy + '년 ' + mm + '월 ' + dd + '일 ' + ampm + h + ':' + m);
         }
     }
 
@@ -107,7 +108,7 @@ function PaymentDetail({match}, {orderId =[]}) {
                     {
                         orderDetails.map((item, index) => {
                             return (
-                                <List.Item>
+                                <List.Item key={index}>
                                     <List.Item.Meta title={item.Name} description={formatOnePrice(item.Price)}/>
                                     <List.Item.Meta title={item.Quantity} />
                                     <p>{item.Price * item.Quantity}원</p>
