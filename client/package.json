@@ -7,7 +7,7 @@
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.2.5",
         "@testing-library/user-event": "^12.7.1",
-        "antd": "^4.12.3",
+        "antd": "^4.14.0",
         "axios": "^0.21.1",
         "craco-less": "^1.17.1",
         "global": "^4.4.0",
@@ -53,7 +53,7 @@
     },
     "devDependencies": {
         "@ant-design/icons": "^4.5.0",
-        "eslint": "^7.20.0",
+        "eslint": "^7.22.0",
         "eslint-config-google": "^0.14.0",
         "eslint-plugin-react": "^7.22.0",
         "prop-types": "^15.7.2",
