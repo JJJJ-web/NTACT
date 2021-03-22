@@ -14,7 +14,7 @@ function ShopList(props) {
         axios.get(`/api/orders/${status}`).then((res) => setData(res.data.reverse()));
     }, []);
 
-    function changeStaus(item) {
+    function changeStatus(item) {
         if(item.order_stat === 'ready') {
             setChange('in-progress');
         } else if(item.order_stat === 'in-progress') {
@@ -23,8 +23,7 @@ function ShopList(props) {
     }
 
     async function changeStateHandler(item) {
-        changeStaus(item);
-        console.log(change);
+        changeStatus(item);
 
         await axios.patch(`/api/orders/${item.id}`, {
             headers: {
@@ -37,11 +36,19 @@ function ShopList(props) {
                 } else if(item.order_stat === 'in-progress') {
                     item.order_stat = 'completed';
                 }
-                console.log(res.order_stat);
             }
         }).catch((error) => {
             console.log(error);
         });
+    }
+
+    function reload(item) {
+        changeStateHandler(item);
+        
+        if(item.order_stat != props.status) {
+            window.location.reload();
+            setChange(props.status);
+        }
     }
 
     function changeValue(value) {
@@ -119,11 +126,11 @@ function ShopList(props) {
                                                 <Select style={{width: 105, visibility: 'hidden'}} />
                                         }
                                         {status === 'ready' && 
-                                             <Button type='primary' className='Button' onClick={()=> changeStateHandler(item)}>조리 시작</Button> ||
+                                             <Button type='primary' className='Button' onClick={()=> reload(item)}>조리 시작</Button> ||
                                             status === 'in-progress' &&
-                                            <Button type='primary' className='Button' onClick={()=> changeStateHandler(item)}>조리 완료</Button> ||
+                                            <Button type='primary' className='Button' onClick={()=> reload(item)}>조리 완료</Button> ||
                                             status === 'completed' &&
-                                            <Button type='primary' disabled='true' className='Button' onClick={()=> changeStateHandler(item)}>완료</Button>
+                                            <Button type='primary' disabled='true' className='Button'>완료</Button>
                                         }
                                     </div>
                                 </div>
