@@ -9,26 +9,22 @@ function Header() {
 
     return (
         <Layout>
-            <Menu theme="dark" mode="horizontal" theme="light" style={{lineHeight: '30px', textAlign: 'center', backgroundColor: '#FFF8EA'}}>
+            <Menu theme="dark" inlineIndent="1" mode="horizontal" theme="light" style={{lineHeight: '30px', textAlign: 'center', backgroundColor: '#FFF8EA'}}>
+                <Menu.Item key="1">
+                    <Link to='/menu'>
+                        <ReadOutlined /> 메뉴판
+                    </Link>
+                </Menu.Item>
 
-                <Row>
-                    <Col span={6}>
-                        <Link to='/menu'>
-                            <ReadOutlined /> 메뉴판
-                        </Link>
-                    </Col>
-                    <Col span={12}>
-                        {userName}님 반갑습니다.
-                    </Col>
-                    <Col span={6}>
-                        <Link to='/payment/history'>
-                            <MenuOutlined /> 결제 내역
-                        </Link>
-                    </Col>
-                </Row>
+                <Menu.Item key="2" disabled>{userName}</Menu.Item>
+
+                <Menu.Item key="3">
+                    <Link to='/payment/history'>
+                        <MenuOutlined /> 결제 내역
+                    </Link>
+                </Menu.Item>
             </Menu>
         </Layout>
-
     );
 }
 
