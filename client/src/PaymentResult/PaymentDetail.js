@@ -75,6 +75,16 @@ function PaymentDetail({match}, {orderId =[]}) {
         return ('기본: ' + price + '원');
     }
 
+    function colorOrderType(type) {
+        if (type === 'dine-in') {
+            return '#fda200';
+        } else if (type === 'pick-up') {
+            return '#87bd00';
+        } else {
+            return '#8b8b8b';
+        }
+    }
+
     useState(() => {
         orderId = match.params.orderId;
         axios.post(`/api/payments/${userId}/${orderId}`).
@@ -100,8 +110,9 @@ function PaymentDetail({match}, {orderId =[]}) {
                     <List.Item>
                         <Progress type="circle" percent={convertOrderStatPercent(orderInfo.order_stat)} format={() => convertOrderStat(orderInfo.order_stat)}/>
                         <List>
-                            <div>{formatDate(orderInfo.date)}</div>
-                            <div style={{fontSize: '1.3rem'}}>{convertOrderType(orderInfo.order_type)}</div>
+                            <b style={{fontSize: '1.4rem', color: colorOrderType(orderInfo.order_type)}}>{convertOrderType(orderInfo.order_type)}</b>
+                            <div style={{color: '#8b8b8b'}}>주문번호: {orderInfo.id}</div>
+                            <div style={{color: '#8b8b8b'}}>주문일시: {formatDate(orderInfo.date)}</div>
                         </List>
                         <p></p><p></p><p></p>
                     </List.Item>
