@@ -42,7 +42,7 @@ function ShopList(props) {
         }).catch((error) => {
             console.log(error);
         });
-    };
+    }
 
     function changeValue(value) {
         setValue(value);
@@ -106,16 +106,24 @@ function ShopList(props) {
                                         }
                                     </List>
                                     <div className='select'>
-                                        <Select defaultValue={10} style={{width: 105}} onChange={changeValue}>
-                                            <Option value={5}>5</Option>
-                                            <Option value={10}>10</Option>
-                                            <Option value={15}>15</Option>
-                                            <Option value={20}>20</Option>
-                                        </Select>
+                                        {status === 'ready' && 
+                                            <Select defaultValue={10} style={{width: 105}} onChange={changeValue}>
+                                                <Option value={5}>5</Option>
+                                                <Option value={10}>10</Option>
+                                                <Option value={15}>15</Option>
+                                                <Option value={20}>20</Option>
+                                            </Select> ||
+                                            status === 'in-progress' &&
+                                                <Select style={{width: 105, visibility: 'hidden'}} /> ||
+                                            status === 'completed' &&
+                                                <Select style={{width: 105, visibility: 'hidden'}} />
+                                        }
                                         {status === 'ready' && 
                                              <Button type='primary' className='Button' onClick={()=> changeStateHandler(item)}>조리 시작</Button> ||
                                             status === 'in-progress' &&
-                                            <Button type='primary' className='Button' onClick={()=> changeStateHandler(item)}>조리 완료</Button>
+                                            <Button type='primary' className='Button' onClick={()=> changeStateHandler(item)}>조리 완료</Button> ||
+                                            status === 'completed' &&
+                                            <Button type='primary' disabled='true' className='Button' onClick={()=> changeStateHandler(item)}>완료</Button>
                                         }
                                     </div>
                                 </div>
