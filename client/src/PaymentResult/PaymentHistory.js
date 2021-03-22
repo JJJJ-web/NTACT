@@ -28,7 +28,7 @@ function PaymentHistory() {
     }
 
     return (
-        <div style={{backgroundColor: '#eeeeee', height: '100vh'}}>
+        <div style={{backgroundColor: '#eeeeee', minHeight: '100vh'}}>
             <Header/>
             <div>
                 {
