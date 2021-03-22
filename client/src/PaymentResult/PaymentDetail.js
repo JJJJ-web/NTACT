@@ -85,7 +85,7 @@ function PaymentDetail({match}, {orderId =[]}) {
     }, []);
 
     return (
-        <div style={{backgroundColor: '#eeeeee', height: '100vh'}}>
+        <div style={{backgroundColor: '#eeeeee', minHeight: '100vh'}}>
             <Layout>
                 <Menu theme="dark" mode="horizontal" theme="light" style={{lineHeight: '30px', backgroundColor: '#FFF8EA'}}>
                     <Menu.Item key="1">
