@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Card, Col, Row, Button, Select} from 'antd';
+import {Card, Col, Row, Button, Select, List} from 'antd';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -48,6 +48,39 @@ function ShopList(props) {
         setValue(value);
     }
 
+    function formatDate(date) {
+        if(date != undefined) {
+            const time = new Date(date);
+            let h = time.getHours();
+            const ampm = h >= 12 ? '오후 ' : '오전 ';
+            h = h >= 10 ? h : '0' + h;
+            let m = time.getMinutes();
+            m = m >= 10 ? m : '0' + m;
+            const s = time.getSeconds();
+            return (ampm + h + '시' + m + '분');
+        }
+    }
+
+    function convertOrderType(type) {
+        if (type === 'dine-in') {
+            return '테이블';
+        } else if (type === 'pick-up') {
+            return '포장';
+        } else {
+            return '-';
+        }
+    }
+
+    function colorOrderType(type) {
+        if (type === 'dine-in') {
+            return '#fda200';
+        } else if (type === 'pick-up') {
+            return '#87bd00';
+        } else {
+            return '#8b8b8b';
+        }
+    }
+
     return (
         <DivList>
             {
@@ -56,21 +89,22 @@ function ShopList(props) {
                         <div className='cardList'>
                             <Card title={item.id} style={{width: 300}} className='items' bodyStyle={{height: 500}} headStyle={{fontSize: 20}}>
                                 <div key={item.id}>
-                                    <span className='order_type'>{item.order_type}</span>
-                                    <br />
-                                    <p className='date'>{item.date}</p>
-                                    <hr />
-                                    <div>
+                                    <b className='order_type' style={{color: colorOrderType(item.order_type)}}>{convertOrderType( item.order_type)}</b>
+                                    <span className='date'>{formatDate(item.date)}</span>
+                                    <hr/>
+                                    <List itemLayout="vertical">
                                         {
                                             item.order_detail.map((order) => {
-                                                return(
-                                                    <div key={order.Id}>
-                                                        <p className='menu'>{order.Name}&nbsp;&nbsp;&nbsp;&nbsp;{order.Quantity}</p>
-                                                    </div>
+                                                return (
+                                                    <List.Item>
+                                                        <span className='menu'>{order.Name}</span>
+                                                        <b className='quantity'>{order.Quantity}</b>
+
+                                                    </List.Item>
                                                 );
                                             })
                                         }
-                                    </div>
+                                    </List>
                                     <div className='select'>
                                         <Select defaultValue={10} style={{width: 105}} onChange={changeValue}>
                                             <Option value={5}>5</Option>
@@ -78,7 +112,7 @@ function ShopList(props) {
                                             <Option value={15}>15</Option>
                                             <Option value={20}>20</Option>
                                         </Select>
-                                        <Button type='primary' className='Button' onClick={()=> changeStateHandler(item)}> 다음 단계로 </Button>
+                                        <Button type='primary' className='Button' onClick={() => changeStateHandler(item)}> 다음 단계로 </Button>
                                     </div>
                                 </div>
                             </Card>
@@ -91,28 +125,39 @@ function ShopList(props) {
 }
 
 const DivList = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    overflow-x: auto;
-    white-space: nowrap;
-    height: 600px;
+  display: flex;
+  justify-content: flex-start;
+  overflow-x: auto;
+  white-space: nowrap;
+  height: 600px;
 
-    .order_type {
-        color: green;
-        font-weight: bold;
-        font-size: 30px;
-    }
+  .order_type {
+    font-size: 2rem;
+  }
 
-    .date {
-        font-size: 20px;
-    }
+  .date {
+    position: relative;
+    left: 10px;
+    color: #0062ff;
+    font-size: 1rem;
+  }
 
-    .menu {
-        font-size: 18px;
-    }
-    Button {
-        margin-left: 25px;
-    }
+  .menu {
+    font-size: 1.1rem;
+  }
+
+  .quantity {
+    position: absolute;
+    right: 10px;
+    font-size: 1.3rem;
+  }
+  .select{
+    position: absolute;
+    bottom: 30px;
+  }
+  Button {
+    margin-left: 25px;
+  }
 `;
 
 export default ShopList;
