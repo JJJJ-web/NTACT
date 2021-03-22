@@ -1,14 +1,11 @@
 import React, {useState} from 'react';
 import 'antd/dist/antd.css';
-import {Form, Input, Button, Select, Radio, Divider} from 'antd';
+import {Form, Input, Button, Radio, Divider} from 'antd';
 import {withRouter, useHistory} from 'react-router-dom';
-import queryString from 'query-string';
 import impCode from '../config/payment.json';
-import PaySuccess from './PaySuccess';
 import axios from 'axios';
 import styled from 'styled-components';
 import {CreditCardOutlined} from '@ant-design/icons';
-import axois from 'axios';
 
 function Payment({sumAmount, cartItems}) {
     const history = useHistory();
@@ -56,7 +53,6 @@ function Payment({sumAmount, cartItems}) {
     }
 
     function callback(response) {
-        const query = queryString.stringify(response);
         if (response.success) { // 결제 성공 시
             axios({
                 url: '/api/payments/iamport-webhook', // 가맹점 서버에 전달할 파라미터에 필요한 서버 URL

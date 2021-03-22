@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {withRouter} from 'react-router-dom';
 import axios from 'axios';
 import Kakao from 'kakaojs';

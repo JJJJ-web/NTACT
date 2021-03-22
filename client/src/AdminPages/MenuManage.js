@@ -1,22 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import 'antd/dist/antd.css';
 import axois from 'axios';
-import {
-    Switch,
-    Row,
-    Col,
-    Divider,
-    Button,
-    Modal,
-    Form,
-    Input,
-    Radio,
-    Select, Space, InputNumber,
-} from 'antd';
+import {Switch, Row, Col, Button, Modal, Form, Input, Select, InputNumber} from 'antd';
 import AddMenu from './AddMenu';
-import {DeleteFilled, FormOutlined} from '@ant-design/icons';
+import {FormOutlined} from '@ant-design/icons';
 import axios from 'axios';
-import {number} from 'prop-types';
 
 const {Option} = Select;
 
