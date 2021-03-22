@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {Row, Col, Layout, Menu} from 'antd';
+import {Layout, Menu} from 'antd';
 import {Link} from 'react-router-dom';
-import styled from 'styled-components';
 import {MenuOutlined, ReadOutlined} from '@ant-design/icons';
 
 function Header() {

@@ -1,8 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Card, Progress, Steps} from 'antd';
 import {withRouter, useLocation} from 'react-router-dom';
-import styled from 'styled-components';
-import {MenuOutlined, ReadOutlined} from '@ant-design/icons';
 import Header from '../pages/Header';
 
 function PaySuccess() {

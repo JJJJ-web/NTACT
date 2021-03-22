@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Card, Progress, Steps} from 'antd';
+import {Card} from 'antd';
 import {withRouter, useHistory, Link} from 'react-router-dom';
-import styled from 'styled-components';
-import {MenuOutlined, ReadOutlined} from '@ant-design/icons';
 import Header from '../pages/Header';
 import axios from 'axios';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {Button} from 'antd';
 import {useHistory, useLocation, withRouter} from 'react-router-dom';
-import queryString from 'query-string';
+
 /*eslint-disable */
 function PaymentResult() {
     const history = useHistory();
