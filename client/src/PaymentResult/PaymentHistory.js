@@ -36,7 +36,7 @@ function PaymentHistory() {
                 {
                     histories.map((item) => {
                         return (
-                            <Card title={item.name} extra={<Link to={`/payment/history/${item.id}`} key={item.id}>주문 상세</Link>} style={{margin: '10px'}}>
+                            <Card key={item.id} title={item.name} extra={<Link to={`/payment/history/${item.id}`}>주문 상세</Link>} style={{margin: '10px'}}>
                                 <h2>{item.amount}원</h2>
                                 <p>{formatDate(item.date)}</p>
                             </Card>
