@@ -52,8 +52,6 @@ function FinalCart() {
         alert('삭제 되었습니다.');
         setfinalRes(list);
         setfinalSum(x);
-        console.log(finalRes);
-        console.log(list);
     };
 
     const list = Object.keys(finalRes).map((item, idx) => {
