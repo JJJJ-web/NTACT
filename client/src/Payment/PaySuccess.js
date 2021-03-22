@@ -1,6 +1,8 @@
-import React, {useEffect} from 'react';
-import {Card, Progress, Steps} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Card, List, Progress, Steps} from 'antd';
 import {withRouter, useLocation} from 'react-router-dom';
+import styled from 'styled-components';
+import {MenuOutlined, ReadOutlined} from '@ant-design/icons';
 import Header from '../pages/Header';
 
 function PaySuccess() {
@@ -16,6 +18,11 @@ function PaySuccess() {
             return '취식';
         }
     }
+
+    function formatOnePrice(price) {
+        return ('기본: ' + price + '원');
+    }
+
     if(location.state == null) {
         return(
             <>
@@ -36,23 +43,32 @@ function PaySuccess() {
                     <Step title='결제' status='finish' />
                     <Step title='주문 접수' status='process' />
                 </Steps>
-                <Card title="결제 완료" bordered={false}>
-                    <Progress type="circle" percent={20} width={90} format={() => '주문 접수'}/>
-                    <div>결제 일시: {orderData.order_date}</div>
-                    <div>식사: {convertOrderType(orderData.order_type)}</div>
-                    {
-                        orderData.order_detail.map((item) => {
-                            return (
-                                <div>
-                                    <span>{item.Name} | </span>
-                                    <span>기본: {item.Price}원 | </span>
-                                    <span>{item.Quantity}개 | </span>
-                                    <span>{item.Price * item.Quantity}원</span>
-                                </div>
-                            );
-                        })
-                    }
-                    <div>총 결제금액: {orderData.total_price}원</div>
+                <Card title="" bordered={false} style={{margin: '10px'}}>
+                    <List itemLayout="horizontal">
+                        <List.Item>
+                            <Progress type="circle" percent={20} format={() => '주문 접수'}/>
+                            <List>
+                                <div>{orderData.order_date}</div>
+                                <div style={{fontSize: '1.3rem'}}>{convertOrderType(orderData.order_type)}</div>
+                            </List>
+                            <p></p><p></p><p></p>
+                        </List.Item>
+                        {
+                            orderData.order_detail.map((item, index) => {
+                                return (
+                                    <List.Item key={index}>
+                                        <List.Item.Meta title={item.Name} description={formatOnePrice(item.Price)}/>
+                                        <List.Item.Meta title={item.Quantity} />
+                                        <p>{item.Price * item.Quantity}원</p>
+                                    </List.Item>
+                                );
+                            })
+                        }
+                        <List.Item style={{fontSize: '1.3rem'}}>
+                            <p>총 결제금액</p>
+                            <p>{orderData.total_price}원</p>
+                        </List.Item>
+                    </List>
                 </Card>
             </>
         );
