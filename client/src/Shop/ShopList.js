@@ -112,7 +112,11 @@ function ShopList(props) {
                                             <Option value={15}>15</Option>
                                             <Option value={20}>20</Option>
                                         </Select>
-                                        <Button type='primary' className='Button' onClick={() => changeStateHandler(item)}> 다음 단계로 </Button>
+                                        {status === 'ready' && 
+                                             <Button type='primary' className='Button' onClick={()=> changeStateHandler(item)}>조리 시작</Button> ||
+                                            status === 'in-progress' &&
+                                            <Button type='primary' className='Button' onClick={()=> changeStateHandler(item)}>조리 완료</Button>
+                                        }
                                     </div>
                                 </div>
                             </Card>
