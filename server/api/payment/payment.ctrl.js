@@ -1,4 +1,5 @@
 const axios = require('axios');
+const {Op} = require('sequelize');
 const paymentConfig = require('../../config/payment-config.json');
 const orderModel = require('../../models').dev_orders;
 
@@ -105,6 +106,9 @@ exports.find = async (ctx) => {
                 attributes: ['id', 'name', 'amount', 'date'],
                 where: {
                     buyer_id: id,
+                    [Op.not]: [
+                        {order_stat: 'uncharged'},
+                    ],
                 },
                 order: [['date', 'DESC']],
             });
