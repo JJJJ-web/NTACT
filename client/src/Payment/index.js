@@ -33,11 +33,10 @@ function Payment({sumAmount, cartItems}) {
                 buyer_id: userId,
             }).then((res) => {
             if (res.status === 200) {
-                window.alert('전송 성공111');
                 data.name = res.data.order_name;
                 data.merchant_uid = res.data.order_id;
             } else {
-                window.alert('전송 실패111');
+                console.log(error);
             }
         });
     }
