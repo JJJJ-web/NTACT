@@ -88,6 +88,19 @@ exports.saleStat = async (ctx) => {
     } ctx.status = 200;
 };
 
+exports.delayTime = async (ctx) => {
+    // id 파라미터를 받아 해당 주문 DB 찾아오기 
+    const {id} = ctx.params;
+    const delaytime = ctx.request.body.headers.delaytime;
+     
+    try {
+        menuModel.update({delay_time: delaytime}, {where: {id: id}});
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+    ctx.status = 200;
+};
+
 exports.status = async (ctx) => {
     // menu Object를 받아 해당 메뉴를 stat을 수정 
     const menu = ctx.request.body.headers.menu;
