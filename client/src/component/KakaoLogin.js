@@ -32,7 +32,7 @@ function Login(props) {
                             }).then((res) => {
                             console.log('res.status: ' + res.status);
                             if (res.status === 200) { // 가입된 사용자일 경우 로그인 성공 처리
-                                window.alert('가입된 사용자');
+                                // window.alert('가입된 사용자');
                             }
                             const user = jwt.verify(res.data.jwtToken,
                                 loginInfo.jwt_password); // 백에서 jwtToken받아옴

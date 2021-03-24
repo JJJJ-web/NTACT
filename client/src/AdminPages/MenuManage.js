@@ -42,7 +42,7 @@ function MenuManage() {
                 product.sales_stat === 1 ? setSelectThisMenu(selectThisMenu.sales_stat = 0) : setSelectThisMenu(selectThisMenu.sales_stat = 1);
                 console.log(selectThisMenu.menu_kor, selectThisMenu.sales_stat);
             } else {
-                window.alert('토글 실패111');
+                // window.alert('토글 실패111');
             }
         });
     }
@@ -54,10 +54,10 @@ function MenuManage() {
                 },
             }).then((res) => {
             if (res.status === 200) {
-                window.alert('폼 전송 성공111');
+                // window.alert('폼 전송 성공111');
                 console.log(JSON.stringify(selectThisMenu));
             } else {
-                window.alert('폼 전송 실패111');
+                // window.alert('폼 전송 실패111');
             }
         });
     }
