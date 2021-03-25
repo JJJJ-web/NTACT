@@ -8,7 +8,6 @@ function PaymentResult() {
     const history = useHistory();
     const location = useLocation();
     const query = location.state.result;
-    console.log(query);
     const merchant_uid = query.merchant_uid;
     const error_msg = query.error_msg;
     const imp_uid = query.imp_uid;
