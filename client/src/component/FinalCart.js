@@ -21,8 +21,6 @@ function FinalCart() {
         setfinalRes(cart.state.res);
     });
 
-    console.log(finalRes);
-
     const onIncrease = (idx) => {
         setfinalRes(finalRes[idx]['Quantity'] += 1);
         totalSum(finalRes);

@@ -16,12 +16,8 @@ function Login(props) {
                 if (!Kakao) {
                     reject(new Error('Kakao 인스턴스가 존재하지 않습니다.'));
                 }
-                if (window.Kakao.Auth.getAccessToken()) {
-                    console.log('액세스 토큰이 존재합니다. 세션을 유지합니다.');
-                }
                 window.Kakao.Auth.login({
                     success: (auth) => {
-                        console.log('정상적으로 로그인 되었습니다.', auth);
                         setAuthorization(Authorization = auth.access_token);
                         axios.post('/api/users/kakao',
                             {
@@ -30,7 +26,6 @@ function Login(props) {
                                 },
                                 withCredentials: true,
                             }).then((res) => {
-                            console.log('res.status: ' + res.status);
                             if (res.status === 200) { // 가입된 사용자일 경우 로그인 성공 처리
                                 // window.alert('가입된 사용자');
                             }

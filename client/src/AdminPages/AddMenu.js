@@ -56,7 +56,8 @@ function AddMenu() {
             });
             return;
         }
-    };
+    }
+
     return(
         <Container>
             <Form onFinish={handleSubmit} ref={formRef} name="addMenuForm" layout="vertical" autoComplete="off">
