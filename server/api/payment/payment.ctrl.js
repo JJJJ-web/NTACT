@@ -82,6 +82,7 @@ exports.complete = async (ctx) => {
                 status: 'success',
                 message: '일반 결제 성공',
                 buyer_name: order.buyer_name,
+                order_id: order.id,
                 order_name: order.name,
                 order_detail: order.order_detail,
                 order_type: order.order_type,
