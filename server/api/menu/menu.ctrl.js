@@ -14,7 +14,7 @@ exports.list = async (ctx) => {
         try {
             menus = await menuModel.findAll({
                 attributes: ['id', ['name_kor', 'menu_kor'], ['name_eng', 'menu_eng'], 'price',
-                    'description', 'img_url', 'sales_stat', 'category_id',
+                    'description', 'img_url', 'sales_stat', 'delay_time', 'category_id',
                     [Sequelize.col('dev_category.name_kor'), 'category_kor'],
                     [Sequelize.col('dev_category.name_eng'), 'category_eng']],
                 include: [{
