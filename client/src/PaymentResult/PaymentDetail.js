@@ -55,22 +55,6 @@ function PaymentDetail({match}, {orderId =[]}) {
         }
     }
 
-    function formatDate(date) {
-        if(date != undefined) {
-            const time = new Date(date);
-            const yyyy = time.getFullYear();
-            const mm = time.getMonth() + 1;
-            const dd = time.getDate();
-            let h = time.getHours();
-            const ampm = h >= 12 ? '오후 ' : '오전 ';
-            h = h >= 10 ? h : '0' + h;
-            let m = time.getMinutes();
-            m = m >= 10 ? m : '0' + m;
-            const s = time.getSeconds();
-            return (yyyy + '년 ' + mm + '월 ' + dd + '일 ' + ampm + h + ':' + m);
-        }
-    }
-
     function formatOnePrice(price) {
         return ('기본: ' + price + '원');
     }
@@ -112,7 +96,7 @@ function PaymentDetail({match}, {orderId =[]}) {
                         <List>
                             <b style={{fontSize: '1.4rem', color: colorOrderType(orderInfo.order_type)}}>{convertOrderType(orderInfo.order_type)}</b>
                             <div style={{color: '#8b8b8b'}}>주문번호: {orderInfo.id}</div>
-                            <div style={{color: '#8b8b8b'}}>주문일시: {formatDate(orderInfo.date)}</div>
+                            <div style={{color: '#8b8b8b'}}>주문일시: {new Date(orderInfo.date).toLocaleString()}</div>
                         </List>
                         <p></p><p></p><p></p>
                     </List.Item>
