@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Card, Col, Row, Button, Select, List} from 'antd';
 import axios from 'axios';
 import styled from 'styled-components';
+import SituationManage from './SituationManage';
 
 function ShopList(props) {
     const {Option} = Select;
@@ -60,11 +61,11 @@ function ShopList(props) {
             const time = new Date(date);
             let h = time.getHours();
             const ampm = h >= 12 ? '오후 ' : '오전 ';
-            h = h >= 10 ? h : '0' + h;
+            h = h >= 12 ? h -= 12 : h;
             let m = time.getMinutes();
             m = m >= 10 ? m : '0' + m;
             const s = time.getSeconds();
-            return (ampm + h + '시' + m + '분');
+            return (ampm + h + '시 ' + m + '분');
         }
     }
 
@@ -89,57 +90,60 @@ function ShopList(props) {
     }
 
     return (
-        <DivList>
-            {
-                data.map((item) => {
-                    return (
-                        <div className='cardList'>
-                            <Card title={item.id} style={{width: 300}} className='items' bodyStyle={{height: 500}} headStyle={{fontSize: 20}}>
-                                <div key={item.id}>
-                                    <b className='order_type' style={{color: colorOrderType(item.order_type)}}>{convertOrderType( item.order_type)}</b>
-                                    <span className='date'>{formatDate(item.date)}</span>
-                                    <hr/>
-                                    <List itemLayout="vertical">
-                                        {
-                                            item.order_detail.map((order) => {
-                                                return (
-                                                    <List.Item>
-                                                        <span className='menu'>{order.Name}</span>
-                                                        <b className='quantity'>{order.Quantity}</b>
+        <>
+            <DivList>
+                {
+                    data.map((item, index) => {
+                        return (
+                            <div className='cardList' key={index}>
+                                <Card title={item.id} style={{width: 300}} className='items' bodyStyle={{height: 500}} headStyle={{fontSize: 20}}>
+                                    <div>
+                                        <b className='order_type' style={{color: colorOrderType(item.order_type)}}>{convertOrderType( item.order_type)}</b>
+                                        <span className='date'>{formatDate(item.date)}</span>
+                                        <hr/>
+                                        <List itemLayout="vertical">
+                                            {
+                                                item.order_detail.map((order, index) => {
+                                                    return (
+                                                        <List.Item key={index}>
+                                                            <span className='menu'>{order.Name}</span>
+                                                            <b className='quantity'>{order.Quantity}</b>
 
-                                                    </List.Item>
-                                                );
-                                            })
-                                        }
-                                    </List>
-                                    <div className='select'>
-                                        {status === 'ready' && 
-                                            <Select defaultValue={10} style={{width: 105}} onChange={changeValue}>
-                                                <Option value={5}>5</Option>
-                                                <Option value={10}>10</Option>
-                                                <Option value={15}>15</Option>
-                                                <Option value={20}>20</Option>
-                                            </Select> ||
-                                            status === 'in-progress' &&
-                                                <Select style={{width: 105, visibility: 'hidden'}} /> ||
-                                            status === 'completed' &&
-                                                <Select style={{width: 105, visibility: 'hidden'}} />
-                                        }
-                                        {status === 'ready' && 
-                                             <Button type='primary' className='Button' onClick={()=> reload(item)}>조리 시작</Button> ||
-                                            status === 'in-progress' &&
-                                            <Button type='primary' className='Button' onClick={()=> reload(item)}>조리 완료</Button> ||
-                                            status === 'completed' &&
-                                            <Button type='primary' disabled='true' className='Button'>완료</Button>
-                                        }
+                                                        </List.Item>
+                                                    );
+                                                })
+                                            }
+                                        </List>
+                                        <div className='select'>
+                                            {status === 'ready' &&
+                                                <Select defaultValue={10} style={{width: 105}} onChange={changeValue}>
+                                                    <Option value={5}>5</Option>
+                                                    <Option value={10}>10</Option>
+                                                    <Option value={15}>15</Option>
+                                                    <Option value={20}>20</Option>
+                                                </Select> ||
+                                                status === 'in-progress' &&
+                                                    <Select style={{width: 105, visibility: 'hidden'}} /> ||
+                                                status === 'completed' &&
+                                                    <Select style={{width: 105, visibility: 'hidden'}} />
+                                            }
+                                            {status === 'ready' &&
+                                                 <Button type='primary' className='Button' onClick={()=> reload(item)}>조리 시작</Button> ||
+                                                status === 'in-progress' &&
+                                                <Button type='primary' className='Button' onClick={()=> reload(item)}>조리 완료</Button> ||
+                                                status === 'completed' &&
+                                                <Button type='primary' disabled='true' className='Button'>완료</Button>
+                                            }
+                                        </div>
                                     </div>
-                                </div>
-                            </Card>
-                        </div>
-                    );
-                })
-            }
-        </DivList> 
+                                </Card>
+                            </div>
+                        );
+                    })
+                }
+            </DivList>,
+            <SituationManage/>
+        </>
     );
 }
 
