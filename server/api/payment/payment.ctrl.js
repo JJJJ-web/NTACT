@@ -131,6 +131,22 @@ exports.refund = async (ctx) => {
             ctx.status = 400;
             ctx.json = {message: '이미 전액환불된 주문입니다.'};
         }
+
+        // 결제 환불 요청
+        const getCancelData = await axios({
+            url: 'https://api.iamport.kr/payments/cancel',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken,
+            },
+            data: {
+                imp_uid: impUid, // 환불 고유 번호
+                checksum: cancelableAmount, // 환불 가능 금액
+            },
+        });
+        const {response} = getCancelData.data; // 환불 결과
+        console.log(response);
     } catch (error) {
         ctx.status = 400;
         ctx.body = error;
