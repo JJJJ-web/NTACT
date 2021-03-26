@@ -13,8 +13,6 @@ function Payment({sumAmount, cartItems}) {
     let [phoneNumber, setPhoneNumber] = useState('');
     let [email, setEmail] = useState('');
     let [orderType, setOrderType] = useState('');
-    const [orderInfo, setOrderInfo] = useState([]);
-    const [orderDetails, setOrderDetails] = useState([]);
 
     const data = {
         pg: 'html5_inicis', // PG사
@@ -121,7 +119,7 @@ function Payment({sumAmount, cartItems}) {
         <FormStyles>
             <Form onFinish={handleSubmit} name="paymentForm">
                 <br/>
-                <Alert message="주문이 승인되면 결제 취소(환불) 불가합니다." type="info" showIcon />
+                <Alert message="주문이 승인되면 결제 취소가 불가합니다." type="info" showIcon />
                 <br/>
                 <Form.Item
                     name="식사"
