@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Card, Layout, List, Progress, Steps} from 'antd';
+import {Steps} from 'antd';
 import {withRouter, useLocation} from 'react-router-dom';
 import Header from '../pages/Header';
-import axios from 'axios';
 import ListCard from '../PaymentResult/ListCard';
 
 function PaySuccess() {

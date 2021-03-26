@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {Button, Card, List, Progress} from 'antd';
+import {Card, List, Progress} from 'antd';
 import CancelButton from '../Payment/CancelButton';
 
 function ListCard({orderInfo, orderDetails}) {
-    const [popVisible, setPopVisible] = useState(false);
+    const [stat, setStat] = useState('');
 
     function convertOrderType(type) {
         if (type === 'dine-in') {
@@ -65,11 +65,20 @@ function ListCard({orderInfo, orderDetails}) {
         }
     }
 
+    function reload(res) {
+        console.log(res);
+        setStat(res);
+    }
+
+    useState(() => {
+        setStat(orderInfo.order_stat);
+    }, []);
+
     return(
         <Card title={orderInfo.name} bordered={false} style={{margin: '10px'}}>
             <List itemLayout="horizontal" style={{margin: '10px'}}>
                 <List.Item>
-                    <Progress type="circle" percent={convertOrderStatPercent(orderInfo.order_stat)} format={() => convertOrderStat(orderInfo.order_stat)}/>
+                    <Progress type="circle" percent={convertOrderStatPercent(stat)} format={() => convertOrderStat(orderInfo.order_stat)}/>
                     <List>
                         <b style={{fontSize: '1.4rem', color: colorOrderType(orderInfo.order_type)}}>{convertOrderType(orderInfo.order_type)}</b>
                         <div style={{color: '#8b8b8b'}}>주문번호: {orderInfo.id}</div>
@@ -93,7 +102,7 @@ function ListCard({orderInfo, orderDetails}) {
                     <p>{orderInfo.amount}원</p>
                 </List.Item>
             </List>
-            <CancelButton orderInfo={orderInfo}/>
+            <CancelButton orderInfo={orderInfo} reload={reload}/>
         </Card>
     );
 }
