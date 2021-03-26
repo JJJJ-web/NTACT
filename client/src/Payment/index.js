@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import 'antd/dist/antd.css';
-import {Form, Input, Button, Radio, Divider} from 'antd';
+import {Form, Input, Button, Radio, Divider, Alert} from 'antd';
 import {withRouter, useHistory} from 'react-router-dom';
 import impCode from '../config/payment.json';
 import axios from 'axios';
@@ -13,6 +13,8 @@ function Payment({sumAmount, cartItems}) {
     let [phoneNumber, setPhoneNumber] = useState('');
     let [email, setEmail] = useState('');
     let [orderType, setOrderType] = useState('');
+    const [orderInfo, setOrderInfo] = useState([]);
+    const [orderDetails, setOrderDetails] = useState([]);
 
     const data = {
         pg: 'html5_inicis', // PG사
@@ -51,6 +53,19 @@ function Payment({sumAmount, cartItems}) {
         await IMP.request_pay(data, callback);
     }
 
+    function getOrderData() {
+        axios.post(`/api/payments/${userId}/${data.merchant_uid}`).
+            then((res) => {
+                console.log('res', res.data);
+                history.push({
+                    pathname: '/payment_success',
+                    state: {orderInfo: res.data},
+                });
+            }).catch((error) => {
+                return false;
+            });
+    }
+
     function callback(response) {
         if (response.success) { // 결제 성공 시
             axios({
@@ -67,11 +82,7 @@ function Payment({sumAmount, cartItems}) {
             }).then((data) => { // 가맹점 서버 결제 API 성공시 로직
                 if(data.data.status=='success') {
                     data.data.order_type = orderType;
-                    console.log(data.data);
-                    history.push({
-                        pathname: '/payment_success',
-                        state: {orderData: data.data},
-                    });
+                    getOrderData();
                 } else {
                     history.push({
                         pathname: '/payment/result',
@@ -109,6 +120,9 @@ function Payment({sumAmount, cartItems}) {
     return (
         <FormStyles>
             <Form onFinish={handleSubmit} name="paymentForm">
+                <br/>
+                <Alert message="주문이 승인되면 결제 취소(환불) 불가합니다." type="info" showIcon />
+                <br/>
                 <Form.Item
                     name="식사"
                     label="식사"
