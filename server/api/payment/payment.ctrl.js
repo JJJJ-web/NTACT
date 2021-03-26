@@ -113,7 +113,24 @@ exports.refund = async (ctx) => {
             },
         });
         const accessToken = getToken.data.response.access_token;
-        console.log(accessToken);
+
+        // 결제 정보 조회
+        const {body} = ctx.request;
+        const merchantUid = body.merchant_uid;
+        const order = await orderModel.findByPk(merchantUid);
+        if (order === null) {
+            ctx.status = 404;
+            ctx.body = 'Order not found!!!';
+        }
+        const paymentData = order.payment; // 조회된 결제 정보
+        const impUid = paymentData.imp_uid;
+        const amount = paymentData.amount;
+        const cancelAmount = paymentData.cancel_amount;
+        const cancelableAmount = amount - cancelAmount; // 환불 가능 금액(= 결제금액 - 환불된 총 금액) 계산
+        if (cancelableAmount <= 0) {
+            ctx.status = 400;
+            ctx.json = {message: '이미 전액환불된 주문입니다.'};
+        }
     } catch (error) {
         ctx.status = 400;
         ctx.body = error;
