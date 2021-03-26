@@ -10,6 +10,8 @@ payments.post('/order', paymentsCtrl.create);
 payments.post('/iamport-webhook', paymentsCtrl.complete);
 // 모바일 웹 환경에 대응하는 api 및 서버 로직
 payments.get('/complete/mobile', paymentsCtrl.complete);
+// 환불 처리
+payments.post('/cancel', paymentsCtrl.refund);
 // 결제 내역
 payments.post('/:id', paymentsCtrl.find);
 // 상세 결제 내역

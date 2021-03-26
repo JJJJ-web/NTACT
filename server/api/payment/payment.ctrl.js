@@ -98,6 +98,28 @@ exports.complete = async (ctx) => {
     }
 };
 
+exports.refund = async (ctx) => {
+    try {
+        // access token 발급
+        const getToken = await axios({
+            url: 'https://api.iamport.kr/users/getToken',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: {
+                imp_key: paymentConfig.imp_key,
+                imp_secret: paymentConfig.imp_secret,
+            },
+        });
+        const accessToken = getToken.data.response.access_token;
+        console.log(accessToken);
+    } catch (error) {
+        ctx.status = 400;
+        ctx.body = error;
+    }
+};
+
 exports.find = async (ctx) => {
     const {id, selected} = ctx.params;
     let history;
