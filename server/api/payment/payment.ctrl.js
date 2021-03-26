@@ -146,7 +146,18 @@ exports.refund = async (ctx) => {
             },
         });
         const {response} = getCancelData.data; // 환불 결과
-        console.log(response);
+
+        // 환불 결과 동기화
+        const refundId = response.merchant_uid;
+        const refund = await orderModel.findByPk(refundId);
+        if (!refund) {
+            throw Error(`Order requested a refund ${id} does not exist.`);
+        }
+        refund.order_stat = 'canceled';
+        refund.payment = response;
+        await refund.save();
+
+        ctx.body = refund;
     } catch (error) {
         ctx.status = 400;
         ctx.body = error;
