@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {Button, Badge} from 'antd';
 import {CreditCardOutlined} from '@ant-design/icons';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import styled from 'styled-components';
 
 function Cart() {
@@ -27,10 +27,7 @@ function Cart() {
 
             <CartSum>
                 <div>금 액 : {list.total}원</div><br />
-                <Link to= {{
-                    pathname: '/finalcart',
-                    state: {list},
-                }}>
+                <Link to='/finalcart'>
                     <Button type="primary" shape="round" icon={<CreditCardOutlined />} size="large">
                         결제하기
                     </Button>
