@@ -1,5 +1,4 @@
 import React from 'react';
-import {useLocation} from 'react-router-dom';
 import Payment from '../Payment/index';
 import {Steps, Divider, Button} from 'antd';
 import {MinusOutlined, PlusOutlined} from '@ant-design/icons';
@@ -9,7 +8,6 @@ import styled from 'styled-components';
 import Header from '../pages/Header';
 
 function FinalCart() {
-    const cart = useLocation();
     const {Step} = Steps;
     const ButtonGroup = Button.Group;
     const dispatch = useDispatch();
