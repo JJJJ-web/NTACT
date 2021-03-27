@@ -11,6 +11,7 @@ function MenuList(props) {
     const [products, setProducts] = useState([]);
     const dispatch = useDispatch();
     const {Panel} = Collapse;
+    const list2 = []; 
 
     useEffect(() => {
         axios.get('/api/menus').then((res) => setProducts(res.data));
@@ -20,15 +21,28 @@ function MenuList(props) {
         return res.category_id === props.categoryId;
     });
 
+    for(let i = 0; i < list.length; i++) {
+        const json = Object.create(null);
+        json.Id = list[i].id;
+        json.Name = list[i].name_kor;
+        json.CategoryId = list[i].category_id;
+        json.Img = list[i].img_url;
+        json.Price = list[i].price;
+        json.Description = list[i].description;
+        json.Quantity = 1;
+
+        list2.push(json);
+    }
+    
     return (
         <MenuListStyle>
             {
-                list.map((item) => {
+                list2.map((item) => {
                     return (
-                        <Space key={item.id} align="center" direction="vertical" wrap>
-                            <Collapse defaultActiveKey='0' expandIconPosition={'right'} className="site-collapse-custom-collapse" key={item.id}>
+                        <Space key={item.Id} align="center" direction="vertical" wrap>
+                            <Collapse defaultActiveKey='0' expandIconPosition={'right'} className="site-collapse-custom-collapse" key={item.Id}>
                                 <div className="menuItem" onClick={() => dispatch(addCart(item))}>
-                                    <LazyImage src={item.img_url} alt={item.name_kor} title={item.name_kor} width={'20%'}
+                                    <LazyImage src={item.Img} alt={item.Name} title={item.Name} width={'20%'}
                                         placeholder={
                                             ({imageProps, ref}) =>
                                                 <LoadingOutlined style={{color: 'orange', fontSize: '5rem'}} ref={ref} alt={imageProps.alt} />
@@ -38,12 +52,12 @@ function MenuList(props) {
                                                 <img {...imageProps} />
                                         }
                                     />
-                                    <div className="itmeName">{item.name_kor}</div>
-                                    <div className="itmePrice">{item.price.toLocaleString()}원</div>
+                                    <div className="itmeName">{item.Name}</div>
+                                    <div className="itmePrice">{item.Price.toLocaleString()}원</div>
                                 </div>
 
                                 <Panel header='설명보기' className="site-collapse-custom-panel">
-                                    <p>{item.description}</p>
+                                    <p>{item.Description}</p>
                                 </Panel>
                             </Collapse>
                         </Space>

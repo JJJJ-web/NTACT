@@ -5,9 +5,23 @@ export const addCart = (item) => {
     };
 };
 
-export const deleteCart = (idx) => {
+export const deleteCart = (item) => {
     return {
         type: 'DELETE_ITEM',
-        idx,
+        payload: item,
+    };
+};
+
+export const increment = (item) => {
+    return {
+        type: 'INCREMENT',
+        payload: item,
+    };
+};
+
+export const decrement = (item) => {
+    return {
+        type: 'DECREMENT',
+        payload: item,
     };
 };
