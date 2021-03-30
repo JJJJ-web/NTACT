@@ -1,8 +1,16 @@
 import React from 'react';
 import {Button} from 'antd';
 import styled from 'styled-components';
+import socketio from 'socket.io-client';
 
+const socket = socketio.connect('http://localhost:4000');
 function Home() {
+    socket.emit('init', { name: 'bella' });
+
+    socket.on('welcome', (msg) => {
+        console.log(msg);
+    });
+
     const btnSize = 'large';
     const btnShape = 'round';
     return (
