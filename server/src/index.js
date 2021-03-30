@@ -1,6 +1,7 @@
 // modules
 const Koa = require('koa');
 const Router = require('koa-router');
+const http = require('http').createServer(Koa);
 const cors = require('@koa/cors');
 const bodyParser = require('koa-bodyparser');
 // api module
@@ -9,7 +10,7 @@ const api = require('../api');
 const app = new Koa();
 const router = new Router();
 
-const io = require('socket.io')(Koa);
+const io = require('socket.io')(http);
 
 io.on('connection', (socket) => {
     console.log(`소켓 접속 ${socket}`);
