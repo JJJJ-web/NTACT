@@ -1,78 +1,35 @@
-import React, {useEffect, useState} from 'react';
-import {useLocation} from 'react-router-dom';
+import React from 'react';
 import Payment from '../Payment/index';
 import {Steps, Divider, Button} from 'antd';
 import {MinusOutlined, PlusOutlined} from '@ant-design/icons';
-import {useDispatch} from 'react-redux';
-import {deleteCart} from '../store/actions';
+import {useDispatch, useSelector} from 'react-redux';
+import {deleteCart, increment, decrement} from '../store/actions';
 import styled from 'styled-components';
 import Header from '../pages/Header';
 
 function FinalCart() {
-    const cart = useLocation();
-    const [finalSum, setfinalSum] = useState(cart.state.sum);
-    const [finalRes, setfinalRes] = useState([]);
     const {Step} = Steps;
     const ButtonGroup = Button.Group;
     const dispatch = useDispatch();
+    const cart2 = useSelector((store) => store.cartReducer);
 
-    useEffect(() => {
-        setfinalSum(finalSum);
-        setfinalRes(cart.state.res);
-    });
-
-    console.log(finalRes);
-
-    const onIncrease = (idx) => {
-        setfinalRes(finalRes[idx]['Quantity'] += 1);
-        totalSum(finalRes);
-    };
-
-    const onDecrease = (idx) => {
-        if(finalRes[idx].Quantity > 1) {
-            setfinalRes(
-                finalRes[idx]['Quantity'] -= 1,
-            );
-        }
-        totalSum(finalRes);
-    };
-
-    const totalSum = (cart) => {
-        let total = 0;
-
-        Object.keys(cart).map((item) => {
-            total += finalRes[item].Price * finalRes[item].Quantity;
-        });
-        setfinalSum(total);
-    };
-
-    const removeHandler = (idx) => {
-        const list = deleteCart(finalRes[idx]['Id']);
-        const x = finalSum - (finalRes[idx]['Quantity'] * finalRes[idx]['Price']);
-        alert('삭제 되었습니다.');
-        setfinalRes(list);
-        setfinalSum(x);
-        console.log(finalRes);
-        console.log(list);
-    };
-
-    const list = Object.keys(finalRes).map((item, idx) => {
+    const list = cart2.cart.map((item, idx) => {
         return (
-            <div key={idx} className='item'>
-                <Button className='delete' type='text' onClick={() => removeHandler(idx)}>x</Button>
-                <div>{finalRes[item].Name}</div>
+            <div key={idx} className='item' item={item}>
+                <Button className='delete' type='text' onClick={() => dispatch(deleteCart(item))}>x</Button>
+                <div className='itemName'>{item.Name}</div>
                 <ButtonGroup className='button'>
-                    <Button onClick={() => onDecrease(idx)} min={1}>
+                    <Button onClick={() => dispatch(decrement(item))} min={1}>
                         <MinusOutlined />
                     </Button>
                     <Button>
-                        {finalRes[item].Quantity}
+                        {item.Quantity}
                     </Button>
-                    <Button onClick={() => onIncrease(idx)}>
+                    <Button onClick={() => dispatch(increment(item))}>
                         <PlusOutlined />
                     </Button>
                 </ButtonGroup>
-                <div className='price'>{finalRes[item].Price}</div>
+                <div className='price'>{item.Price * item.Quantity}</div>
                 <Divider className='divider'/>
             </div>
         );
@@ -91,9 +48,9 @@ function FinalCart() {
                 <hr />
                 <div>{list}</div>
                 <div className='line' />
-                <div className='finalSum'>총 주문 금액: {finalSum}</div>
+                <div className='finalSum'>총 주문 금액:&nbsp;{cart2.total} &nbsp;원</div>
                 <div className='line' />
-                <Payment sumAmount={finalSum} cartItems={finalRes} />
+                <Payment sumAmount={cart2.total} cartItems={cart2.cart} />
             </StepsBar>
         </>
     );
@@ -105,18 +62,21 @@ const StepsBar = styled.div `
     .finalSum {
         font-size: 1.5rem;
     }
-
     .button {
         margin-top: 10px;
     }
     .delete {
         float: right;
     }
-
+    .itemName {
+        font-size: 17px;
+        font-weight: bold;
+    }
     .price {
         float: right;
         margin-right: 30px;
         margin-top: 30px;
+        font-size: 15px;
     }
     .divider {
         margin: 30px;
@@ -130,7 +90,7 @@ const StepsBar = styled.div `
         box-shadow: 0px -1px 0 0 #e8e8e8 inset;
     }
     .line {
-        background-color: black;
+        background-color: #ffb400;
         height: 0.2rem;
     }
 `;

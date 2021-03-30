@@ -1,14 +1,11 @@
 import React, {useState} from 'react';
 import 'antd/dist/antd.css';
-import {Form, Input, Button, Select, Radio, Divider} from 'antd';
+import {Form, Input, Button, Radio, Divider, Alert} from 'antd';
 import {withRouter, useHistory} from 'react-router-dom';
-import queryString from 'query-string';
 import impCode from '../config/payment.json';
-import PaySuccess from './PaySuccess';
 import axios from 'axios';
 import styled from 'styled-components';
 import {CreditCardOutlined} from '@ant-design/icons';
-import axois from 'axios';
 
 function Payment({sumAmount, cartItems}) {
     const history = useHistory();
@@ -36,11 +33,10 @@ function Payment({sumAmount, cartItems}) {
                 buyer_id: userId,
             }).then((res) => {
             if (res.status === 200) {
-                window.alert('전송 성공111');
                 data.name = res.data.order_name;
                 data.merchant_uid = res.data.order_id;
             } else {
-                window.alert('전송 실패111');
+                console.log(error);
             }
         });
     }
@@ -55,8 +51,20 @@ function Payment({sumAmount, cartItems}) {
         await IMP.request_pay(data, callback);
     }
 
+    function getOrderData() {
+        axios.post(`/api/payments/${userId}/${data.merchant_uid}`).
+            then((res) => {
+                console.log('res', res.data);
+                history.push({
+                    pathname: '/payment_success',
+                    state: {orderInfo: res.data},
+                });
+            }).catch((error) => {
+                return false;
+            });
+    }
+
     function callback(response) {
-        const query = queryString.stringify(response);
         if (response.success) { // 결제 성공 시
             axios({
                 url: '/api/payments/iamport-webhook', // 가맹점 서버에 전달할 파라미터에 필요한 서버 URL
@@ -72,11 +80,7 @@ function Payment({sumAmount, cartItems}) {
             }).then((data) => { // 가맹점 서버 결제 API 성공시 로직
                 if(data.data.status=='success') {
                     data.data.order_type = orderType;
-                    console.log(data.data);
-                    history.push({
-                        pathname: '/payment_success',
-                        state: {orderData: data.data},
-                    });
+                    getOrderData();
                 } else {
                     history.push({
                         pathname: '/payment/result',
@@ -114,6 +118,9 @@ function Payment({sumAmount, cartItems}) {
     return (
         <FormStyles>
             <Form onFinish={handleSubmit} name="paymentForm">
+                <br/>
+                <Alert message="주문이 승인되면 결제 취소가 불가합니다." type="info" showIcon />
+                <br/>
                 <Form.Item
                     name="식사"
                     label="식사"

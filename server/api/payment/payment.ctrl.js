@@ -1,4 +1,5 @@
 const axios = require('axios');
+const {Op} = require('sequelize');
 const paymentConfig = require('../../config/payment-config.json');
 const orderModel = require('../../models').dev_orders;
 
@@ -34,7 +35,7 @@ exports.create = async (ctx) => {
     } catch (e) {
         return ctx.throw(500, e);
     }
-    ctx.body = order['id'];
+    ctx.body = {order_id: order['id'], order_name: order['name']};
 };
 
 exports.complete = async (ctx) => {
@@ -81,6 +82,7 @@ exports.complete = async (ctx) => {
                 status: 'success',
                 message: '일반 결제 성공',
                 buyer_name: order.buyer_name,
+                order_id: order.id,
                 order_name: order.name,
                 order_detail: order.order_detail,
                 order_type: order.order_type,
@@ -96,15 +98,84 @@ exports.complete = async (ctx) => {
     }
 };
 
+exports.refund = async (ctx) => {
+    try {
+        // access token 발급
+        const getToken = await axios({
+            url: 'https://api.iamport.kr/users/getToken',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: {
+                imp_key: paymentConfig.imp_key,
+                imp_secret: paymentConfig.imp_secret,
+            },
+        });
+        const accessToken = getToken.data.response.access_token;
+
+        // 결제 정보 조회
+        const {body} = ctx.request;
+        const merchantUid = body.merchant_uid;
+        const order = await orderModel.findByPk(merchantUid);
+        if (order === null) {
+            ctx.status = 404;
+            ctx.body = 'Order not found!!!';
+        }
+        const paymentData = order.payment; // 조회된 결제 정보
+        const impUid = paymentData.imp_uid;
+        const amount = paymentData.amount;
+        const cancelAmount = paymentData.cancel_amount;
+        const cancelableAmount = amount - cancelAmount; // 환불 가능 금액(= 결제금액 - 환불된 총 금액) 계산
+        if (cancelableAmount <= 0) {
+            ctx.status = 400;
+            ctx.json = {message: '이미 전액환불된 주문입니다.'};
+        }
+
+        // 결제 환불 요청
+        const getCancelData = await axios({
+            url: 'https://api.iamport.kr/payments/cancel',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken,
+            },
+            data: {
+                imp_uid: impUid, // 환불 고유 번호
+                checksum: cancelableAmount, // 환불 가능 금액
+            },
+        });
+        const {response} = getCancelData.data; // 환불 결과
+
+        // 환불 결과 동기화
+        const refundId = response.merchant_uid;
+        const refund = await orderModel.findByPk(refundId);
+        if (!refund) {
+            throw Error(`Order requested a refund ${id} does not exist.`);
+        }
+        refund.order_stat = 'canceled';
+        refund.payment = response;
+        await refund.save();
+
+        ctx.body = refund;
+    } catch (error) {
+        ctx.status = 400;
+        ctx.body = error;
+    }
+};
+
 exports.find = async (ctx) => {
     const {id, selected} = ctx.params;
     let history;
     if (typeof selected === 'undefined') {
         try {
             history = await orderModel.findAll({
-                attributes: ['id', 'name', 'amount', 'date'],
+                attributes: ['id', 'name', 'amount', 'date', 'order_type'],
                 where: {
                     buyer_id: id,
+                    [Op.not]: [
+                        {order_stat: 'uncharged'},
+                    ],
                 },
                 order: [['date', 'DESC']],
             });

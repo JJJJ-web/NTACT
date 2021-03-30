@@ -12,7 +12,7 @@ const Router = () => (
         <Route exact path="/payment/result" component={PaymentResult} />
         <Route exact path="/payment_success" component={PaymentSuccess} />
         <Route exact path="/payment/history" component={PaymentHistory} />
-        <Route exact path="/payment/history_details" component={PaymentDetail} />
+        <Route exact path="/payment/history/:orderId" component={PaymentDetail} />
         <Route path="/menu_manage" component={MenuManage} />
         <Route path="/shop" component={Shop} />
     </Switch>

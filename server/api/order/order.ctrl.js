@@ -7,7 +7,7 @@ exports.list = async (ctx) => {
     let list;
     try {
         list = await orderModel.findAll({
-            attributes: ['id', 'buyer_name', 'order_detail', 'date', 'order_stat'],
+            attributes: ['id', 'buyer_name', 'order_detail', 'date', 'order_stat', 'order_type'],
             where: {
                 order_stat: status,
                 date: {

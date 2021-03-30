@@ -14,7 +14,7 @@ exports.list = async (ctx) => {
         try {
             menus = await menuModel.findAll({
                 attributes: ['id', ['name_kor', 'menu_kor'], ['name_eng', 'menu_eng'], 'price',
-                    'description', 'img_url', 'sales_stat', 'category_id',
+                    'description', 'img_url', 'sales_stat', 'delay_time', 'category_id',
                     [Sequelize.col('dev_category.name_kor'), 'category_kor'],
                     [Sequelize.col('dev_category.name_eng'), 'category_eng']],
                 include: [{
@@ -86,6 +86,19 @@ exports.saleStat = async (ctx) => {
             ctx.throw(500, e);
         }
     } ctx.status = 200;
+};
+
+exports.delayTime = async (ctx) => {
+    // id 파라미터를 받아 해당 주문 DB 찾아오기 
+    const {id} = ctx.params;
+    const delaytime = ctx.request.body.headers.delaytime;
+     
+    try {
+        menuModel.update({delay_time: delaytime}, {where: {id: id}});
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+    ctx.status = 200;
 };
 
 exports.status = async (ctx) => {

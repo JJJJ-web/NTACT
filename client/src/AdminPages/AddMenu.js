@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import 'antd/dist/antd.css';
-import axois from 'axios';
-import {Input, Select, Row, Col, InputNumber, Upload, Form, Button, Space} from 'antd';
+import {Input, Select, InputNumber, Upload, Form, Button, Space} from 'antd';
 import {InboxOutlined, DeleteFilled, PlusOutlined} from '@ant-design/icons';
 import styled from 'styled-components';
 
@@ -57,7 +56,8 @@ function AddMenu() {
             });
             return;
         }
-    };
+    }
+
     return(
         <Container>
             <Form onFinish={handleSubmit} ref={formRef} name="addMenuForm" layout="vertical" autoComplete="off">

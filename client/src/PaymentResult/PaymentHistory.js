@@ -1,52 +1,64 @@
 import React, {useEffect, useState} from 'react';
-import {Card, Progress, Steps} from 'antd';
-import {withRouter, useLocation} from 'react-router-dom';
-import styled from 'styled-components';
-import {MenuOutlined, ReadOutlined} from '@ant-design/icons';
+import {Card, Avatar} from 'antd';
+import {withRouter, useHistory, Link} from 'react-router-dom';
 import Header from '../pages/Header';
 import axios from 'axios';
+const {Meta} = Card;
 
 function PaymentHistory() {
     const userId = JSON.parse(sessionStorage.getItem('userInfo')).userId;
-    const [histories, setHistories] = useState('');
+    const [histories, setHistories] = useState([]);
 
-    useState(() => {
-        console.log(userId);
-        axios.post(`api/payments/${userId}`,
-            {
-            }).then((res) => {
-            if (res.status === 200) {
-                setHistories(res);
-                console.log(histories);
-            } else {
-                window.alert('실패111');
-            }
-        });
-
-        // axios.post(`api/payments/${userId}`).then((res) => setHistories(res));
+    useEffect(() => {
+        axios.post(`/api/payments/${userId}`).then((res) => setHistories(res.data));
     }, []);
 
+    function convertOrderType(type) {
+        if (type === 'dine-in') {
+            return '테이블';
+        } else if (type === 'pick-up') {
+            return '포장';
+        } else {
+            return '-';
+        }
+    }
+
+    function colorOrderType(type) {
+        if (type === 'dine-in') {
+            return '#fdb916';
+        } else if (type === 'pick-up') {
+            return '#a2d52a';
+        } else {
+            return '#adadad';
+        }
+    }
+
+    function formatPrice(price) {
+        return (price + '원');
+    }
+
     return (
-        <>
+        <div style={{backgroundColor: '#eeeeee', minHeight: '100vh'}}>
             <Header/>
             <div>
-                {/*
+                {
                     histories.map((item) => {
                         return (
-                            <div onClick={()=> history.push({
-                                pathname: '/payment/history_details',
-                                state: {orderId: response},
-                            })}>
-                                <span>{item.Name} | </span>
-                                <span>{item.amount}원 | </span>
-                                <span>{item.date} | </span>
-                            </div>
+                            <Card key={item.id} title={item.name} extra={<Link to={`/payment/history/${item.id}`}>주문 상세</Link>} style={{margin: '10px'}}>
+                                <Meta
+                                    avatar={<Avatar shape="square" size={60} style={{
+                                        color: '#ffffff',
+                                        backgroundColor: colorOrderType(item.order_type),
+                                    }}>{convertOrderType(item.order_type)}</Avatar>}
+                                    title={formatPrice(item.amount)}
+                                    description={new Date(item.date).toLocaleString()}
+                                />
+                            </Card>
                         );
                     })
-                    */
                 }
             </div>
-        </>
+        </div>
     );
 }
 

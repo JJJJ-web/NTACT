@@ -2,13 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import {Button} from 'antd';
 import {useHistory, useLocation, withRouter} from 'react-router-dom';
-import queryString from 'query-string';
+
 /*eslint-disable */
 function PaymentResult() {
     const history = useHistory();
     const location = useLocation();
     const query = location.state.result;
-    console.log(query);
     const merchant_uid = query.merchant_uid;
     const error_msg = query.error_msg;
     const imp_uid = query.imp_uid;

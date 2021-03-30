@@ -1,22 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import 'antd/dist/antd.css';
 import axois from 'axios';
-import {
-    Switch,
-    Row,
-    Col,
-    Divider,
-    Button,
-    Modal,
-    Form,
-    Input,
-    Radio,
-    Select, Space, InputNumber,
-} from 'antd';
+import {Switch, Row, Col, Button, Modal, Form, Input, Select, InputNumber} from 'antd';
 import AddMenu from './AddMenu';
-import {DeleteFilled, FormOutlined} from '@ant-design/icons';
+import {FormOutlined} from '@ant-design/icons';
 import axios from 'axios';
-import {number} from 'prop-types';
 
 const {Option} = Select;
 
@@ -54,7 +42,7 @@ function MenuManage() {
                 product.sales_stat === 1 ? setSelectThisMenu(selectThisMenu.sales_stat = 0) : setSelectThisMenu(selectThisMenu.sales_stat = 1);
                 console.log(selectThisMenu.menu_kor, selectThisMenu.sales_stat);
             } else {
-                window.alert('토글 실패111');
+                // window.alert('토글 실패111');
             }
         });
     }
@@ -66,10 +54,10 @@ function MenuManage() {
                 },
             }).then((res) => {
             if (res.status === 200) {
-                window.alert('폼 전송 성공111');
+                // window.alert('폼 전송 성공111');
                 console.log(JSON.stringify(selectThisMenu));
             } else {
-                window.alert('폼 전송 실패111');
+                // window.alert('폼 전송 실패111');
             }
         });
     }

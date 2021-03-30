@@ -1,10 +1,10 @@
 import React from 'react';
-import ShopList from './ShopList';
+import ShopTabs from './ShopTabs';
 
 function Shop() {
     return(
         <div>
-            <ShopList />
+            <ShopTabs />
         </div>
     );
 }
