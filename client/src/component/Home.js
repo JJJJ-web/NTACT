@@ -1,15 +1,24 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button} from 'antd';
 import styled from 'styled-components';
-import socketio from 'socket.io-client';
+import io from 'socket.io-client';
 
-const socket = socketio.connect('http://localhost:4000');
+const socket = io('http://localhost:4000');
 function Home() {
-    socket.emit('init', { name: 'bella' });
 
-    socket.on('welcome', (msg) => {
-        console.log(msg);
-    });
+    useState(() => {
+        const user_id = "snsk3779"
+        socket.emit('room',user_id);
+        socket.on("your id",id=>{
+            setState({
+                yourID:id
+            })
+        })
+        socket.on("message",(message)=>{
+            console.log(message);
+            this.receivemessage(message);
+        })
+    }, []);
 
     const btnSize = 'large';
     const btnShape = 'round';
