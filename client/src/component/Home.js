@@ -3,23 +3,8 @@ import {Button} from 'antd';
 import styled from 'styled-components';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:4000');
+// const socket = io('http://localhost:4000');
 function Home() {
-
-    useState(() => {
-        const user_id = "snsk3779"
-        socket.emit('room',user_id);
-        socket.on("your id",id=>{
-            setState({
-                yourID:id
-            })
-        })
-        socket.on("message",(message)=>{
-            console.log(message);
-            this.receivemessage(message);
-        })
-    }, []);
-
     const btnSize = 'large';
     const btnShape = 'round';
     return (
