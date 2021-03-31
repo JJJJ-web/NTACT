@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button} from 'antd';
 import styled from 'styled-components';
+import {Link} from 'react-router-dom';
 
 function Home() {
     const btnSize = 'large';
@@ -11,8 +12,12 @@ function Home() {
                 <img height='100%' src='./ntact512.png'/>
             </div>
             <span className="content">
-                <Button href='/login' type="primary" shape={btnShape} size={btnSize}>회원</Button>
-                <Button href='/menu' type="ghost" shape={btnShape} size={btnSize}>비회원</Button>
+                <Link to='/login'>
+                    <Button type="primary" shape={btnShape} size={btnSize}>회원</Button>
+                </Link>
+                <Link to='/menu'>
+                    <Button type="ghost" shape={btnShape} size={btnSize}>비회원</Button>
+                </Link>
             </span>
             <div className="footer">한성대학교 2021년 캡스톤디자인</div>
         </Layout>
