@@ -12,6 +12,13 @@ export const deleteCart = (item) => {
     };
 };
 
+export const deleteAll = () => {
+    return {
+        type: 'DELETE_ALL',
+        payload: [],
+    };
+};
+
 export const increment = (item) => {
     return {
         type: 'INCREMENT',
