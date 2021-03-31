@@ -29,7 +29,7 @@ function FinalCart() {
                         <PlusOutlined />
                     </Button>
                 </ButtonGroup>
-                <div className='price'>{item.Price * item.Quantity}</div>
+                <div className='price'>{item.Price}</div>
                 <Divider className='divider'/>
             </div>
         );

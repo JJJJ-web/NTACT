@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 function Cart() {
     const list = useSelector((store) => store.cartReducer);
-    
+
     const cartItem = list.cart.map((item, idx) => {
         return (
             <span className="items" key={idx} item={item} idx={idx}>
@@ -26,7 +26,9 @@ function Cart() {
             </CartMenus>
 
             <CartSum>
-                <div>금 액 : {list.total}원</div><br />
+                <div>
+                    <span>총: {list.total}원</span>
+                </div><br />
                 <Link to='/finalcart'>
                     <Button type="primary" shape="round" icon={<CreditCardOutlined />} size="large">
                         결제하기
@@ -44,11 +46,11 @@ const CartMenus = styled.div`
   height: 100%;
   white-space:nowrap;
   overflow-x: auto;
-  
+
   .badge {
       float: right;
   }
-  
+
   .items{
     display: inline-block;
     padding: 0rem 1rem;
