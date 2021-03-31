@@ -2,15 +2,18 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {Button, Badge} from 'antd';
 import {CreditCardOutlined} from '@ant-design/icons';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {deleteCart} from '../store/actions';
 import styled from 'styled-components';
 
 function Cart() {
     const list = useSelector((store) => store.cartReducer);
+    const dispatch = useDispatch();
 
     const cartItem = list.cart.map((item, idx) => {
         return (
             <span className="items" key={idx} item={item} idx={idx}>
+                <Button className='delete' type='text' onClick={() => dispatch(deleteCart(item))}>x</Button>
                 <Badge count={item.Quantity} className='badge'/>
                 <img src={item.Img} height='100em'/>
                 <div>{item.Name}</div>
@@ -48,6 +51,9 @@ const CartMenus = styled.div`
   overflow-x: auto;
 
   .badge {
+      float: left;
+  }
+  .delete {
       float: right;
   }
 
@@ -71,9 +77,9 @@ const CartSum = styled.div`
   right: 0px;
   width: 150px;
   height: 100%;
-  padding-top: 30px;
+  padding-top: 25px;
   padding-right: 10px;
   border-left: 1px solid black;
-  
+
 `;
 export default Cart;

@@ -32,6 +32,11 @@ const cartReducer = (state = INITIAL_STATE, action) => {
             cart: state.cart.filter((item) => item.Id !== action.payload.Id),
             total: state.total - (action.payload.Price * action.payload.Quantity),
         };
+    case 'DELETE_ALL':
+        return {
+            cart: [],
+            total: 0,
+        }; 
     case 'INCREMENT': 
         const plus = state.cart.find((item) => item.Id === action.payload.Id);
         
