@@ -36,7 +36,11 @@ function FinalCart() {
     });
 
     function resetcart() {
-        dispatch(deleteAll());
+        if(list.length > 0) {
+            dispatch(deleteAll());
+        } else {
+            alert('장바구니가 비어있습니다.');
+        }
     }
 
     return (
@@ -51,16 +55,9 @@ function FinalCart() {
                 <div className='menucnt'>담은 메뉴: {list.length}개</div>
                 <hr />
                 <div>{list}</div>
-                {
-                    list.length > 0 &&
-                    <Button type='default' size='large' danger className='deleteAll' onClick={resetcart}>
-                        전체 삭제
-                    </Button> ||
-                    list.length === 0 &&
-                    <Button type='default' size='large' danger disabled className='deleteAll'>
-                        전체 삭제
-                    </Button>
-                }
+                <Button type='default' size='large' danger className='deleteAll' onClick={resetcart}>
+                    전체 삭제
+                </Button>
                 <div className='line' />
                 <div className='finalSum'>총 주문 금액:&nbsp;{cart2.total} &nbsp;원</div>
                 <div className='line' />
