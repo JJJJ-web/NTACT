@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {Modal, Button, Form, Switch, Col, Row, Select} from 'antd';
+import {Modal, Button, Form, Switch, Col, Row, Select, message} from 'antd';
 import axois from 'axios';
 
 const {Option} = Select;
@@ -8,6 +8,7 @@ const {Option} = Select;
 function SituationManage() {
     const [visible, setVisible] = useState(false);
     const [products, setProducts] = useState([]);
+    const [selectDisabled, setSelectDisabled] = useState(true);
 
     const onCreate = (values) => {
         console.log('수정 Received values of form: ', values);
@@ -15,23 +16,34 @@ function SituationManage() {
     };
 
     async function soldoutMenuClickHandler(product) {
-        await axios.put('/api/menus/status',
+        await axios.patch(`/api/menus/status/${product.id}`,
             {
-                headers: {
-                    menu: selectThisMenu,
-                },
             }).then((res) => {
             if (res.status === 200) {
-                // window.alert('폼 전송 성공111');
-                console.log(JSON.stringify(selectThisMenu));
+                message.success(product.menu_kor + ' 의 판매 상태가 변경되었습니다.');
             } else {
-                // window.alert('폼 전송 실패111');
+                // window.alert('토글 실패111');
             }
         });
     }
 
     function getMenuSituation() {
         axois.get('/api/menus?category=true').then((res) => setProducts(res.data));
+    }
+
+    async function changeDelay(value, product) {
+        await axios.patch(`/api/menus/delaytime/${product.id}`,
+            {
+                headers: {
+                    delaytime: value,
+                },
+            }).then((res) => {
+            if (res.status === 200) {
+                message.success(product.menu_kor + ' 의 지연시간이 변경되었습니다.');
+            } else {
+                // window.alert('토글 실패111');
+            }
+        });
     }
 
     function CollectionCreateForm({visible, onCreate, onCancel}) {
@@ -75,10 +87,10 @@ function SituationManage() {
                                         <span>{product.menu_kor}</span>
                                     </Col>
                                     <Col span={4}>
-                                        <Switch checkedChildren="판매중" unCheckedChildren="품절" style={{width: '4.5rem'}} onClick={() => soldoutMenuClickHandler(product)} checked={product.sales_stat==true?true:false}/>
+                                        <Switch checkedChildren="판매중" unCheckedChildren="품절" style={{width: '4.5rem'}} onChange={() => soldoutMenuClickHandler(product)} defaultChecked={product.sales_stat==true?true:false}/>
                                     </Col>
                                     <Col span={6}>
-                                        <Select value={product.delay_time==0?'정상 판매':product.delay_time+'분 지연'} style={{width: 120}}>
+                                        <Select defaultValue={product.delay_time==0?'정상 판매':product.delay_time+'분 지연'} style={{width: 120}} onChange={(e)=>changeDelay(e, product)}>
                                             <Option value="0">정상 판매</Option>
                                             <Option value="10">10분 지연</Option>
                                             <Option value="20">20분 지연</Option>
