@@ -7,6 +7,7 @@ import socket from './SocketInfo';
 
 function App() {
     const [socketEvents, setSocketEvents] = useState([]);
+    const [condition, setCondition] = useState([]);
 
     console.log(socket);
 
@@ -15,6 +16,17 @@ function App() {
 
         socket.emit('hello', 'world');
     });
+
+    useEffect(() => {
+        window.addEventListener('beforeunload', alertUser);
+        return () => {
+            window.removeEventListener('beforeunload', alertUser);
+        };
+    }, []);
+    const alertUser = (e) => {
+        e.preventDefault();
+        e.returnValue = 'F5 reload';
+    };
 
     return (
         <div>
