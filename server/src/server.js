@@ -27,12 +27,23 @@ io.on('connection', (socket) => {
         socket.join('client');
         
         // redis에 userID와 socketID를 저장한다.
-        client.set(data.socketID, data.userID, redis.print);
+        client.set(data.userID, data.socketID, redis.print);
         
         // redis에 들어갔는지 확인용 삭제될 코드 
-        client.get(data.socketID, (err, value) => {
+        client.get(data.userID, (err, value) => {
             if(err) console.log(err);
-            console.log(`레디스에서 가져온 결과 | key(socketID): ${data.socketID}에 해당하는 value(userID): ${value}`);
+            console.log(`레디스에서 가져온 결과 | key(userID): ${data.userID}에 해당하는 value(socketID): ${value}`);
+        });
+    });
+
+    // 해당 주문 상태변경시 오는 이벤트
+    socket.on('B', (data) => {
+        // 레디스에서 userID를 통해 socketID를 찾는다.
+        client.get(data.userID, (err, value) => {
+            if(err) console.log(err);
+            // ID를 통해 해당 소켓에게 C 이벤트를 송신한다.
+            io.to(value).emit('C');
+            console.log(`소켓ID:${value}에게 소켓이벤트 C 전송`); 
         });
     });
 
