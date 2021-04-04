@@ -1,9 +1,15 @@
 import React, {useState} from 'react';
 import {Card, List, Progress} from 'antd';
 import CancelButton from '../Payment/CancelButton';
+import socket from '../SocketInfo';
 
 function ListCard({orderInfo, orderDetails}) {
     const [stat, setStat] = useState('');
+
+    socket.on('C', (data) => {
+        console.log(data);
+        alert(data);
+    });
 
     function convertOrderType(type) {
         if (type === 'dine-in') {
