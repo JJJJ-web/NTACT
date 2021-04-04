@@ -3,6 +3,7 @@ import {Card, Button, Select, List, Popconfirm, message} from 'antd';
 import axios from 'axios';
 import styled from 'styled-components';
 import SituationManage from './SituationManage';
+import socket from '../SocketInfo';
 
 function ShopList(props) {
     const {Option} = Select;
@@ -38,6 +39,7 @@ function ShopList(props) {
                 } else if(item.order_stat === 'in-progress') {
                     item.order_stat = 'completed';
                 }
+                socket.emit('B', {userID: item.buyer_id});
             }
         }).catch((error) => {
             console.log(error);
