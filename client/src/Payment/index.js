@@ -6,6 +6,8 @@ import impCode from '../config/payment.json';
 import axios from 'axios';
 import styled from 'styled-components';
 import {CreditCardOutlined} from '@ant-design/icons';
+import {useDispatch} from 'react-redux';
+import {deleteAll} from '../store/actions';
 
 function Payment({sumAmount, cartItems}) {
     const history = useHistory();
@@ -13,6 +15,7 @@ function Payment({sumAmount, cartItems}) {
     let [phoneNumber, setPhoneNumber] = useState('');
     let [email, setEmail] = useState('');
     let [orderType, setOrderType] = useState('');
+    const dispatch = useDispatch();
 
     const data = {
         pg: 'html5_inicis', // PG사
@@ -80,8 +83,10 @@ function Payment({sumAmount, cartItems}) {
             }).then((data) => { // 가맹점 서버 결제 API 성공시 로직
                 if(data.data.status=='success') {
                     data.data.order_type = orderType;
+                    dispatch(deleteAll());
                     getOrderData();
                 } else {
+                    dispatch(deleteAll());
                     history.push({
                         pathname: '/payment/result',
                         state: {result: response},

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Card, Col, Row, Button, Select, List} from 'antd';
+import {Card, Button, Select, List, Popconfirm, message} from 'antd';
 import axios from 'axios';
 import styled from 'styled-components';
 import SituationManage from './SituationManage';
@@ -10,12 +10,13 @@ function ShopList(props) {
     const [status, setStatus] = useState(props.status);
     const [value, setValue] = useState(10);
     const [change, setChange] = useState(status);
+    const text = '해당 주문을 취소하겠습니까?';
 
     useEffect(() => { // 역순 출력
         axios.get(`/api/orders/${status}`).then((res) => setData(res.data.reverse()));
     }, []);
 
-    function changeStatus(item) {
+    function changeStatus(item) { // 주문 진행 상태 변경
         if(item.order_stat === 'ready') {
             setChange('in-progress');
         } else if(item.order_stat === 'in-progress') {
@@ -23,7 +24,7 @@ function ShopList(props) {
         }
     }
 
-    async function changeStateHandler(item) {
+    async function changeStateHandler(item) { // <> server 주문 진행 상태 변경
         changeStatus(item);
 
         await axios.patch(`/api/orders/${item.id}`, {
@@ -43,12 +44,64 @@ function ShopList(props) {
         });
     }
 
-    function reload(item) {
+    function reload(item) { // 주문 진행 상태 변경 후 자동 새로고침
         changeStateHandler(item);
         
         if(item.order_stat != props.status) {
             window.location.reload();
             setChange(props.status);
+        }
+    }
+
+    async function cancelHandler(item) { // 주문 취소: server에 주문 상태 변경
+        setChange('canceled');
+
+        await axios.patch(`/api/orders/${item.id}`, {
+            headers: {
+                status: change,
+            },
+        }).then((res) => {
+            if(res.status === 200) {
+                if(item.order_stat === 'ready') {
+                    item.order_stat = 'canceled';
+                }
+            }
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    function cancelPay(item) { // 주문 취소 <> server
+        axios({
+            url: '/api/payments/cancel',
+            method: 'POST',
+            headers: {
+            },
+            data: {
+                merchant_uid: item.id,
+            },
+        }).then((res) => {
+            if(res.status === 200) {
+                message.success('주문이 취소되었습니다.');
+            } else if (res.status === 400) {
+                console.log(res);
+                message.success('유효하지 않은 요청입니다.');
+            } else {
+                console.log(res);
+                alert('환불 실패');
+            }
+        }).catch((error) => {
+            console.log(error);
+            alert('환불 실패');
+        });
+    }
+
+    function canceledMenu(item) { // 주문 취소 및 환불
+        if(item.order_stat === 'ready') {
+            cancelPay(item);
+            cancelHandler(item);
+        } else {
+            message.warning('조리 중에는 주문을 취소할 수 없습니다.');
         }
     }
 
@@ -100,6 +153,11 @@ function ShopList(props) {
                                     <div>
                                         <b className='order_type' style={{color: colorOrderType(item.order_type)}}>{convertOrderType( item.order_type)}</b>
                                         <span className='date'>{formatDate(item.date)}</span>
+                                        <div>
+                                            <Popconfirm onConfirm={() => canceledMenu(item)} title={text} okText={'네'} cancelText={'아니요'} className='reject'>
+                                                <Button danger size='large' type='primary'>주문 취소</Button>
+                                            </Popconfirm>
+                                        </div>
                                         <hr/>
                                         <List itemLayout="vertical">
                                             {
@@ -132,7 +190,7 @@ function ShopList(props) {
                                                 status === 'in-progress' &&
                                                 <Button type='primary' className='Button' onClick={()=> reload(item)}>조리 완료</Button> ||
                                                 status === 'completed' &&
-                                                <Button type='primary' disabled='true' className='Button'>완료</Button>
+                                                <Button type='primary' disabled={true} className='Button'>완료</Button>
                                             }
                                         </div>
                                     </div>
@@ -156,6 +214,10 @@ const DivList = styled.div`
 
   .order_type {
     font-size: 2rem;
+  }
+
+  .reject {
+      left: 50%;
   }
 
   .date {

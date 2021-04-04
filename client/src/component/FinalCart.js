@@ -3,7 +3,8 @@ import Payment from '../Payment/index';
 import {Steps, Divider, Button} from 'antd';
 import {MinusOutlined, PlusOutlined} from '@ant-design/icons';
 import {useDispatch, useSelector} from 'react-redux';
-import {deleteCart, increment, decrement} from '../store/actions';
+import {useHistory} from 'react-router-dom';
+import {deleteCart, increment, decrement, deleteAll} from '../store/actions';
 import styled from 'styled-components';
 import Header from '../pages/Header';
 
@@ -11,6 +12,7 @@ function FinalCart() {
     const {Step} = Steps;
     const ButtonGroup = Button.Group;
     const dispatch = useDispatch();
+    const history = useHistory();
     const cart2 = useSelector((store) => store.cartReducer);
 
     const list = cart2.cart.map((item, idx) => {
@@ -29,11 +31,20 @@ function FinalCart() {
                         <PlusOutlined />
                     </Button>
                 </ButtonGroup>
-                <div className='price'>{item.Price * item.Quantity}</div>
+                <div className='price'>{item.Price}</div>
                 <Divider className='divider'/>
             </div>
         );
     });
+
+    function resetcart() {
+        if(list.length > 0) {
+            dispatch(deleteAll());
+            history.push('/menu');
+        } else {
+            alert('장바구니가 비어있습니다.');
+        }
+    }
 
     return (
         <>
@@ -47,6 +58,9 @@ function FinalCart() {
                 <div className='menucnt'>담은 메뉴: {list.length}개</div>
                 <hr />
                 <div>{list}</div>
+                <Button type='default' size='large' danger className='deleteAll' onClick={resetcart}>
+                    전체 삭제
+                </Button>
                 <div className='line' />
                 <div className='finalSum'>총 주문 금액:&nbsp;{cart2.total} &nbsp;원</div>
                 <div className='line' />
@@ -59,6 +73,11 @@ function FinalCart() {
 const StepsBar = styled.div `
     display: inline;
 
+    .deleteAll {
+        margin: auto;
+        width: 30%;
+        margin-left: 35%;
+    }
     .finalSum {
         font-size: 1.5rem;
     }
