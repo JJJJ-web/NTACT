@@ -30,17 +30,18 @@ io.on('connection', (socket) => {
         client.set(data.socketID, data.userID, redis.print);
         
         // redis에 들어갔는지 확인용 삭제될 코드 
-        client.get(data.userID, (err, value) => {
+        client.get(data.socketID, (err, value) => {
             if(err) console.log(err);
-            console.log(`레디스 에서 가져온 ${data.userID}에 해당하는 value값: ${value}`);
+            console.log(`레디스에서 가져온 결과 | key(socketID): ${data.socketID}에 해당하는 value(userID): ${value}`);
         });
     });
 
     // 소켓 연결 해제
     socket.on('disconnect', () => {
         console.log(`소켓 연결 해제 | 소켓: ${socket.id}`);
+        // 'client' room에서 뺀다.
         socket.leave('client');
-        // redis에 해당 소켓id가 key값에 있을 경우 해당 key-value 삭제.
+        // redis에 해당 소켓id가 key값으로 있을 경우 해당 key-value 전체 삭제.
         if(client.exists(socket.id)) client.del(socket.id, redis.print);
     });
 });
