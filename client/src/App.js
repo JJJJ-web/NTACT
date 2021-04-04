@@ -1,13 +1,19 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Router from './Routes/Router';
 import './App.less';
 import 'antd/dist/antd.css';
 import io from 'socket.io-client';
+import socket from './SocketInfo';
 
-const socket = io('http://localhost:4000');
 function App() {
+    const [socketEvents, setSocketEvents] = useState([]);
+
+    console.log(socket);
+
     socket.on('connect', () => {
         console.log('connection server');
+
+        socket.emit('hello', 'world');
     });
 
     return (
