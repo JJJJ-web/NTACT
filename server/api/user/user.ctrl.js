@@ -37,7 +37,7 @@ exports.kakao = async (ctx) => {
             findOrCreate 메서드는 검색되었거나 또는 생성된 객체를 포함한 배열, 그리고 boolean값을 반환합니다. 여기서 boolean값은, 새 객체가 생성되었을 경우 true, 그렇지 않을 경우 false입니다.
             */
             UserModel.findOrCreate({
-                where: {userid: `${kakaoUserDB.id}`, sns: 'Kakao'},
+                where: {userid: `${kakaoUserDB.id}`},
                 // 없을경우 defualts에 있는 정보로 user가 생성된다.
                 defaults: {
                     username: `${kakaoUserDB.properties.nickname}`,
