@@ -13,20 +13,10 @@ function App() {
 
     socket.on('connect', () => {
         console.log('connection server');
-
-        socket.emit('hello', 'world');
+        if(JSON.parse(sessionStorage.getItem('userInfo')).userId != null) {
+            socket.emit('A', {userID: JSON.parse(sessionStorage.getItem('userInfo')).userId, socketID: socket.id});
+        }
     });
-
-    useEffect(() => {
-        window.addEventListener('beforeunload', alertUser);
-        return () => {
-            window.removeEventListener('beforeunload', alertUser);
-        };
-    }, []);
-    const alertUser = (e) => {
-        e.preventDefault();
-        e.returnValue = 'F5 reload';
-    };
 
     return (
         <div>

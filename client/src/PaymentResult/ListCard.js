@@ -6,11 +6,6 @@ import socket from '../SocketInfo';
 function ListCard({orderInfo, orderDetails}) {
     const [stat, setStat] = useState('');
 
-    socket.on('C', (data) => {
-        console.log(data);
-        alert(data);
-    });
-
     function convertOrderType(type) {
         if (type === 'dine-in') {
             return '테이블 식사';
@@ -78,6 +73,10 @@ function ListCard({orderInfo, orderDetails}) {
 
     useState(() => {
         setStat(orderInfo.order_stat);
+        socket.on('C', () => {
+            console.log('실시간 주문 상태 변경 이벤트 C 수신');
+            // 렌더링 다시하도록
+        });
     }, []);
 
     return(
