@@ -190,7 +190,7 @@ function ShopList(props) {
                                                 status === 'in-progress' &&
                                                 <Button type='primary' className='Button' onClick={()=> reload(item)}>조리 완료</Button> ||
                                                 status === 'completed' &&
-                                                <Button type='primary' disabled='true' className='Button'>완료</Button>
+                                                <Button type='primary' disabled={true} className='Button'>완료</Button>
                                             }
                                         </div>
                                     </div>
