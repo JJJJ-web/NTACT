@@ -3,7 +3,7 @@ import {Card, List, Progress} from 'antd';
 import CancelButton from '../Payment/CancelButton';
 import socket from '../SocketInfo';
 
-function ListCard({orderInfo, orderDetails}) {
+function ListCard({orderInfo, orderDetails, reload}) {
     let [stat, setStat] = useState('');
 
     function convertOrderType(type) {
@@ -66,15 +66,11 @@ function ListCard({orderInfo, orderDetails}) {
         }
     }
 
-    function reload(res) {
-        setStat(res);
-    }
-
     useState(() => {
         setStat(stat = orderInfo.order_stat);
-        socket.on('C', () => {
+        socket.on('C', (data) => {
             alert('실시간 주문 상태 변경 이벤트 C 수신');
-            // 렌더링 다시하도록
+            reload();
         });
     }, []);
 
