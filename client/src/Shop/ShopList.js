@@ -14,8 +14,13 @@ function ShopList(props) {
     const text = '해당 주문을 취소하겠습니까?';
 
     useEffect(() => { // 역순 출력
-        axios.get(`/api/orders/${status}`).then((res) => setData(res.data.reverse()));
+        getList();
     }, []);
+
+    async function getList() {
+        axios.get(`/api/orders/${status}`).then((res) => setData(res.data.reverse()));
+        console.log('getList 완료');
+    }
 
     function changeStatus(item) { // 주문 진행 상태 변경
         if(item.order_stat === 'ready') {
@@ -34,25 +39,13 @@ function ShopList(props) {
             },
         }).then((res) => {
             if(res.status === 200) {
-                if(item.order_stat === 'ready') {
-                    item.order_stat = 'in-progress';
-                } else if(item.order_stat === 'in-progress') {
-                    item.order_stat = 'completed';
-                }
                 socket.emit('B', {userID: item.buyer_id});
+                alert('전송완료');
+                getList();
             }
         }).catch((error) => {
             console.log(error);
         });
-    }
-
-    function reload(item) { // 주문 진행 상태 변경 후 자동 새로고침
-        changeStateHandler(item);
-        
-        if(item.order_stat != props.status) {
-            window.location.reload();
-            setChange(props.status);
-        }
     }
 
     async function cancelHandler(item) { // 주문 취소: server에 주문 상태 변경
@@ -107,10 +100,6 @@ function ShopList(props) {
         }
     }
 
-    function changeValue(value) {
-        setValue(value);
-    }
-
     function formatDate(date) {
         if(date != undefined) {
             const time = new Date(date);
@@ -143,12 +132,35 @@ function ShopList(props) {
             return '#8b8b8b';
         }
     }
-
+    function checkOrderStat(stat) {
+        if (stat === 'ready' || stat === 'in-progress') {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    function returnStat(stat) {
+        if (stat === 'ready') {
+            return '조리 시작';
+        } else if (stat === 'in-progress') {
+            return '조리 완료';
+        } else {
+            return '완료';
+        }
+    }
+    function chectStatReady(stat) {
+        if (stat === 'ready') {
+            return 'visible';
+        } else {
+            return 'hidden';
+        }
+    }
     return (
         <>
             <DivList>
                 {
                     data.map((item, index) => {
+                        console.log('리렌더링');
                         return (
                             <div className='cardList' key={index}>
                                 <Card title={item.id} style={{width: 300}} className='items' bodyStyle={{height: 500}} headStyle={{fontSize: 20}}>
@@ -156,13 +168,8 @@ function ShopList(props) {
                                         <b className='order_type' style={{color: colorOrderType(item.order_type)}}>{convertOrderType( item.order_type)}</b>
                                         <span className='date'>{formatDate(item.date)}</span>
                                         <div>
-                                            <Popconfirm onConfirm={() => canceledMenu(item)} title={text} okText={'네'} cancelText={'아니요'} className='reject'>
-                                                {
-                                                    status === 'completed' &&
-                                                    <Button disabled={true} danger size='large' type='primary'>주문 취소</Button> ||
-                                                    (status === 'ready' || status === 'in-progress') && 
-                                                    <Button danger size='large' type='primary'>주문 취소</Button>
-                                                }
+                                            <Popconfirm onConfirm={() => canceledMenu(item)} title={text} okText={'확인'} cancelText={'닫기'} className='reject'>
+                                                <Button style={{visibility: chectStatReady(item.order_stat)}} danger type='primary'>주문 취소</Button>
                                             </Popconfirm>
                                         </div>
                                         <hr/>
@@ -180,25 +187,13 @@ function ShopList(props) {
                                             }
                                         </List>
                                         <div className='select'>
-                                            {status === 'ready' &&
-                                                <Select defaultValue={10} style={{width: 105}} onChange={changeValue}>
-                                                    <Option value={5}>5</Option>
-                                                    <Option value={10}>10</Option>
-                                                    <Option value={15}>15</Option>
-                                                    <Option value={20}>20</Option>
-                                                </Select> ||
-                                                status === 'in-progress' &&
-                                                    <Select style={{width: 105, visibility: 'hidden'}} /> ||
-                                                status === 'completed' &&
-                                                    <Select style={{width: 105, visibility: 'hidden'}} />
-                                            }
-                                            {status === 'ready' &&
-                                                 <Button type='primary' className='Button' onClick={()=> reload(item)}>조리 시작</Button> ||
-                                                status === 'in-progress' &&
-                                                <Button type='primary' className='Button' onClick={()=> reload(item)}>조리 완료</Button> ||
-                                                status === 'completed' &&
-                                                <Button type='primary' disabled={true} className='Button'>완료</Button>
-                                            }
+                                            <Select defaultValue={10} onChange={(e)=>setValue(e)} style={{width: 105, visibility: chectStatReady(item.order_stat)}}>
+                                                <Option value={5}>5</Option>
+                                                <Option value={10}>10</Option>
+                                                <Option value={15}>15</Option>
+                                                <Option value={20}>20</Option>
+                                            </Select>
+                                            <Button type='primary' disabled={checkOrderStat(item.order_stat)} className='Button' onClick={() => changeStateHandler(item)}>{returnStat(item.order_stat)}</Button>
                                         </div>
                                     </div>
                                 </Card>
