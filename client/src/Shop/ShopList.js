@@ -10,7 +10,6 @@ function ShopList(props) {
     const [data, setData] = useState([]);
     const [status, setStatus] = useState(props.status);
     const [value, setValue] = useState(10);
-    const [change, setChange] = useState(status);
     const text = '해당 주문을 취소하겠습니까?';
 
     useEffect(() => { // 역순 출력
@@ -44,26 +43,8 @@ function ShopList(props) {
         });
     }
 
-    async function cancelHandler(item) { // 주문 취소: server에 주문 상태 변경
-        setChange('canceled');
-
-        await axios.patch(`/api/orders/${item.id}`, {
-            headers: {
-                status: change,
-            },
-        }).then((res) => {
-            if(res.status === 200) {
-                if(item.order_stat === 'ready') {
-                    item.order_stat = 'canceled';
-                }
-            }
-        }).catch((error) => {
-            console.log(error);
-        });
-    }
-
-    function cancelPay(item) { // 주문 취소 <> server
-        axios({
+    async function cancelPay(item) { // 주문 취소 <> server
+        await axios({
             url: '/api/payments/cancel',
             method: 'POST',
             headers: {
@@ -74,6 +55,15 @@ function ShopList(props) {
         }).then((res) => {
             if(res.status === 200) {
                 message.success('주문이 취소되었습니다.');
+                axios.patch(`/api/orders/${item.id}`, { // 주문 취소: server에 주문 상태 변경
+                    headers: {
+                        status: 'canceled',
+                    },
+                }).then((res) => {
+                    if(res.status === 200) {}
+                }).catch((error) => {
+                    console.log(error);
+                });
             } else if (res.status === 400) {
                 console.log(res);
                 message.success('유효하지 않은 요청입니다.');
@@ -90,7 +80,6 @@ function ShopList(props) {
     function canceledMenu(item) { // 주문 취소 및 환불
         if(item.order_stat === 'ready') {
             cancelPay(item);
-            cancelHandler(item);
         } else {
             message.warning('조리 중에는 주문을 취소할 수 없습니다.');
         }
