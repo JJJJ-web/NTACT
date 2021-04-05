@@ -13,7 +13,7 @@ function App() {
 
     socket.on('connect', () => {
         console.log('connection server');
-        if(JSON.parse(sessionStorage.getItem('userInfo')).userId != null) {
+        if(sessionStorage.getItem('userInfo') != null) {
             socket.emit('A', {userID: JSON.parse(sessionStorage.getItem('userInfo')).userId, socketID: socket.id});
         }
     });
