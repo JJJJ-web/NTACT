@@ -157,7 +157,12 @@ function ShopList(props) {
                                         <span className='date'>{formatDate(item.date)}</span>
                                         <div>
                                             <Popconfirm onConfirm={() => canceledMenu(item)} title={text} okText={'네'} cancelText={'아니요'} className='reject'>
-                                                <Button danger size='large' type='primary'>주문 취소</Button>
+                                                {
+                                                    status === 'completed' &&
+                                                    <Button disabled={true} danger size='large' type='primary'>주문 취소</Button> ||
+                                                    (status === 'ready' || status === 'in-progress') && 
+                                                    <Button danger size='large' type='primary'>주문 취소</Button>
+                                                }
                                             </Popconfirm>
                                         </div>
                                         <hr/>
