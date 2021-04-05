@@ -57,7 +57,6 @@ function Payment({sumAmount, cartItems}) {
     function getOrderData() {
         axios.post(`/api/payments/${userId}/${data.merchant_uid}`).
             then((res) => {
-                console.log('res', res.data);
                 history.push({
                     pathname: '/payment_success',
                     state: {orderInfo: res.data},

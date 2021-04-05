@@ -10,8 +10,12 @@ function PaymentHistory() {
     const [histories, setHistories] = useState([]);
 
     useEffect(() => {
-        axios.post(`/api/payments/${userId}`).then((res) => setHistories(res.data));
+        getList();
     }, []);
+
+    async function getList() {
+        axios.post(`/api/payments/${userId}`).then((res) => setHistories(res.data));
+    }
 
     function convertOrderType(type) {
         if (type === 'dine-in') {

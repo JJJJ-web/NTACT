@@ -3,10 +3,12 @@ import {Steps} from 'antd';
 import {withRouter, useLocation} from 'react-router-dom';
 import Header from '../pages/Header';
 import ListCard from '../PaymentResult/ListCard';
+import axios from 'axios';
 
 function PaySuccess() {
     const location = useLocation();
     const {Step} = Steps;
+    const userId = JSON.parse(sessionStorage.getItem('userInfo')).userId;
 
     if(location.state == null) {
         return(
@@ -15,8 +17,21 @@ function PaySuccess() {
             </>
         );
     } else {
-        const orderInfo = location.state.orderInfo;
-        const orderDetails = location.state.orderInfo.order_detail;
+        const orderID = location.state.orderInfo.id;
+        let [orderInfo, setOrderInfo] = useState([]);
+        let [orderDetails, setOrderDetails] = useState([]);
+
+        async function getList() {
+            await axios.post(`/api/payments/${userId}/${orderID}`).
+                then((res) => {
+                    setOrderInfo(orderInfo = res.data);
+                    setOrderDetails(orderDetails = res.data.order_detail);
+                });
+        }
+
+        useState(() => {
+            getList();
+        }, []);
 
         return (
             <>
