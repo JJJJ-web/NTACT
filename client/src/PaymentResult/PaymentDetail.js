@@ -21,7 +21,11 @@ function PaymentDetail({match}, {orderId =[]}) {
         orderId = match.params.orderId;
         getList();
     }, []);
-
+    
+    function reload() {
+        getList();
+    }
+    
     return (
         <div style={{backgroundColor: '#eeeeee', minHeight: '100vh'}}>
             <Layout>
@@ -33,7 +37,7 @@ function PaymentDetail({match}, {orderId =[]}) {
                     </Menu.Item>
                 </Menu>
             </Layout>
-            <ListCard orderInfo={orderInfo} orderDetails={orderDetails}/>
+            <ListCard orderInfo={orderInfo} orderDetails={orderDetails} reload={reload}/>
         </div>
     );
 }

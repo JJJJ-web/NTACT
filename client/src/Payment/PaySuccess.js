@@ -29,6 +29,10 @@ function PaySuccess() {
                 });
         }
 
+        function reload() {
+            getList();
+        }
+
         useState(() => {
             getList();
         }, []);
@@ -41,7 +45,7 @@ function PaySuccess() {
                     <Step title='결제' status='finish' />
                     <Step title='주문 접수' status='process' />
                 </Steps>
-                <ListCard orderInfo={orderInfo} orderDetails={orderDetails}/>
+                <ListCard orderInfo={orderInfo} orderDetails={orderDetails} reload={reload}/>
             </>
         );
     }
