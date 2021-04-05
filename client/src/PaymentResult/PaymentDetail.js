@@ -10,13 +10,16 @@ function PaymentDetail({match}, {orderId =[]}) {
     const [orderInfo, setOrderInfo] = useState([]);
     const [orderDetails, setOrderDetails] = useState([]);
 
-    useState(() => {
-        orderId = match.params.orderId;
-        axios.post(`/api/payments/${userId}/${orderId}`).
+    async function getList() {
+        await axios.post(`/api/payments/${userId}/${orderId}`).
             then((res) => {
                 setOrderInfo(res.data);
                 setOrderDetails(res.data.order_detail);
             });
+    }
+    useState(() => {
+        orderId = match.params.orderId;
+        getList();
     }, []);
 
     return (

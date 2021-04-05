@@ -4,7 +4,7 @@ import CancelButton from '../Payment/CancelButton';
 import socket from '../SocketInfo';
 
 function ListCard({orderInfo, orderDetails}) {
-    const [stat, setStat] = useState('');
+    let [stat, setStat] = useState('');
 
     function convertOrderType(type) {
         if (type === 'dine-in') {
@@ -67,14 +67,13 @@ function ListCard({orderInfo, orderDetails}) {
     }
 
     function reload(res) {
-        console.log(res);
         setStat(res);
     }
 
     useState(() => {
-        setStat(orderInfo.order_stat);
+        setStat(stat = orderInfo.order_stat);
         socket.on('C', () => {
-            console.log('실시간 주문 상태 변경 이벤트 C 수신');
+            alert('실시간 주문 상태 변경 이벤트 C 수신');
             // 렌더링 다시하도록
         });
     }, []);
@@ -83,7 +82,7 @@ function ListCard({orderInfo, orderDetails}) {
         <Card title={orderInfo.name} bordered={false} style={{margin: '10px'}}>
             <List itemLayout="horizontal" style={{margin: '10px'}}>
                 <List.Item>
-                    <Progress type="circle" percent={convertOrderStatPercent(stat)} format={() => convertOrderStat(orderInfo.order_stat)}/>
+                    <Progress type="circle" percent={convertOrderStatPercent(orderInfo.order_stat)} format={() => convertOrderStat(orderInfo.order_stat)}/>
                     <List>
                         <b style={{fontSize: '1.4rem', color: colorOrderType(orderInfo.order_type)}}>{convertOrderType(orderInfo.order_type)}</b>
                         <div style={{color: '#8b8b8b'}}>주문번호: {orderInfo.id}</div>
