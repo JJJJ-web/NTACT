@@ -19,28 +19,24 @@ function ShopList(props) {
 
     async function getList() {
         axios.get(`/api/orders/${status}`).then((res) => setData(res.data.reverse()));
-        console.log('getList 완료');
     }
 
     function changeStatus(item) { // 주문 진행 상태 변경
         if(item.order_stat === 'ready') {
-            setChange('in-progress');
+            return 'in-progress';
         } else if(item.order_stat === 'in-progress') {
-            setChange('completed');
+            return 'completed';
         }
     }
 
     async function changeStateHandler(item) { // <> server 주문 진행 상태 변경
-        changeStatus(item);
-
         await axios.patch(`/api/orders/${item.id}`, {
             headers: {
-                status: change,
+                status: changeStatus(item),
             },
         }).then((res) => {
             if(res.status === 200) {
                 socket.emit('B', {userID: item.buyer_id});
-                alert('전송완료');
                 getList();
             }
         }).catch((error) => {
@@ -160,7 +156,6 @@ function ShopList(props) {
             <DivList>
                 {
                     data.map((item, index) => {
-                        console.log('리렌더링');
                         return (
                             <div className='cardList' key={index}>
                                 <Card title={item.id} style={{width: 300}} className='items' bodyStyle={{height: 500}} headStyle={{fontSize: 20}}>
