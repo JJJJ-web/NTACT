@@ -60,7 +60,9 @@ function ShopList(props) {
                         status: 'canceled',
                     },
                 }).then((res) => {
-                    if(res.status === 200) {}
+                    if(res.status === 200) {
+                        getList();
+                    }
                 }).catch((error) => {
                     console.log(error);
                 });
