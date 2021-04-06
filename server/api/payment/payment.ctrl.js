@@ -170,7 +170,7 @@ exports.find = async (ctx) => {
     if (typeof selected === 'undefined') {
         try {
             history = await orderModel.findAll({
-                attributes: ['id', 'name', 'amount', 'date', 'order_type'],
+                attributes: ['id', 'name', 'amount', 'date', 'order_type', 'order_stat'],
                 where: {
                     buyer_id: id,
                     [Op.not]: [
