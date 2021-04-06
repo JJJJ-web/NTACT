@@ -17,8 +17,10 @@ function PaymentHistory() {
         axios.post(`/api/payments/${userId}`).then((res) => setHistories(res.data));
     }
 
-    function convertOrderType(type) {
-        if (type === 'dine-in') {
+    function convertOrderType(type, status) {
+        if (status === 'canceled') {
+            return '취소';
+        } else if (type === 'dine-in') {
             return '테이블';
         } else if (type === 'pick-up') {
             return '포장';
@@ -27,8 +29,10 @@ function PaymentHistory() {
         }
     }
 
-    function colorOrderType(type) {
-        if (type === 'dine-in') {
+    function colorOrderType(type, status) {
+        if (status === 'canceled') {
+            return '#adadad';
+        } else if (type === 'dine-in') {
             return '#fdb916';
         } else if (type === 'pick-up') {
             return '#a2d52a';
@@ -52,8 +56,8 @@ function PaymentHistory() {
                                 <Meta
                                     avatar={<Avatar shape="square" size={60} style={{
                                         color: '#ffffff',
-                                        backgroundColor: colorOrderType(item.order_type),
-                                    }}>{convertOrderType(item.order_type)}</Avatar>}
+                                        backgroundColor: colorOrderType(item.order_type, item.order_stat),
+                                    }}>{convertOrderType(item.order_type, item.order_stat)}</Avatar>}
                                     title={formatPrice(item.amount)}
                                     description={new Date(item.date).toLocaleString()}
                                 />
