@@ -16,8 +16,8 @@ function MenuList(props) {
 
     useState(() => {
         axios.get('/api/menus').then((res) => setProducts(res.data));
-        socket.on('C', () => {
-            alert('실시간 주문 상태 변경 이벤트 C 수신');
+        socket.on('E', () => {
+            alert('실시간 주문 상태 변경 이벤트 E 수신');
         });
     }, []);
 
