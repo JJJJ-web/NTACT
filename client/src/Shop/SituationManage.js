@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import {Modal, Button, Form, Switch, Col, Row, Select, message} from 'antd';
 import axois from 'axios';
+import socket from '../SocketInfo';
 
 const {Option} = Select;
 
@@ -20,6 +21,7 @@ function SituationManage() {
             {
             }).then((res) => {
             if (res.status === 200) {
+                socket.emit('D');
                 message.success(product.menu_kor + ' 의 판매 상태가 변경되었습니다.');
             } else {
                 // window.alert('토글 실패111');
@@ -39,6 +41,7 @@ function SituationManage() {
                 },
             }).then((res) => {
             if (res.status === 200) {
+                socket.emit('D');
                 message.success(product.menu_kor + ' 의 지연시간이 변경되었습니다.');
             } else {
                 // window.alert('토글 실패111');
