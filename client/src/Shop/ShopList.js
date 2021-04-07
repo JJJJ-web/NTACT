@@ -12,7 +12,11 @@ function ShopList(props) {
     const [value, setValue] = useState(10);
     const text = '해당 주문을 취소하겠습니까?';
 
-    useEffect(() => { // 역순 출력
+    useState(() => { // 역순 출력
+        socket.on('G', () => {
+            alert('실시간 주문 접수 이벤트 G 수신');
+            getList();
+        });
         getList();
     }, []);
 
