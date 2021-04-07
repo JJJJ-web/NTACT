@@ -26,6 +26,10 @@ io.on('connection', (socket) => {
         // 'client' room에 넣는다. 
         socket.join('client');
         
+        // 일단 테스트를 위해 주방 room에도 넣는다. 수정예정
+        socket.join('chef');
+
+
         // redis에 userID와 socketID를 저장한다.
         client.set(data.userID, data.socketID, redis.print);
         
@@ -51,7 +55,14 @@ io.on('connection', (socket) => {
     socket.on('D', () => {
         // 'client' 룸에 있는 모든 소켓에게 이벤트 E 전송
         io.in('client').emit('E');
-        console.log(`client room에 있는 전체 소켓에게 소켓이벤트 E 전송`); 
+        console.log(`client room에 있는 전체 고객 소켓에게 소켓이벤트 E 전송`); 
+    });
+
+    // 결제 성공하여 새로운 주문 발생시 오는 이벤트
+    socket.on('F', () => {
+        // 'chef' 룸에 있는 모든 소켓에게 이벤트 G 전송
+        io.in('chef').emit('G');
+        console.log(`chef room에 있는 주방관리자 소켓들에게 소켓이벤트 G 전송`); 
     });
 
     // 소켓 연결 해제
