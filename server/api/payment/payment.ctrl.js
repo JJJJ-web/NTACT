@@ -19,7 +19,7 @@ exports.create = async (ctx) => {
         }
     }
     if (outOfStocks.length > 0) {
-        ctx.status = 417;
+        ctx.status = 409;
         ctx.body = outOfStocks;
         return;
     }
