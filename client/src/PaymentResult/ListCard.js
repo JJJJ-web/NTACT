@@ -68,7 +68,7 @@ function ListCard({orderInfo, orderDetails, reload}) {
 
     useState(() => {
         setStat(stat = orderInfo.order_stat);
-        socket.on('C', (data) => {
+        socket.on('C', () => {
             alert('실시간 주문 상태 변경 이벤트 C 수신');
             reload();
         });
