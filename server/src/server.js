@@ -47,6 +47,13 @@ io.on('connection', (socket) => {
         });
     });
 
+    // 메뉴 상태 변경시 오는 이벤트
+    socket.on('D', () => {
+        // 'client' 룸에 있는 모든 소켓에게 이벤트 E 전송
+        io.in('client').emit('E');
+        console.log(`client room에 있는 전체 소켓에게 소켓이벤트 E 전송`); 
+    });
+
     // 소켓 연결 해제
     socket.on('disconnect', () => {
         console.log(`소켓 연결 해제 | 소켓: ${socket.id}`);
