@@ -6,6 +6,7 @@ import {LazyImage} from 'react-lazy-images';
 import {LoadingOutlined} from '@ant-design/icons';
 import {Collapse, Space} from 'antd';
 import styled from 'styled-components';
+import socket from '../SocketInfo';
 
 function MenuList(props) {
     const [products, setProducts] = useState([]);
@@ -13,8 +14,11 @@ function MenuList(props) {
     const {Panel} = Collapse;
     const list2 = []; 
 
-    useEffect(() => {
+    useState(() => {
         axios.get('/api/menus').then((res) => setProducts(res.data));
+        socket.on('C', () => {
+            alert('실시간 주문 상태 변경 이벤트 C 수신');
+        });
     }, []);
 
     const list = products.filter((res) => {
@@ -30,6 +34,8 @@ function MenuList(props) {
         json.Price = list[i].price;
         json.Description = list[i].description;
         json.Quantity = 1;
+        json.Status = list[i].sales_stat;
+        json.DelayTime = list[i].delay_time;
 
         list2.push(json);
     }
@@ -54,6 +60,7 @@ function MenuList(props) {
                                     />
                                     <div className="itmeName">{item.Name}</div>
                                     <div className="itmePrice">{item.Price.toLocaleString()}원</div>
+                                    <div>품절: {item.Status} , 지연시간: {item.DelayTime} </div>
                                 </div>
 
                                 <Panel header='설명보기' className="site-collapse-custom-panel">
