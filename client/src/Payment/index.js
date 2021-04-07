@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import {CreditCardOutlined} from '@ant-design/icons';
 import {useDispatch} from 'react-redux';
 import {deleteAll} from '../store/actions';
+import socket from '../SocketInfo';
 
 function Payment({sumAmount, cartItems}) {
     const history = useHistory();
@@ -83,6 +84,7 @@ function Payment({sumAmount, cartItems}) {
                 if(data.data.status=='success') {
                     data.data.order_type = orderType;
                     dispatch(deleteAll());
+                    socket.emit('F');
                     getOrderData();
                 } else {
                     dispatch(deleteAll());
