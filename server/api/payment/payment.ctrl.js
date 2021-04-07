@@ -2,12 +2,29 @@ const axios = require('axios');
 const {Op} = require('sequelize');
 const paymentConfig = require('../../config/payment-config.json');
 const orderModel = require('../../models').dev_orders;
+const menuModel = require('../../models').dev_menu;
 
 exports.create = async (ctx) => {
     const cart = ctx.request.body;
+    const totalOrderItems = cart['cart'].length;
+    const outOfStocks = [];
     let name;
     let totalOrderQuantity = 0;
-    for (let i = 0; i < cart['cart'].length; i++) {
+
+    // 주문 내역 중 품절된 메뉴가 있는지 체크
+    for (let i = 0; i < totalOrderItems; i++) {
+        const item = await menuModel.findByPk(cart['cart'][i].Id);
+        if (item.sales_stat === 0) {
+            outOfStocks.push(item.id);
+        }
+    }
+    if (outOfStocks.length > 0) {
+        ctx.status = 417;
+        ctx.body = outOfStocks;
+        return;
+    }
+
+    for (let i = 0; i < totalOrderItems; i++) {
         totalOrderQuantity += cart['cart'][i].Quantity;
     }
 
