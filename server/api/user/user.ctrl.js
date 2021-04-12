@@ -1,12 +1,11 @@
 const UserModel = require('../../models').dev_user;
+const ChefModel = require('../../models').dev_chef;
+const AdminModel = require('../../models').dev_admin;
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
 // eslint-disable-next-line camelcase
 const password_config = require('../../config/password-config.json');
 
-exports.index = (ctx) => {
-    ctx.body = `${ctx.request.method} ${ctx.request.path}`;
-};
 
 // 카카오 로그인
 exports.kakao = async (ctx) => {
@@ -103,3 +102,78 @@ exports.google = async (ctx) => {
     ctx.body = {jwtToken: jwtToken};
     ctx.status = 200;
 };
+
+// 주방관리자 로그인
+exports.chef = async (ctx) => {
+    // header로 보낸 request payload를 접근하려면 body로 접근
+    // 로그인시 이메일과 비밀번호 jwt로 프론트에서 보내줌
+    const JWT = ctx.request.body.headers.Authorization;
+        
+    jwt.verify(JWT, password_config.jwt_password)
+        .then((data) => {
+            // chef DB에서 Email과 Password 확인
+            ChefModel.findOne({
+                where: {
+                    email: data.email,
+                    password: data.password,
+                },
+            }).then((result) => {
+                // 로그인 성공 시
+                // chef 권한,이름을 담은 토큰 생성 후 200전송
+
+                console.log(`${result} Chef DB를 찾았습니다. 로그인 성공`);
+                JWT = jwt.sign(
+                    {
+                        name: result.name,
+                        role: 'chef',
+                    },
+                    password_config.jwt_password, // secrec Key
+                );    
+    
+                ctx.body = {JWT: JWT};
+                ctx.status = 200;
+            }).catch((err) => {
+                console.log(err);
+                // 로그인 실패시 403 반환
+                ctx.status = 403;
+            });
+        });
+};
+
+// 관리자 로그인
+exports.chef = async (ctx) => {
+    // header로 보낸 request payload를 접근하려면 body로 접근
+    // 로그인시 이메일과 비밀번호 jwt로 프론트에서 보내줌
+    const JWT = ctx.request.body.headers.Authorization;
+        
+    jwt.verify(JWT, password_config.jwt_password)
+        .then((data) => {
+            // chef DB에서 Email과 Password 확인
+            AdminModel.findOne({
+                where: {
+                    email: data.email,
+                    password: data.password,
+                },
+            }).then((result) => {
+                // 로그인 성공 시
+                // chef 권한,이름을 담은 토큰 생성 후 200전송
+
+                console.log(`${result} Admin DB를 찾았습니다. 로그인 성공`);
+                JWT = jwt.sign(
+                    {
+                        name: result.name,
+                        role: 'admin',
+                    },
+                    password_config.jwt_password, // secrec Key
+                );    
+    
+                ctx.body = {JWT: JWT};
+                ctx.status = 200;
+            }).catch((err) => {
+                console.log(err);
+                // 로그인 실패시 403 반환
+                ctx.status = 403;
+            });
+        });
+};
+
