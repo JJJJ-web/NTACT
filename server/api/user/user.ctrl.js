@@ -107,7 +107,7 @@ exports.google = async (ctx) => {
 exports.chef = async (ctx) => {
     // header로 보낸 request payload를 접근하려면 body로 접근
     // 로그인시 이메일과 비밀번호 jwt로 프론트에서 보내줌
-    const JWT = ctx.request.body.headers.Authorization;
+    let JWT = ctx.request.body.headers.Authorization;
         
     jwt.verify(JWT, password_config.jwt_password)
         .then((data) => {
@@ -141,10 +141,10 @@ exports.chef = async (ctx) => {
 };
 
 // 관리자 로그인
-exports.chef = async (ctx) => {
+exports.admin = async (ctx) => {
     // header로 보낸 request payload를 접근하려면 body로 접근
     // 로그인시 이메일과 비밀번호 jwt로 프론트에서 보내줌
-    const JWT = ctx.request.body.headers.Authorization;
+    let JWT = ctx.request.body.headers.Authorization;
         
     jwt.verify(JWT, password_config.jwt_password)
         .then((data) => {
