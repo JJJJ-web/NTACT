@@ -1,35 +1,34 @@
 import React from 'react';
+import styled from 'styled-components';
 import CategoryTabs from './CategoryTabs';
 import Cart from '../component/Cart';
 import Header from './Header';
-import styled from 'styled-components';
 
 function Menu() {
-    return (
-        <>
-            <HeaderStyles>
-                <TopStyles>
-                    <Header/>
-                </TopStyles>
-                <CategoryStyles>
-                    <CategoryTabs/>
-                </CategoryStyles>
-            </HeaderStyles>
-            <BottomCart>
-                <Cart />
-            </BottomCart>
-        </>
-    );
+  return (
+    <>
+      <HeaderStyles>
+        <TopStyles>
+          <Header />
+        </TopStyles>
+        <CategoryStyles>
+          <CategoryTabs />
+        </CategoryStyles>
+      </HeaderStyles>
+      <BottomCart>
+        <Cart />
+      </BottomCart>
+    </>
+  );
 }
-const HeaderStyles = styled.div`
-`;
+const HeaderStyles = styled.div``;
 const TopStyles = styled.div`
   position: relative;
   width: 100vw;
   height: 30px;
 `;
 const CategoryStyles = styled.div`
-  position:absolute;
+  position: absolute;
   top: 30px;
   left: 0;
   right: 0;

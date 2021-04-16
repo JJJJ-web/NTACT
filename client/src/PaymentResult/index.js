@@ -1,53 +1,53 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Button} from 'antd';
-import {useHistory, useLocation, withRouter} from 'react-router-dom';
+import { Button } from 'antd';
+import { useHistory, useLocation, withRouter } from 'react-router-dom';
 
 /*eslint-disable */
 function PaymentResult() {
-    const history = useHistory();
-    const location = useLocation();
-    const query = location.state.result;
-    const merchant_uid = query.merchant_uid;
-    const error_msg = query.error_msg;
-    const imp_uid = query.imp_uid;
-    const success = query.success;
-    const isSuccessed = getIsSuccessed();
+  const history = useHistory();
+  const location = useLocation();
+  const query = location.state.result;
+  const merchant_uid = query.merchant_uid;
+  const error_msg = query.error_msg;
+  const imp_uid = query.imp_uid;
+  const success = query.success;
+  const isSuccessed = getIsSuccessed();
 
-    function getIsSuccessed() {
-        if (typeof success === 'string') return success === 'true';
-        if (typeof success === 'boolean') return success === true;
-    }
+  function getIsSuccessed() {
+    if (typeof success === "string") return success === "true";
+    if (typeof success === "boolean") return success === true;
+  }
 
-    const resultType = isSuccessed ? '성공' : '실패';
-    const colorType = isSuccessed ? '#52c41a' : '#f5222d';
-    return (
-        <Wrapper>
-            <Container colorType={colorType}>
-                <p>{`결제에 ${resultType}하였습니다`}</p>
-                <ul>
-                    <li>
-                        <span>주문번호</span>
-                        <span>{merchant_uid}</span>
-                    </li>
-                    {isSuccessed ? (
-                        <li>
-                            <span>아임포트 번호</span>
-                            <span>{imp_uid}</span>
-                        </li>
-                    ) : (
-                        <li>
-                            <span>에러 메시지</span>
-                            <span>{error_msg}</span>
-                        </li>
-                    )}
-                </ul>
-                <Button size="large" onClick={() => history.push('/menu')}>
-                    돌아가기
-                </Button>
-            </Container>
-        </Wrapper>
-    );
+  const resultType = isSuccessed ? "성공" : "실패";
+  const colorType = isSuccessed ? "#52c41a" : "#f5222d";
+  return (
+    <Wrapper>
+      <Container colorType={colorType}>
+        <p>{`결제에 ${resultType}하였습니다`}</p>
+        <ul>
+          <li>
+            <span>주문번호</span>
+            <span>{merchant_uid}</span>
+          </li>
+          {isSuccessed ? (
+            <li>
+              <span>아임포트 번호</span>
+              <span>{imp_uid}</span>
+            </li>
+          ) : (
+            <li>
+              <span>에러 메시지</span>
+              <span>{error_msg}</span>
+            </li>
+          )}
+        </ul>
+        <Button size="large" onClick={() => history.push("/menu")}>
+          돌아가기
+        </Button>
+      </Container>
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.div`
@@ -71,7 +71,7 @@ const Container = styled.div`
   right: 2rem;
   bottom: 2rem;
   padding: 2rem;
-  
+
   p {
     font-size: 2rem;
     font-weight: bold;
@@ -99,9 +99,10 @@ const Container = styled.div`
     }
   }
 
-  button, button:hover {
-    border-color: ${props => props.colorType};
-    color: ${props => props.colorType};
+  button,
+  button:hover {
+    border-color: ${(props) => props.colorType};
+    color: ${(props) => props.colorType};
   }
 
   button:hover {
