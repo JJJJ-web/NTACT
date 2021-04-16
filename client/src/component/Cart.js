@@ -1,45 +1,52 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {Button, Badge} from 'antd';
-import {CreditCardOutlined} from '@ant-design/icons';
-import {useSelector, useDispatch} from 'react-redux';
-import {deleteCart} from '../store/actions';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Button, Badge } from 'antd';
+import { CreditCardOutlined } from '@ant-design/icons';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteCart } from '../store/actions';
 
 function Cart() {
-    const list = useSelector((store) => store.cartReducer);
-    const dispatch = useDispatch();
+  const list = useSelector((store) => store.cartReducer);
+  const dispatch = useDispatch();
 
-    const cartItem = list.cart.map((item, idx) => {
-        return (
-            <span className="items" key={idx} item={item} idx={idx}>
-                <Button className='delete' type='text' onClick={() => dispatch(deleteCart(item))}>x</Button>
-                <Badge count={item.Quantity} className='badge'/>
-                <img src={item.Img} height='100em'/>
-                <div>{item.Name}</div>
-                <div>{item.Price}원</div>
-            </span>
-        );
-    });
+  const cartItem = list.cart.map((item, idx) => (
+    <span className="items" key={item.Id} item={item} idx={idx}>
+      <Button className="delete" type="text" onClick={() => dispatch(deleteCart(item))}>x</Button>
+      <Badge count={item.Quantity} className="badge" />
+      <img src={item.Img} height="100em" alt="menuImg" />
+      <div>{item.Name}</div>
+      <div>
+        {item.Price}
+        원
+      </div>
+    </span>
+  ));
 
-    return (
-        <>
-            <CartMenus>
-                {cartItem}   
-            </CartMenus>
+  return (
+    <>
+      <CartMenus>
+        {cartItem}
+      </CartMenus>
 
-            <CartSum>
-                <div>
-                    <span>총: {list.total}원</span>
-                </div><br />
-                <Link to='/finalcart'>
-                    <Button type="primary" shape="round" icon={<CreditCardOutlined />} size="large">
-                        결제하기
-                    </Button>
-                </Link>
-            </CartSum>
-        </>
-    );
+      <CartSum>
+        <div>
+          <span>
+            총:
+            &nbsp;
+            {list.total}
+            원
+          </span>
+        </div>
+        <br />
+        <Link to="/finalcart">
+          <Button type="primary" shape="round" icon={<CreditCardOutlined />} size="large">
+            결제하기
+          </Button>
+        </Link>
+      </CartSum>
+    </>
+  );
 }
 const CartMenus = styled.div`
   position: absolute;

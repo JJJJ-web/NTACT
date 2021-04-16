@@ -1,34 +1,24 @@
-export const addCart = (item) => {
-    return {
-        type: 'ADD_ITEM',
-        payload: item,
-    };
-};
+export const addCart = (item) => ({
+  type: 'ADD_ITEM',
+  payload: item,
+});
 
-export const deleteCart = (item) => {
-    return {
-        type: 'DELETE_ITEM',
-        payload: item,
-    };
-};
+export const deleteCart = (item) => ({
+  type: 'DELETE_ITEM',
+  payload: item,
+});
 
-export const deleteAll = () => {
-    return {
-        type: 'DELETE_ALL',
-        payload: [],
-    };
-};
+export const deleteAll = () => ({
+  type: 'DELETE_ALL',
+  payload: [],
+});
 
-export const increment = (item) => {
-    return {
-        type: 'INCREMENT',
-        payload: item,
-    };
-};
+export const increment = (item) => ({
+  type: 'INCREMENT',
+  payload: item,
+});
 
-export const decrement = (item) => {
-    return {
-        type: 'DECREMENT',
-        payload: item,
-    };
-};
+export const decrement = (item) => ({
+  type: 'DECREMENT',
+  payload: item,
+});

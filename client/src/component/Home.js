@@ -1,27 +1,27 @@
 import React from 'react';
-import {Button} from 'antd';
+import { Button } from 'antd';
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Home() {
-    const btnSize = 'large';
-    const btnShape = 'round';
-    return (
-        <Layout>
-            <div className="header">
-                <img height='100%' src='./ntact512.png'/>
-            </div>
-            <span className="content">
-                <Link to='/login'>
-                    <Button type="primary" shape={btnShape} size={btnSize}>회원</Button>
-                </Link>
-                <Link to='/menu'>
-                    <Button type="ghost" shape={btnShape} size={btnSize}>비회원</Button>
-                </Link>
-            </span>
-            <div className="footer">한성대학교 2021년 캡스톤디자인</div>
-        </Layout>
-    );
+  const btnSize = 'large';
+  const btnShape = 'round';
+  return (
+    <Layout>
+      <div className="header">
+        <img height="100%" src="./ntact512.png" alt="logo" />
+      </div>
+      <span className="content">
+        <Link to="/login">
+          <Button type="primary" shape={btnShape} size={btnSize}>회원</Button>
+        </Link>
+        <Link to="/menu">
+          <Button type="ghost" shape={btnShape} size={btnSize}>비회원</Button>
+        </Link>
+      </span>
+      <div className="footer">한성대학교 2021년 캡스톤디자인</div>
+    </Layout>
+  );
 }
 
 const Layout = styled.div`

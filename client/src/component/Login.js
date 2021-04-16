@@ -1,28 +1,28 @@
 import React from 'react';
+import styled from 'styled-components';
 import KakaoLogin from './KakaoLogin';
 import GoogleLogin from './GoogleLogin';
-import styled from 'styled-components';
 
 function Login() {
-    return (
-        <LoginButtons>
-            <div className="header">
-                <img height='100%' src='./ntact512.png'/>
-            </div>
-            <KakaoLogin/>
-            <GoogleLogin/>
-        </LoginButtons>
-    );
+  return (
+    <LoginButtons>
+      <div className="header">
+        <img height="100%" src="./ntact512.png" alt="logo" />
+      </div>
+      <KakaoLogin />
+      <GoogleLogin />
+    </LoginButtons>
+  );
 }
 
 const LoginButtons = styled.div`
   display: table;
   margin: auto;
-  
-  div{
+
+  div {
     text-align: center;
   }
-  .header{
+  .header {
     height: 30vw;
     margin-bottom: 3rem;
   }
