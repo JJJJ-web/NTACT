@@ -7,3 +7,7 @@ server/sync-db.bat
 client/node_modules/
 client/.eslintcache
 client/src/config
+kitchen/.eslintcache
+kitchen/node_modules/
+admin/.eslintcache
+admin/node_modules/
