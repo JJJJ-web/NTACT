@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import SituationManage from './SituationManage';
 import socket from '../../SocketInfo';
 
-function ShopList(props) {
+function ReceiptList(props) {
   const { Option } = Select;
   const [data, setData] = useState([]);
   // eslint-disable-next-line react/destructuring-assignment
@@ -282,4 +282,4 @@ const DivList = styled.div`
   }
 `;
 
-export default ShopList;
+export default ReceiptList;

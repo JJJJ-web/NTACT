@@ -29,9 +29,6 @@ const TopbarProfile = () => {
       )}
       <Collapse isOpen={isCollapsed} className="topbar__menu-wrap">
         <div className="topbar__menu">
-          <TopbarMenuLink title="Page one" icon="list" path="/pages/one" />
-          <TopbarMenuLink title="Page two" icon="inbox" path="/pages/two" />
-          <div className="topbar__menu-divider" />
           <TopbarMenuLink title="Log Out" icon="exit" path="/" />
         </div>
       </Collapse>
