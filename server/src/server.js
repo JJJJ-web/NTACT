@@ -65,8 +65,7 @@ io.on('connection', (socket) => {
   });
 
   // 소켓 연결 해제
-  socket.on('disconnect', (data)
-   => {
+  socket.on('disconnect', (data) => {
     console.log(`소켓 연결 해제 | 소켓: ${socket.id}`);
     // 해당 소켓의 role room에서 뺀다.
     socket.leave(`${data.role}`);
