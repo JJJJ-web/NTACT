@@ -24,6 +24,7 @@ exports.kakao = async (ctx) => {
       // 토큰 생성
       jwtToken = jwt.sign(
         {
+          role: `client`,
           username: kakaoUserDB.properties.nickname,
           id: kakaoUserDB.id, // 유저 정보
         },
@@ -74,6 +75,7 @@ exports.google = async (ctx) => {
       // 토큰 생성
       jwtToken = jwt.sign(
         {
+          role: `client`,
           username: GoogleUserDB.name,
           id: GoogleUserDB.sub, // 유저 정보
         },
