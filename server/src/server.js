@@ -24,15 +24,11 @@ io.on('connection', (socket) => {
   console.log(`소켓 연결 성공 | 소켓: ${socket.id}`);
 
   // 로그인 후 해당 유저 ID 와 socket ID를 Redis에 저장.
-  // 해당 소켓을 client Room에 join 
+  // 해당 소켓을 해당 role 방에 넣는다. 
   socket.on('A', (data) => {
-    // 'client' room에 넣는다. 
-    socket.join('client');
+    // 소켓의 role에 해당하는 room에 넣는다. 
+    socket.join(`${data.role}`);
         
-    // 일단 테스트를 위해 주방 room에도 넣는다. 수정예정
-    socket.join('chef');
-
-
     // redis에 userID와 socketID를 저장한다.
     client.set(data.userID, data.socketID, redis.print);
         
@@ -69,10 +65,11 @@ io.on('connection', (socket) => {
   });
 
   // 소켓 연결 해제
-  socket.on('disconnect', () => {
+  socket.on('disconnect', (data)
+   => {
     console.log(`소켓 연결 해제 | 소켓: ${socket.id}`);
-    // 'client' room에서 뺀다.
-    socket.leave('client');
+    // 해당 소켓의 role room에서 뺀다.
+    socket.leave(`${data.role}`);
     // redis에 해당 소켓id가 key값으로 있을 경우 해당 key-value 전체 삭제.
     if(client.exists(socket.id)) client.del(socket.id, redis.print);
   });
