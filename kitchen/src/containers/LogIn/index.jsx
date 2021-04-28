@@ -9,38 +9,17 @@ const LogIn = () => (
     <div className="account__wrapper">
       <div className="account__card">
         <div className="account__head">
-          <h3 className="account__title">Welcome to
-            <span className="account__logo"> Easy
-              <span className="account__logo-accent">DEV</span>
+          <h3 className="account__title">
+            <span className="account__logo">
+              <span className="account__logo-accent">NTACT</span>
             </span>
           </h3>
-          <h4 className="account__subhead subhead">Start your business easily</h4>
+          <h4 className="account__subhead subhead">주방관리자 로그인</h4>
         </div>
         <LogInForm />
-        <div className="account__or">
-          <p>Or Easily Using</p>
-        </div>
-        <div className="account__social">
-          <Link
-            className="account__social-btn account__social-btn--facebook"
-            to="/kitchen"
-          >
-            <FacebookIcon />
-          </Link>
-          <Link
-            className="account__social-btn account__social-btn--google"
-            to="/kitchen"
-          >
-            <GooglePlusIcon />
-          </Link>
-        </div>
       </div>
     </div>
   </div>
 );
 
 export default LogIn;
-
-// if you want to add select,
-// date-picker and time-picker in your app you need to uncomment the first
-// four lines in /scss/components/form.scss to add styles

@@ -3,11 +3,16 @@ import EyeIcon from 'mdi-react/EyeIcon';
 import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
 import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import jwt from 'jsonwebtoken';
+import loginInfo from '../loginInfo.json';
 import CheckBox from '../../../shared/components/form/CheckBox';
 
 const LogInForm = () => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [isToggleCheckboxEnabled, setIsToggleCheckboxEnabled] = useState(false);
+  const [userID, setuserID] = useState('');
+  const [userPW, setuserPW] = useState('');
 
   const handleShowPassword = () => {
     setIsPasswordShown(!isPasswordShown);
@@ -17,8 +22,39 @@ const LogInForm = () => {
     setIsToggleCheckboxEnabled(!isToggleCheckboxEnabled);
   };
 
+  function login(e) {
+    e.preventDefault();
+    axios({
+      url: '/api/users/chef',
+      method: 'POST',
+      headers: {
+        email: userID,
+        password: userPW,
+      },
+    })
+      .then((res) => { // 로그인 성공시
+        if (res.status === 200) {
+          const user = jwt.verify(
+            res.data.jwtToken,
+            loginInfo.jwt_password,
+          ); // 백에서 jwtToken받아옴
+          sessionStorage.setItem(
+            'userInfo',
+            JSON.stringify({ userName: user.name, userRole: user.role }),
+          );
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   return (
-    <form className="form">
+    <form
+      className="form"
+      onSubmit={(e) => {
+        login(e);
+      }}
+    >
       <div className="form__form-group">
         <span className="form__form-group-label">Username</span>
         <div className="form__form-group-field">
@@ -26,9 +62,12 @@ const LogInForm = () => {
             <AccountOutlineIcon />
           </div>
           <input
-            name="name"
+            name="id"
             type="text"
-            placeholder="Name"
+            placeholder="ID"
+            onChange={(e) => setuserID(e.target.value)}
+            value={userID}
+            required
           />
         </div>
       </div>
@@ -42,6 +81,9 @@ const LogInForm = () => {
             name="password"
             type={isPasswordShown ? 'text' : 'password'}
             placeholder="Password"
+            onChange={(e) => setuserPW(e.target.value)}
+            value={userPW}
+            required
           />
           <button
             className={`form__form-group-button${isPasswordShown ? ' active' : ''}`}
@@ -64,8 +106,8 @@ const LogInForm = () => {
           />
         </div>
       </div>
-      <Link className="btn btn-primary account__btn account__btn--small" to="/kitchen">Sign In</Link>
-      <Link className="btn btn-outline-primary account__btn account__btn--small" to="/log_in">Create Account</Link>
+
+      <button type="submit" className="btn btn-primary account__btn account__btn--small" onClick={login} onKeyDown={login}>Sign In</button>
     </form>
   );
 };
