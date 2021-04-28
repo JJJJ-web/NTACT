@@ -1,13 +1,10 @@
 .idea/
 node_modules/
-server/node_modules/
 server/config/*-config.json
 server/models/dev_*.js
 server/sync-db.bat
-client/node_modules/
-client/.eslintcache
 client/src/config
-kitchen/.eslintcache
-kitchen/node_modules/
-admin/.eslintcache
-admin/node_modules/
+*/.eslintcache
+*/yarn-error.log
+*/node_modules/
+*/src/containers/LogIn/loginInfo.json
