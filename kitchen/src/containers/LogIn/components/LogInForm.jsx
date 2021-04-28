@@ -27,7 +27,7 @@ const LogInForm = () => {
     axios({
       url: '/api/users/chef',
       method: 'POST',
-      headers: {
+      data: {
         email: userID,
         password: userPW,
       },
@@ -42,6 +42,8 @@ const LogInForm = () => {
             'userInfo',
             JSON.stringify({ userName: user.name, userRole: user.role }),
           );
+          // eslint-disable-next-line no-restricted-globals
+          history.push('/kitchen');
         }
       })
       .catch((error) => {
