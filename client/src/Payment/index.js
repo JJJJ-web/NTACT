@@ -14,7 +14,7 @@ import socket from '../SocketInfo';
 
 function Payment({ sumAmount, cartItems }) {
   const history = useHistory();
-  const { userId } = JSON.parse(sessionStorage.getItem('userInfo'));
+  const { userID } = JSON.parse(sessionStorage.getItem('userInfo'));
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [orderType, setOrderType] = useState('');
@@ -31,27 +31,32 @@ function Payment({ sumAmount, cartItems }) {
     buyer_email: email, // 구매자 이메일
   };
   async function sendCartData(sumAmount, cartItems) {
+    let sendStat;
     await axios
       .post('/api/payments/order', {
         cart: cartItems,
         sum: sumAmount,
         order_type: orderType, // 취식
-        buyer_id: userId,
+        buyer_id: userID,
       })
       .then((res) => {
         if (res.status === 200) {
+          sendStat = 200;
           data.name = res.data.order_name;
           data.merchant_uid = res.data.order_id;
-        } else {
-          // eslint-disable-next-line no-undef
-          console.log(error);
+        }
+      }).catch((err) => {
+        if(err.response.status === 409) {
+          sendStat = 409;
+          console.log(err.response.data);
         }
       });
+    return sendStat;
   }
 
   function getOrderData() {
     axios
-      .post(`/api/payments/${userId}/${data.merchant_uid}`)
+      .post(`/api/payments/${userID}/${data.merchant_uid}`)
       .then((res) => {
         history.push({
           pathname: '/payment_success',
@@ -109,12 +114,13 @@ function Payment({ sumAmount, cartItems }) {
 
   async function handleSubmit() {
     const userCode = impCode.imp_user_code;
-    await sendCartData(sumAmount, cartItems); // cart, 가격 전달
-
-    /* 웹 환경일때 */
-    const { IMP } = window;
-    IMP.init(userCode);
-    await IMP.request_pay(data, callback);
+    if(await sendCartData(sumAmount, cartItems) === 200) { // cart, 가격 전달
+      const { IMP } = window;
+      IMP.init(userCode);
+      await IMP.request_pay(data, callback);
+    } else {
+      // 품절있어서 튕긴 후 처리
+    }
   }
 
   function onInputPhonenumber(e) {
