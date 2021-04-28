@@ -42,7 +42,7 @@ function Login(props) {
                   'userInfo',
                   JSON.stringify({ userName: user.username, userID: user.id, userRole: user.role }),
                 );
-                socket.emit('A', { userID: user.id, socketID: socket.id });
+                socket.emit('A', { userID: user.id, socketID: socket.id, role: user.role});
                 props.history.push('/menu');
               })
               .catch((err) => {
