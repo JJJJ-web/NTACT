@@ -8,12 +8,12 @@ import axios from 'axios';
 import ListCard from './ListCard';
 
 function PaymentDetail({ match }, { orderId = [] }) {
-  const { userId } = JSON.parse(sessionStorage.getItem('userInfo'));
+  const { userID } = JSON.parse(sessionStorage.getItem('userInfo'));
   const [orderInfo, setOrderInfo] = useState([]);
   const [orderDetails, setOrderDetails] = useState([]);
 
   async function getList() {
-    await axios.post(`/api/payments/${userId}/${orderId}`).then((res) => {
+    await axios.post(`/api/payments/${userID}/${orderId}`).then((res) => {
       setOrderInfo(res.data);
       setOrderDetails(res.data.order_detail);
     });

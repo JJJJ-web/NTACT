@@ -7,11 +7,11 @@ import Header from '../pages/Header';
 const { Meta } = Card;
 
 function PaymentHistory() {
-  const { userId } = JSON.parse(sessionStorage.getItem('userInfo'));
+  const { userID } = JSON.parse(sessionStorage.getItem('userInfo'));
   const [histories, setHistories] = useState([]);
 
   async function getList() {
-    axios.post(`/api/payments/${userId}`).then((res) => setHistories(res.data));
+    axios.post(`/api/payments/${userID}`).then((res) => setHistories(res.data));
   }
 
   useEffect(() => {

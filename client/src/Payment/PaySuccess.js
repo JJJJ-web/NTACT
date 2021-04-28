@@ -8,7 +8,7 @@ import ListCard from '../PaymentResult/ListCard';
 function PaySuccess() {
   const location = useLocation();
   const { Step } = Steps;
-  const { userId } = JSON.parse(sessionStorage.getItem('userInfo'));
+  const { userID } = JSON.parse(sessionStorage.getItem('userInfo'));
 
   if (location.state == null) {
     return <>잘못된 접근입니다.</>;
@@ -20,7 +20,7 @@ function PaySuccess() {
   let [orderDetails, setOrderDetails] = useState([]);
 
   async function getList() {
-    await axios.post(`/api/payments/${userId}/${orderID}`).then((res) => {
+    await axios.post(`/api/payments/${userID}/${orderID}`).then((res) => {
       setOrderInfo((orderInfo = res.data));
       setOrderDetails((orderDetails = res.data.order_detail));
     });

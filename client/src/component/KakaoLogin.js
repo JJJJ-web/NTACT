@@ -40,7 +40,7 @@ function Login(props) {
                 setUserName((user.username));
                 sessionStorage.setItem(
                   'userInfo',
-                  JSON.stringify({ userName: user.username, userId: user.id }),
+                  JSON.stringify({ userName: user.username, userID: user.id, userRole: user.role }),
                 );
                 socket.emit('A', { userID: user.id, socketID: socket.id });
                 props.history.push('/menu');
