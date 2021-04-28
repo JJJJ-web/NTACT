@@ -13,6 +13,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "classnames": "^2.2.6",
+    "jsonwebtoken": "^8.5.1",
     "mdi-react": "^7.4.0",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
