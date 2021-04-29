@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import EyeIcon from 'mdi-react/EyeIcon';
 import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
 import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import loginInfo from '../loginInfo.json';
 import CheckBox from '../../../shared/components/form/CheckBox';
 
 const LogInForm = () => {
+  const history = useHistory();
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [isToggleCheckboxEnabled, setIsToggleCheckboxEnabled] = useState(false);
   const [userID, setuserID] = useState('');
@@ -42,7 +43,6 @@ const LogInForm = () => {
             'userInfo',
             JSON.stringify({ userName: user.name, userRole: user.role }),
           );
-          // eslint-disable-next-line no-restricted-globals
           history.push('/kitchen');
         }
       })
