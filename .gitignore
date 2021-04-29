@@ -3,6 +3,7 @@ node_modules/
 server/config/*-config.json
 server/models/dev_*.js
 server/sync-db.bat
+wifi-connector/config/wifi-info.json
 client/src/config
 */.eslintcache
 */yarn-error.log
