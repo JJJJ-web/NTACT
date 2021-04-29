@@ -15,8 +15,9 @@ function App() {
     console.log('connection server');
     if (sessionStorage.getItem('userInfo') != null) {
       socket.emit('A', {
-        userID: JSON.parse(sessionStorage.getItem('userInfo')).userId,
+        userID: JSON.parse(sessionStorage.getItem('userInfo')).userID,
         socketID: socket.id,
+        role: JSON.parse(sessionStorage.getItem('userInfo')).userRole,
       });
     }
   });
