@@ -10,7 +10,7 @@ const wrappedRoutes = () => (
   <div>
     <Layout />
     <div className="container__wrap">
-      <Route path="/Kitchen" component={Kitchen} />
+      <Route path="/kitchen" component={Kitchen} />
     </div>
   </div>
 );
