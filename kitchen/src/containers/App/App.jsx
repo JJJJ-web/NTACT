@@ -19,10 +19,12 @@ const App = () => {
 
   socket.on('connect', () => {
     console.log('connection server');
+    console.log(sessionStorage.getItem('userInfo'));
     if (sessionStorage.getItem('userInfo') != null) {
       socket.emit('A', {
-        userID: JSON.parse(sessionStorage.getItem('userInfo')).userId,
+        userID: JSON.parse(sessionStorage.getItem('userInfo')).userID,
         socketID: socket.id,
+        role: JSON.parse(sessionStorage.getItem('userInfo')).userRole,
       });
     }
   });
