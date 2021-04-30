@@ -28,7 +28,7 @@ io.on('connection', (socket) => {
   socket.on('A', (data) => {
     // 소켓의 role에 해당하는 room에 넣는다. 
     socket.join(`${data.role}`);
-        
+    console.log(`소켓: ${socket.id} ${data.role} room에 들어감`);
     // redis에 userID와 socketID를 저장한다.
     client.set(data.userID, data.socketID, redis.print);
         
@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
       if(err) console.log(err);
       // ID를 통해 해당 소켓에게 C 이벤트를 송신한다.
       io.to(value).emit('C');
-      console.log(`소켓ID:${value}에게 소켓이벤트 C 전송`); 
+      console.log(`소켓ID:${value}에게 소켓이벤트 C (주문상태 변동) 전송`); 
     });
   });
 
@@ -65,10 +65,8 @@ io.on('connection', (socket) => {
   });
 
   // 소켓 연결 해제
-  socket.on('disconnect', (data) => {
-    console.log(`소켓 연결 해제 | 소켓: ${socket.id}`);
-    // 해당 소켓의 role room에서 뺀다.
-    socket.leave(`${data.role}`);
+  socket.on('disconnect', () => {
+    console.log(`소켓 ${socket.id} 연결 해제`);
     // redis에 해당 소켓id가 key값으로 있을 경우 해당 key-value 전체 삭제.
     if(client.exists(socket.id)) client.del(socket.id, redis.print);
   });
