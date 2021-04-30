@@ -13,12 +13,18 @@ router.get('/', (ctx) => {
     iface: null,
   });
 
-  // Connect to a network
-  wifi.connect({ ssid: wifiInfo.ssid, password: wifiInfo.password }, (error) => {
+  wifi.getCurrentConnections((error, currentConnections) => {
     if (error) {
       console.log(error);
+    } else if (currentConnections[0].ssid !== wifiInfo.ssid) {
+      // Connect to a network
+      wifi.connect({ ssid: wifiInfo.ssid, password: wifiInfo.password }, (err) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(`Wifi ${wifiInfo.ssid} Connected`);
+      });
     }
-    console.log(`Wifi ${wifiInfo.ssid} Connected`);
     open('http://localhost:3000');
   });
   ctx.body = 'Connecting wifi...';
