@@ -134,7 +134,8 @@ exports.chef = async (ctx) => {
 
   const jwtToken = jwt.sign(
     {
-      name: `${result.name}`,
+      if : result.id,
+      name: result.name,
       role: 'chef',
     },
     passwordConfig.jwt_password, // secret Key
@@ -171,7 +172,8 @@ exports.admin = async (ctx) => {
 
   const jwtToken = jwt.sign(
     {
-      name: `${result.name}`,
+      if : result.id,
+      name: result.name,
       role: 'admin',
     },
     passwordConfig.jwt_password, // secret Key
