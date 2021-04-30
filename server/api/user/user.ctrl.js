@@ -134,7 +134,7 @@ exports.chef = async (ctx) => {
 
   const jwtToken = jwt.sign(
     {
-      if : result.id,
+      id : result.id,
       name: result.name,
       role: 'chef',
     },
@@ -147,8 +147,7 @@ exports.chef = async (ctx) => {
 exports.admin = async (ctx) => {
   // header로 보낸 request payload를 접근하려면 body로 접근
   // 로그인시 이메일과 비밀번호 jwt로 프론트에서 보내줌
-  const { email } = ctx.request.body;
-  const { password } = ctx.request.body;
+  const { email, password } = ctx.request.body;
 
   const result = await adminModel.findOne({
     where: {
@@ -172,7 +171,7 @@ exports.admin = async (ctx) => {
 
   const jwtToken = jwt.sign(
     {
-      if : result.id,
+      id : result.id,
       name: result.name,
       role: 'admin',
     },
