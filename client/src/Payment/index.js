@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import {
-  Form, Input, Button, Radio, Divider, Alert, 
+  Form, Input, Button, Radio, Divider, Alert, notification,
 } from 'antd';
 import { withRouter, useHistory } from 'react-router-dom';
 import axios from 'axios';
@@ -19,6 +19,8 @@ function Payment({ sumAmount, cartItems }) {
   const [email, setEmail] = useState('');
   const [orderType, setOrderType] = useState('');
   const dispatch = useDispatch();
+  const saleData = [];
+  let sale = [];
 
   const data = {
     pg: 'html5_inicis', // PG사
@@ -48,7 +50,7 @@ function Payment({ sumAmount, cartItems }) {
       }).catch((err) => {
         if(err.response.status === 409) {
           sendStat = 409;
-          console.log(err.response.data);
+          sale = err.response.data;
         }
       });
     return sendStat;
@@ -82,7 +84,7 @@ function Payment({ sumAmount, cartItems }) {
         },
       })
         .then((data) => {
-        // 가맹점 서버 결제 API 성공시 로직
+          // 가맹점 서버 결제 API 성공시 로직
           if (data.data.status === 'success') {
             data.data.order_type = orderType;
             dispatch(deleteAll());
@@ -97,7 +99,7 @@ function Payment({ sumAmount, cartItems }) {
           }
         })
         .catch((err) => {
-        // 에러 처리
+          // 에러 처리
           history.push({
             pathname: '/payment/result',
             state: { result: response },
@@ -119,7 +121,20 @@ function Payment({ sumAmount, cartItems }) {
       IMP.init(userCode);
       await IMP.request_pay(data, callback);
     } else {
-      // 품절있어서 튕긴 후 처리
+      // 품절 처리
+      for(let i = 0; i < cartItems.length; i++) {
+        for(let j = 0; j < sale.length; j++) {
+          if(cartItems[i].Id === sale[j]) {
+            saleData.push(cartItems[i].Name);
+          }
+        }
+      }
+      notification.info({
+        message: '품절된 메뉴가 있습니다.',
+        description: `❗${saleData}❗ 품절입니다.`,
+        duration: 0,
+      });
+      saleData.length = 0;
     }
   }
 
@@ -221,7 +236,6 @@ const FormStyles = styled.div`
   justify-content: center;
   flex-direction: initial;
   text-align: center;
-
   .ant-btn-primary {
     background-color: #ffb400;
     width: 50vw;
