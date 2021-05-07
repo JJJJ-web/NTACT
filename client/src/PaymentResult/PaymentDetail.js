@@ -7,20 +7,19 @@ import { LeftOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import ListCard from './ListCard';
 
-function PaymentDetail({ match }, { orderId = [] }) {
-  const { userID } = JSON.parse(sessionStorage.getItem('userInfo'));
+function PaymentDetail({ match }) {
   const [orderInfo, setOrderInfo] = useState([]);
   const [orderDetails, setOrderDetails] = useState([]);
+  const { userID } = JSON.parse(sessionStorage.getItem('userInfo'));
+  const { orderId } = match.params;
 
-  async function getList() {
-    await axios.post(`/api/payments/${userID}/${orderId}`).then((res) => {
+  function getList() {
+    axios.post(`/api/payments/${userID}/${orderId}`).then((res) => {
       setOrderInfo(res.data);
       setOrderDetails(res.data.order_detail);
     });
   }
   useState(() => {
-    // eslint-disable-next-line no-param-reassign
-    orderId = match.params.orderId;
     getList();
   }, []);
 
