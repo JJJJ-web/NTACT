@@ -31,6 +31,8 @@ function Payment({ sumAmount, cartItems }) {
     buyer_name: JSON.parse(sessionStorage.getItem('userInfo')).userName, // 구매자 이름
     buyer_tel: phoneNumber, // 구매자 전화번호
     buyer_email: email, // 구매자 이메일
+    // m_redirect_url: 'http://ntact.site:3000/payment/result',
+    m_redirect_url: 'http://localhost:3000/payment/result',
   };
   async function sendCartData(sumAmount, cartItems) {
     let sendStat;
@@ -61,14 +63,15 @@ function Payment({ sumAmount, cartItems }) {
       .post(`/api/payments/${userID}/${data.merchant_uid}`)
       .then((res) => {
         history.push({
-          pathname: '/payment_success',
+          // pathname: '/payment_success',
+          pathname: '/payment/result',
           state: { orderInfo: res.data },
         });
       })
       .catch((error) => false);
   }
 
-  function callback(response) {
+  function callback(response) { // pc버전 결제
     if (response.success) {
       // 결제 성공 시
       axios({
@@ -88,8 +91,10 @@ function Payment({ sumAmount, cartItems }) {
           if (data.data.status === 'success') {
             data.data.order_type = orderType;
             dispatch(deleteAll());
-            socket.emit('F');
-            getOrderData();
+            history.push({
+              pathname: '/payment/result',
+              state: { result: response },
+            });
           } else {
             dispatch(deleteAll());
             history.push({
@@ -106,6 +111,7 @@ function Payment({ sumAmount, cartItems }) {
           });
         });
     } else {
+      console.log(response);
       // 결제 실패 시
       history.push({
         pathname: '/payment/result',
