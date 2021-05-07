@@ -5,13 +5,17 @@ const cors = require('@koa/cors');
 const bodyParser = require('koa-bodyparser');
 // api module
 const api = require('../api');
-
 const app = new Koa();
 const router = new Router();
 
-// cors()를 사용하여 현재는 모든 경로에 대한 cors 접근을 허용했습니다. 
-// 추후 저희 프론트 경로만 접근 허용하는 옵션을 설정해야합니다.
-app.use(cors());
+// cors()를 사용하여 클라이언트 도메인에만 접근을 허용했습니다. 
+const corsOption = {
+    origin: 'http://ntact.site:3000',
+};
+
+app.use(cors(corsOption));
+
+
 
 // HTTP header 부분을 text로 변환해줍니다. ctx.body로 접근가능합니다.
 // json, text, form 형태로 반환해줍니다.
