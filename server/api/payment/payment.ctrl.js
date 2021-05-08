@@ -158,19 +158,28 @@ exports.mobile = async (ctx) => {
       orderToBeUpdated.buyer_tel = paymentData.buyer_tel;
       orderToBeUpdated.order_stat = 'ready';
       orderToBeUpdated.payment = paymentData;
-      await orderToBeUpdated.save();
 
-      ctx.body = {
-        status: 'success',
-        message: '모바일 결제 성공',
-        buyer_name: orderToBeUpdated.buyer_name,
-        order_id: orderToBeUpdated.id,
-        order_name: orderToBeUpdated.name,
-        order_detail: orderToBeUpdated.order_detail,
-        order_type: orderToBeUpdated.order_type,
-        total_price: orderToBeUpdated.amount,
-        order_date: orderToBeUpdated.date.toLocaleString(),
-      };
+      const paymentResultStatus = ctx.request.query.imp_success === 'true' ? 'success' : 'failed';
+
+      if (paymentResultStatus === 'success') {
+        await orderToBeUpdated.save();
+        ctx.body = {
+          status: 'success',
+          message: '모바일 결제 성공',
+          buyer_name: orderToBeUpdated.buyer_name,
+          order_id: orderToBeUpdated.id,
+          order_name: orderToBeUpdated.name,
+          order_detail: orderToBeUpdated.order_detail,
+          order_type: orderToBeUpdated.order_type,
+          total_price: orderToBeUpdated.amount,
+          order_date: orderToBeUpdated.date.toLocaleString(),
+        };
+      } else {
+        ctx.body = {
+          status: 'failed',
+          message: ctx.request.query.error_msg,
+        };
+      }
     } else { // 위변조된 결제
       throw { status: 'forgery', message: '위조된 결제시도' };
     }
