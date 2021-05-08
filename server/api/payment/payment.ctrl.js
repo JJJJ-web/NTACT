@@ -120,6 +120,75 @@ exports.complete = async (ctx) => {
   }
 };
 
+exports.mobile = async (ctx) => {
+  try {
+    const impUid = ctx.request.query.imp_uid;
+    const merchantUid = ctx.request.query.merchant_uid;
+
+    const getToken = await axios({ // access token 발급
+      url: 'https://api.iamport.kr/users/getToken',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      data: {
+        imp_key: paymentConfig.imp_key,
+        imp_secret: paymentConfig.imp_secret,
+      },
+    });
+    const accessToken = getToken.data.response.access_token; // 인증 토큰
+
+    const getPaymentData = await axios({ // 결제 정보 조회
+      url: `https://api.iamport.kr/payments/${impUid}`,
+      method: 'get',
+      headers: { Authorization: accessToken },
+    });
+    const paymentData = getPaymentData.data.response;
+
+    // DB에서 결제되어야 하는 금액 조회
+    const order = await orderModel.findByPk(paymentData.merchant_uid);
+    const amountToBePaid = order.amount;
+
+    // 결제 검증하기
+    const { amount } = paymentData;
+    if (amount === amountToBePaid) { // 위변조 되지 않았으면 DB에 결제 정보 업데이트
+      const orderToBeUpdated = await orderModel.findOne({ where: { id: merchantUid } });
+      if (!orderToBeUpdated) {
+        throw Error(`Order ${orderToBeUpdated.id} does not exist.`);
+      }
+      orderToBeUpdated.buyer_name = paymentData.buyer_name;
+      orderToBeUpdated.buyer_tel = paymentData.buyer_tel;
+      orderToBeUpdated.order_stat = 'ready';
+      orderToBeUpdated.payment = paymentData;
+
+      const paymentResultStatus = ctx.request.query.imp_success === 'true' ? 'success' : 'failed';
+
+      if (paymentResultStatus === 'success') {
+        await orderToBeUpdated.save();
+        ctx.body = {
+          status: 'success',
+          message: '모바일 결제 성공',
+          buyer_name: orderToBeUpdated.buyer_name,
+          order_id: orderToBeUpdated.id,
+          order_name: orderToBeUpdated.name,
+          order_detail: orderToBeUpdated.order_detail,
+          order_type: orderToBeUpdated.order_type,
+          total_price: orderToBeUpdated.amount,
+          order_date: orderToBeUpdated.date.toLocaleString(),
+        };
+      } else {
+        ctx.body = {
+          status: 'failed',
+          message: ctx.request.query.error_msg,
+        };
+      }
+    } else { // 위변조된 결제
+      throw { status: 'forgery', message: '위조된 결제시도' };
+    }
+  } catch (e) {
+    ctx.status = 400;
+    ctx.body = e;
+  }
+};
+
 exports.refund = async (ctx) => {
   try {
     // access token 발급
