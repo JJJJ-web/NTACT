@@ -69,5 +69,5 @@
             "/node_modules/(?!antd|@ant-design|rc-.+?|@babel/runtime).+(js|jsx)$"
         ]
     },
-    "proxy": "http://13.209.109.91:4000"
+    "proxy": "http://dev.ntact.site:4000"
 }
