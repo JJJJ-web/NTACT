@@ -10,7 +10,6 @@ import { CreditCardOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import impCode from '../config/payment.json';
 import { deleteAll } from '../store/actions';
-import socket from '../SocketInfo';
 
 function Payment({ sumAmount, cartItems }) {
   const history = useHistory();
@@ -31,8 +30,8 @@ function Payment({ sumAmount, cartItems }) {
     buyer_name: JSON.parse(sessionStorage.getItem('userInfo')).userName, // 구매자 이름
     buyer_tel: phoneNumber, // 구매자 전화번호
     buyer_email: email, // 구매자 이메일
-    // m_redirect_url: 'http://ntact.site:3000/payment/result',
-    m_redirect_url: 'http://localhost:3000/payment/result',
+    m_redirect_url: 'http://dev.ntact.site:4000/api/payments/complete/mobile',
+    // m_redirect_url: 'http://localhost:4000/api/payments/complete/mobile',
   };
   async function sendCartData(sumAmount, cartItems) {
     let sendStat;

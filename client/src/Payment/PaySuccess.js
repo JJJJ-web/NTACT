@@ -9,8 +9,6 @@ function PaySuccess() {
   const location = useLocation();
   const { Step } = Steps;
   const { userID } = JSON.parse(sessionStorage.getItem('userInfo'));
-  console.log('PaySuccess');
-  console.log(location.state);
   if (location.state == null) {
     return <>잘못된 접근입니다.</>;
   } 
