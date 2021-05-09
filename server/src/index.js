@@ -5,12 +5,15 @@ const cors = require('@koa/cors');
 const bodyParser = require('koa-bodyparser');
 // api module
 const api = require('../api');
+
 const app = new Koa();
 const router = new Router();
 
 // cors()를 사용하여 클라이언트 도메인에만 접근을 허용했습니다. 
 const corsOption = {
-    origin: 'http://ntact.site:3000',
+  origin: ['http://ntact.site:3000',
+    'http://admin.ntact.site:3000',
+    'http://kitchen.ntact.site:3000'],
 };
 
 app.use(cors(corsOption));
