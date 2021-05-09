@@ -176,6 +176,29 @@ exports.mobile = async (ctx) => {
   }
 };
 
+exports.result = async (ctx) => {
+  const paymentId = ctx.request.query.id;
+  const paymentOrder = await orderModel.findOne({ where: { id: paymentId } });
+  if (paymentOrder.buyer_tel != null) {
+    ctx.body = {
+      status: 'success',
+      message: '모바일 결제 성공',
+      buyer_name: paymentOrder.buyer_name,
+      order_id: paymentOrder.id,
+      order_name: paymentOrder.name,
+      order_detail: paymentOrder.order_detail,
+      order_type: paymentOrder.order_type,
+      total_price: paymentOrder.amount,
+      order_date: paymentOrder.date.toLocaleString(),
+    };
+  } else {
+    ctx.body = {
+      status: 'failed',
+      message: paymentOrder.payment,
+    };
+  }
+};
+
 exports.refund = async (ctx) => {
   try {
     // access token 발급
