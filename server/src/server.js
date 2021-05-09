@@ -5,7 +5,9 @@ const httpServer = require('http').createServer(app.callback());
 
 const options = {
   cors: {
-    origin: ['http://ntact.site:3000'],
+    origin: ['http://ntact.site:3000',
+      'http://admin.ntact.site:3000',
+      'http://kitchen.ntact.site:3000'],
     methods: ['GET', 'POST'],
   },
 };
