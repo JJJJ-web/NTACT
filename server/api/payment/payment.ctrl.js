@@ -166,11 +166,11 @@ exports.mobile = async (ctx) => {
         orderToBeUpdated.payment = ctx.request.query.error_msg;
         await orderToBeUpdated.save();
       }
+      ctx.status = 301;
+      ctx.redirect(`http://localhost:3000/payment/result?id=${orderToBeUpdated.id}`);
     } else { // 위변조된 결제
       throw { status: 'forgery', message: '위조된 결제시도' };
     }
-    ctx.status = 301;
-    ctx.redirect('http://localhost:3000/payment/result');
   } catch (e) {
     ctx.status = 400;
     ctx.body = e;
