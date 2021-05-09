@@ -7,6 +7,7 @@ import {
   Payment,
   PaymentResult,
   PaymentSuccess,
+  PaymentFailed,
   PaymentHistory,
   PaymentDetail,
   MenuManage,
@@ -23,6 +24,7 @@ const Router = () => (
     <Route exact path="/payment" component={Payment} />
     <Route exact path="/payment/result" component={PaymentResult} />
     <Route exact path="/payment_success" component={PaymentSuccess} />
+    <Route exact path="/payment_failed" component={PaymentFailed} />
     <Route exact path="/payment/history" component={PaymentHistory} />
     <Route exact path="/payment/history/:orderId" component={PaymentDetail} />
     <Route path="/menu_manage" component={MenuManage} />
