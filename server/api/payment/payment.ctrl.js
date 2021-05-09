@@ -169,6 +169,7 @@ exports.mobile = async (ctx) => {
     } else { // 위변조된 결제
       throw { status: 'forgery', message: '위조된 결제시도' };
     }
+    ctx.status = 301;
     ctx.redirect('http://localhost:3000/payment/result');
   } catch (e) {
     ctx.status = 400;
