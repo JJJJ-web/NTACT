@@ -7,26 +7,26 @@ function ShopTabs() {
   const [ready, setRCount] = useState();
   const [progress, setPCount] = useState();
   const [completed, setCCount] = useState();
-  const [data, setData] = useState([]);
   const { TabPane } = Tabs;
 
-  useState(() => {
+  function getCount() {
     axios.get('/api/orders/ready').then((res) => {
-      setData(res.data);
       setRCount(res.data.length);
     });
     axios.get('/api/orders/in-progress').then((res) => {
-      setData(res.data);
       setPCount(res.data.length);
     });
     axios.get('/api/orders/completed').then((res) => {
-      setData(res.data);
       setCCount(res.data.length);
     });
-  });
+  }
+
+  useEffect(() => {
+    getCount();
+  }, [ready, progress, completed]);
 
   return (
-    <Tabs defaultActiveKey="ready" size="large">
+    <Tabs defaultActiveKey="ready" size="large" onClick={getCount}>
       <TabPane tab={` 접수 ${ready}`} key="ready">
         <ShopList status="ready" />
       </TabPane>
