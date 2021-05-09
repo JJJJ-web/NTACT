@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { 
   Card, Button, Select, List, Popconfirm, message,
 } from 'antd';
@@ -21,14 +21,14 @@ function ShopList(props) {
       .then((res) => setData(res.data.reverse()));
   }
   
-  useEffect(() => {
+  useState(() => {
     // 역순 출력
     socket.on('G', () => {
       alert('실시간 주문 접수 이벤트 G 수신');
       getList();
     });
     getList();
-  }, [data]);
+  }, []);
   
   // eslint-disable-next-line consistent-return
   function changeStatus(item) {
@@ -39,6 +39,23 @@ function ShopList(props) {
       return 'completed';
     }
   }
+  function changeTabCountReady() {
+    axios.get('/api/orders/ready').then((res) => {
+      props.setRCount(res.data.length);
+    });
+  }
+  function changeTabCountProgress() {
+    let length;
+    axios.get('/api/orders/in-progress').then((res) => {
+      props.setPCount(res.data.length);
+    });
+  }
+  function changeTabCountCompleted() {
+    axios.get('/api/orders/completed').then((res) => {
+      props.setCCount(res.data.length);
+    });
+  }
+
 
   async function changeStateHandler(item) {
     // <> server 주문 진행 상태 변경
@@ -52,6 +69,9 @@ function ShopList(props) {
         if (res.status === 200) {
           socket.emit('B', { userID: item.buyer_id });
           getList();
+          changeTabCountReady();
+          changeTabCountProgress();
+          changeTabCountCompleted();
         }
       })
       .catch((error) => {
