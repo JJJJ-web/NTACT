@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Card, Button, Select, List, Popconfirm, message,
 } from 'antd';
@@ -21,14 +21,14 @@ function ShopList(props) {
       .then((res) => setData(res.data.reverse()));
   }
   
-  useState(() => {
+  useEffect(() => {
     // 역순 출력
     socket.on('G', () => {
       alert('실시간 주문 접수 이벤트 G 수신');
       getList();
     });
     getList();
-  }, []);
+  }, [data]);
   
   // eslint-disable-next-line consistent-return
   function changeStatus(item) {
