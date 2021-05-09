@@ -154,38 +154,48 @@ exports.mobile = async (ctx) => {
       if (!orderToBeUpdated) {
         throw Error(`Order ${orderToBeUpdated.id} does not exist.`);
       }
-      orderToBeUpdated.buyer_name = paymentData.buyer_name;
-      orderToBeUpdated.buyer_tel = paymentData.buyer_tel;
-      orderToBeUpdated.order_stat = 'ready';
-      orderToBeUpdated.payment = paymentData;
 
       const paymentResultStatus = ctx.request.query.imp_success === 'true' ? 'success' : 'failed';
-
       if (paymentResultStatus === 'success') {
+        orderToBeUpdated.buyer_name = paymentData.buyer_name;
+        orderToBeUpdated.buyer_tel = paymentData.buyer_tel;
+        orderToBeUpdated.order_stat = 'ready';
+        orderToBeUpdated.payment = paymentData;
         await orderToBeUpdated.save();
-        ctx.body = {
-          status: 'success',
-          message: '모바일 결제 성공',
-          buyer_name: orderToBeUpdated.buyer_name,
-          order_id: orderToBeUpdated.id,
-          order_name: orderToBeUpdated.name,
-          order_detail: orderToBeUpdated.order_detail,
-          order_type: orderToBeUpdated.order_type,
-          total_price: orderToBeUpdated.amount,
-          order_date: orderToBeUpdated.date.toLocaleString(),
-        };
       } else {
-        ctx.body = {
-          status: 'failed',
-          message: ctx.request.query.error_msg,
-        };
+        orderToBeUpdated.payment = ctx.request.query.error_msg;
+        await orderToBeUpdated.save();
       }
     } else { // 위변조된 결제
       throw { status: 'forgery', message: '위조된 결제시도' };
     }
+    ctx.redirect('http://localhost:3000/payment/result');
   } catch (e) {
     ctx.status = 400;
     ctx.body = e;
+  }
+};
+
+exports.result = async (ctx) => {
+  const paymentId = ctx.request.query.id;
+  const paymentOrder = await orderModel.findOne({ where: { id: paymentId } });
+  if (paymentOrder.buyer_tel != null) {
+    ctx.body = {
+      status: 'success',
+      message: '모바일 결제 성공',
+      buyer_name: paymentOrder.buyer_name,
+      order_id: paymentOrder.id,
+      order_name: paymentOrder.name,
+      order_detail: paymentOrder.order_detail,
+      order_type: paymentOrder.order_type,
+      total_price: paymentOrder.amount,
+      order_date: paymentOrder.date.toLocaleString(),
+    };
+  } else {
+    ctx.body = {
+      status: 'failed',
+      message: paymentOrder.payment,
+    };
   }
 };
 
