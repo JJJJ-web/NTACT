@@ -11,14 +11,13 @@ import {
   PaymentHistory,
   PaymentDetail,
   MenuManage,
-  Login,
   Shop,
 } from './index';
 
 const Router = () => (
   <Switch>
     <Route exact path="/" component={Home} />
-    <Route path="/login" component={Login} />
+    <Route path="/login" component={Home} />
     <Route path="/finalcart" component={FinalCart} />
     <Route path="/menu" component={Menu} />
     <Route exact path="/payment" component={Payment} />
@@ -29,6 +28,7 @@ const Router = () => (
     <Route exact path="/payment/history/:orderId" component={PaymentDetail} />
     <Route path="/menu_manage" component={MenuManage} />
     <Route path="/shop" component={Shop} />
+    <Route render={() => <div>에러</div>} />
   </Switch>
 );
 

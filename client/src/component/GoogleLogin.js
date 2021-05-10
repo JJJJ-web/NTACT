@@ -32,20 +32,24 @@ function Google() {
             axios
               .post('/api/users/google', { headers: { Authorization: googleUser.getAuthResponse().access_token } })
               .then((res) => {
+                sessionStorage.setItem(
+                  'jwt',
+                  res.data.jwtToken,
+                );
                 const user = jwt.verify(
                   res.data.jwtToken,
                   loginInfo.jwt_password,
                 ); // 백에서 jwtToken받아옴
                 sessionStorage.setItem(
                   'userInfo',
-                  JSON.stringify({ userName: user.username, userID: user.id, userRole: user.role }),
+                  JSON.stringify({
+                    userName: user.username,
+                    userID: user.id,
+                    userRole: user.role,
+                  }),
                 );
                 socket.emit('A', { userID: user.id, socketID: socket.id, role: user.role });
                 history.push('/menu');
-                if (res.status === 200) {
-                  // 가입된 사용자일 경우 로그인 성공 처리
-                  window.alert('가입된 사용자');
-                }
               })
               .catch((error) => alert('Error가 발생하였습니다', error));
           },
@@ -83,7 +87,7 @@ const GoogleLoginStyle = styled.button`
   margin: auto;
   margin-bottom: 8px;
   font-size: 12px;
-  color: #4a4a4a;
+  color: #5680F5;
   background-color: #ffffff;
   box-shadow: 0 2px 1px 0 rgba(155, 155, 155, 0.5);
   display: flex;

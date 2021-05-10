@@ -29,10 +29,10 @@ function Login(props) {
                 withCredentials: true,
               })
               .then((res) => {
-                if (res.status === 200) {
-                  // 가입된 사용자일 경우 로그인 성공 처리
-                  // window.alert('가입된 사용자');
-                }
+                sessionStorage.setItem(
+                  'jwt',
+                  res.data.jwtToken,
+                );
                 const user = jwt.verify(
                   res.data.jwtToken,
                   loginInfo.jwt_password,
@@ -40,7 +40,11 @@ function Login(props) {
                 setUserName((user.username));
                 sessionStorage.setItem(
                   'userInfo',
-                  JSON.stringify({ userName: user.username, userID: user.id, userRole: user.role }),
+                  JSON.stringify({
+                    userName: user.username,
+                    userID: user.id,
+                    userRole: user.role,
+                  }),
                 );
                 socket.emit('A', { userID: user.id, socketID: socket.id, role: user.role });
                 props.history.push('/menu');
@@ -58,22 +62,11 @@ function Login(props) {
       console.error(err);
     }
   };
-  /*
-    logoutWithKakao() {
-        if (window.Kakao.Auth.getAccessToken()) {
-            console.log('카카오 인증 액세스 토큰이 존재합니다.',
-                window.Kakao.Auth.getAccessToken());
-            window.Kakao.Auth.logout(() => {
-                console.log('로그아웃 되었습니다', window.Kakao.Auth.getAccessToken());
-            });
-        }
-    };
-     */
 
   return (
     <KakaoLoginStyle onClick={loginWithKakao}>
       <img src="./kakao-logo.png" id="icon-img" alt="kakaologo" />
-      카카오로 로그인
+      카카오로 시작하기
     </KakaoLoginStyle>
   );
 }
