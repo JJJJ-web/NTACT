@@ -45,7 +45,6 @@ function ShopList(props) {
     });
   }
   function changeTabCountProgress() {
-    let length;
     axios.get('/api/orders/in-progress').then((res) => {
       props.setPCount(res.data.length);
     });
