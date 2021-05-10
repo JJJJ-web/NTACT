@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import {
-  Card, Button, Select, List, Popconfirm, message,
-} from 'antd';
+  Card, Button, CardHeader, CardFooter, CardBody, Alert, List, Input,
+  CardTitle, CardText, UncontrolledPopover, PopoverContent, PopoverBody, Collapse,
+} from 'reactstrap';
 import axios from 'axios';
 import styled from 'styled-components';
 import SituationManage from './SituationManage';
 import socket from '../../SocketInfo';
 
 function ReceiptList(props) {
-  const { Option } = Select;
   const [data, setData] = useState([]);
   // eslint-disable-next-line react/destructuring-assignment
   const [status, setStatus] = useState(props.status);
@@ -30,6 +30,13 @@ function ReceiptList(props) {
     getList();
   }, []);
 
+  function printAlert(message) {
+    return(
+      <Alert color="warning">
+        {message}
+      </Alert>
+    );
+  }
   // eslint-disable-next-line consistent-return
   function changeStatus(item) {
     // 주문 진행 상태 변경
@@ -39,7 +46,22 @@ function ReceiptList(props) {
       return 'completed';
     }
   }
-
+  function changeTabCountReady() {
+    axios.get('/api/orders/ready').then((res) => {
+      props.setRCount(res.data.length);
+    });
+  }
+  function changeTabCountProgress() {
+    axios.get('/api/orders/in-progress').then((res) => {
+      props.setPCount(res.data.length);
+    });
+  }
+  function changeTabCountCompleted() {
+    axios.get('/api/orders/completed').then((res) => {
+      props.setCCount(res.data.length);
+    });
+  }
+  
   async function changeStateHandler(item) {
     // <> server 주문 진행 상태 변경
     await axios
@@ -52,6 +74,9 @@ function ReceiptList(props) {
         if (res.status === 200) {
           socket.emit('B', { userID: item.buyer_id });
           getList();
+          changeTabCountReady();
+          changeTabCountProgress();
+          changeTabCountCompleted();
         }
       })
       .catch((error) => {
@@ -71,7 +96,7 @@ function ReceiptList(props) {
     })
       .then((res) => {
         if (res.status === 200) {
-          message.success('주문이 취소되었습니다.');
+          printAlert('주문이 취소되었습니다.');
           axios
             .patch(`/api/orders/${item.id}`, {
               // 주문 취소: server에 주문 상태 변경
@@ -89,7 +114,7 @@ function ReceiptList(props) {
             });
         } else if (res.status === 400) {
           console.log(res);
-          message.success('유효하지 않은 요청입니다.');
+          printAlert('유효하지 않은 요청입니다.');
         } else {
           console.log(res);
           alert('환불 실패');
@@ -106,7 +131,7 @@ function ReceiptList(props) {
     if (item.order_stat === 'ready') {
       cancelPay(item);
     } else {
-      message.warning('조리 중에는 주문을 취소할 수 없습니다.');
+      printAlert('조리 중에는 주문을 취소할 수 없습니다.');
     }
   }
 
@@ -165,79 +190,72 @@ function ReceiptList(props) {
     <>
       <DivList>
         {data.map((item, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <div className="cardList" key={index}>
-            <Card
-              title={item.id}
-              style={{ width: 300 }}
-              className="items"
-              bodyStyle={{ height: 500 }}
-              headStyle={{ fontSize: 20 }}
-            >
+          // eslint-disable-next-line react/no-array-index-key,react/style-prop-object
+          <Card className="card" style={{ width: '18rem' }} key={index}>
+            <CardHeader tag="h4">
+              {item.id}
+            </CardHeader>
+            <CardBody>
+              <b
+                className="order_type"
+                style={{ color: colorOrderType(item.order_type) }}
+              >
+                {convertOrderType(item.order_type)}
+              </b>
+              <span className="date">{formatDate(item.date)}</span>
               <div>
-                <b
-                  className="order_type"
-                  style={{ color: colorOrderType(item.order_type) }}
-                >
-                  {convertOrderType(item.order_type)}
-                </b>
-                <span className="date">{formatDate(item.date)}</span>
-                <div>
-                  <Popconfirm
-                    onConfirm={() => canceledMenu(item)}
-                    title={text}
-                    okText="확인"
-                    cancelText="닫기"
-                    className="reject"
-                  >
-                    <Button
-                      style={{ visibility: chectStatReady(item.order_stat) }}
-                      danger
-                      type="primary"
-                    >
-                      주문 취소
-                    </Button>
-                  </Popconfirm>
-                </div>
-                <hr />
-                <List itemLayout="vertical">
-                  {item.order_detail.map((order, index) => (
-                    // eslint-disable-next-line react/no-array-index-key
-                    <List.Item key={index}>
-                      <span className="menu">{order.Name}</span>
-                      <b className="quantity">{order.Quantity}</b>
-                    </List.Item>
-                  ))}
-                </List>
-                <div className="select">
-                  <Select
-                    defaultValue={10}
-                    onChange={(e) => setValue(e)}
-                    style={{
-                      width: 105,
-                      visibility: chectStatReady(item.order_stat),
-                    }}
-                  >
-                    <Option value={5}>5</Option>
-                    <Option value={10}>10</Option>
-                    <Option value={15}>15</Option>
-                    <Option value={20}>20</Option>
-                  </Select>
-                  <Button
-                    type="primary"
-                    disabled={checkOrderStat(item.order_stat)}
-                    className="Button"
-                    onClick={() => changeStateHandler(item)}
-                  >
-                    {returnStat(item.order_stat)}
+                <PopoverBody>
+                  {/*  onConfirm={() => canceledMenu(item)} */}
+                  {/*  title={text} */}
+                  {/*  okText="확인" */}
+                  {/*  cancelText="닫기" */}
+                  {/*  className="reject" */}
+                  {/* > */}
+                  <Button color="danger" id="orderCancleButton" onClick={() => canceledMenu(item)}>
+                    주문 취소
                   </Button>
-                </div>
+                  <UncontrolledPopover trigger="click" placement="top" target="orderCancleButton">
+                    {() => canceledMenu(item)}
+                  </UncontrolledPopover>
+                </PopoverBody>
               </div>
-            </Card>
-          </div>
+              <hr />
+              <List type="unstyled">
+                {item.order_detail.map((order, index) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <li key={index}>
+                    <span className="menu">{order.Name}</span>
+                    <b className="quantity">{order.Quantity}</b>
+                  </li>
+                ))}
+              </List>
+              <div className="select">
+                <Input
+                  type="select"
+                  name="select"
+                  defaultValue={10}
+                  onChange={(e) => setValue(e)}
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                  <option value={20}>20</option>
+                </Input>
+                <Button
+                  type="primary"
+                  color="success"
+                  disabled={checkOrderStat(item.order_stat)}
+                  className="Button"
+                  onClick={() => changeStateHandler(item)}
+                >
+                  {returnStat(item.order_stat)}
+                </Button>
+              </div>
+            </CardBody>
+          </Card>
         ))}
       </DivList>
-      <SituationManage />
+      {/* <SituationManage /> */}
     </>
   );
 }
@@ -249,6 +267,10 @@ const DivList = styled.div`
   white-space: nowrap;
   height: 600px;
 
+  .card {
+    margin-right: 3px;
+    border: 1px solid #bcbcbc;
+  }
   .order_type {
     font-size: 2rem;
   }

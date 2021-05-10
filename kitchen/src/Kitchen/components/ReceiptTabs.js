@@ -10,25 +10,20 @@ function ReceiptTabs() {
   const [ready, setRCount] = useState();
   const [progress, setPCount] = useState();
   const [completed, setCCount] = useState();
-  const [data, setData] = useState([]);
   const [activeTab, setActiveTab] = useState('0');
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-
   useState(() => {
     axios.get('/api/orders/ready').then((res) => {
-      setData(res.data);
       setRCount(res.data.length);
     });
     axios.get('/api/orders/in-progress').then((res) => {
-      setData(res.data);
       setPCount(res.data.length);
     });
     axios.get('/api/orders/completed').then((res) => {
-      setData(res.data);
       setCCount(res.data.length);
     });
   });
@@ -65,13 +60,13 @@ function ReceiptTabs() {
 
         <TabContent activeTab={activeTab}>
           <TabPane tabId="0">
-            <ReceiptList status="ready" />
+            <ReceiptList status="ready" setRCount={setRCount} setPCount={setPCount} setCCount={setCCount} />
           </TabPane>
           <TabPane tabId="1">
-            <ReceiptList status="in-progress" />
+            <ReceiptList status="in-progress" setRCount={setRCount} setPCount={setPCount} setCCount={setCCount} />
           </TabPane>
           <TabPane tabId="2">
-            <ReceiptList status="completed" />
+            <ReceiptList status="completed" setRCount={setRCount} setPCount={setPCount} setCCount={setCCount} />
           </TabPane>
         </TabContent>
       </div>
