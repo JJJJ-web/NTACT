@@ -2,6 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useHistory, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import jwt from 'jsonwebtoken';
+import loginInfo from '../config/loginInfo.json';
+import socket from '../SocketInfo';
 
 function Google() {
   const googleLoginBtn = useRef(null);
@@ -26,13 +29,19 @@ function Google() {
           googleLoginBtn.current,
           {},
           (googleUser) => {
-            console.log('(구글) 정상적으로 로그인 되었습니다.', googleUser);
-            history.push('/menu');
             axios
               .post('/api/users/google', { headers: { Authorization: googleUser.getAuthResponse().access_token } })
               .then((res) => {
-                sessionStorage.setItem('token', res.data.token);
-                console.log(`res.status: ${res.status}`);
+                const user = jwt.verify(
+                  res.data.jwtToken,
+                  loginInfo.jwt_password,
+                ); // 백에서 jwtToken받아옴
+                sessionStorage.setItem(
+                  'userInfo',
+                  JSON.stringify({ userName: user.username, userID: user.id, userRole: user.role }),
+                );
+                socket.emit('A', { userID: user.id, socketID: socket.id, role: user.role });
+                history.push('/menu');
                 if (res.status === 200) {
                   // 가입된 사용자일 경우 로그인 성공 처리
                   window.alert('가입된 사용자');
