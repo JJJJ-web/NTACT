@@ -10,7 +10,7 @@ import { Collapse, Space } from 'antd';
 import { addCart } from '../store/actions';
 import socket from '../SocketInfo';
 
-function MenuList(props) {
+function MenuList({ categoryId }) {
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
   const { Panel } = Collapse;
@@ -24,7 +24,7 @@ function MenuList(props) {
   }, []);
 
   const list = products.filter((res) => (
-    res.category_id === props.categoryId
+    res.category_id === categoryId
   ));
 
   for (let i = 0; i < list.length; i++) {
@@ -91,10 +91,6 @@ function MenuList(props) {
     </MenuListStyle>
   );
 }
-
-MenuList.propTypes = {
-  categoryId: PropTypes.func.isRequired,
-};
 
 const MenuListStyle = styled.div`
   display: inline-block;
