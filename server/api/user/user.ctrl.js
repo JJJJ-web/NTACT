@@ -24,6 +24,7 @@ exports.kakao = async (ctx) => {
       // 토큰 생성
       jwtToken = jwt.sign(
         {
+          exp: Math.floor(Date.now() / 1000) + (10 * 60),
           role: 'client',
           username: kakaoUserDB.properties.nickname,
           id: kakaoUserDB.id, // 유저 정보
@@ -75,6 +76,7 @@ exports.google = async (ctx) => {
       // 토큰 생성
       jwtToken = jwt.sign(
         {
+          exp: Math.floor(Date.now() / 1000) + (10 * 60),
           role: 'client',
           username: GoogleUserDB.name,
           id: GoogleUserDB.sub, // 유저 정보
@@ -134,7 +136,7 @@ exports.chef = async (ctx) => {
 
   const jwtToken = jwt.sign(
     {
-      id : result.id,
+      id: result.id,
       name: result.name,
       role: 'chef',
     },
@@ -171,7 +173,7 @@ exports.admin = async (ctx) => {
 
   const jwtToken = jwt.sign(
     {
-      id : result.id,
+      id: result.id,
       name: result.name,
       role: 'admin',
     },
