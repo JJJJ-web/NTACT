@@ -11,6 +11,9 @@ users.post('/kakao', ctrl.kakao);
 // 고객 구글 로그인
 users.post('/google', ctrl.google);
 
+// 고객 비회원 로그인
+users.post('/anonymous', ctrl.anonymous);
+
 // 주방관리자 로그인
 users.post('/chef', ctrl.chef);
 

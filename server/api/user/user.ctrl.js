@@ -1,10 +1,11 @@
+const uuid4 = require('uuid4');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+
 const userModel = require('../../models').dev_user;
 const chefModel = require('../../models').dev_chef;
 const adminModel = require('../../models').dev_admin;
 const passwordConfig = require('../../config/password-config.json');
-
 
 // 카카오 로그인
 exports.kakao = async (ctx) => {
@@ -28,6 +29,7 @@ exports.kakao = async (ctx) => {
           role: 'client',
           username: kakaoUserDB.properties.nickname,
           id: kakaoUserDB.id, // 유저 정보
+          tel: kakaoUserDB.tel,
         },
         passwordConfig.jwt_password, // secret Key
       );
@@ -64,7 +66,7 @@ exports.google = async (ctx) => {
   const GoogleToken = ctx.request.body.headers.Authorization;
   let jwtToken;
 
-  // kakao 서버에 요청하여 유저정보 가져온후 DB에 저장
+  // google 서버에 요청하여 유저정보 가져온후 DB에 저장
   await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
     headers: {
       Authorization: `Bearer ${GoogleToken}`,
@@ -80,6 +82,7 @@ exports.google = async (ctx) => {
           role: 'client',
           username: GoogleUserDB.name,
           id: GoogleUserDB.sub, // 유저 정보
+          tel: GoogleUserDB.tel,
         },
         passwordConfig.jwt_password, // secret Key
       );
@@ -103,6 +106,24 @@ exports.google = async (ctx) => {
     .catch((error) => {
       console.log(error);
     });
+
+  ctx.body = { jwtToken };
+  ctx.status = 200;
+};
+
+// 비회원 로그인
+exports.anonymous = async (ctx) => {
+  const splitUUID4 = uuid4().split('-');
+  
+  const jwtToken = jwt.sign(
+    {
+      exp: Math.floor(Date.now() / 1000) + (10 * 60),
+      role: 'client',
+      username: '비회원',
+      id: splitUUID4[2] + splitUUID4[1] + splitUUID4[0] + splitUUID4[3] + splitUUID4[4], // 유저 정보
+    },
+    passwordConfig.jwt_password, // secret Key
+  );
 
   ctx.body = { jwtToken };
   ctx.status = 200;
