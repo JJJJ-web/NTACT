@@ -11,7 +11,19 @@ function PaymentHistory() {
   const [histories, setHistories] = useState([]);
 
   async function getList() {
-    axios.post(`/api/payments/${userID}`).then((res) => setHistories(res.data));
+    axios.post(`/api/payments/${userID}`)
+      .then((res) => {
+        if (res.status === 200) {
+          setHistories(res.data);
+        } else if (res.status === 204) {
+          return (
+            <div />
+          );
+        }
+        return null;
+      }).catch((err) => {
+        console.log(err);
+      });
   }
 
   useEffect(() => {
