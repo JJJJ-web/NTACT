@@ -91,10 +91,11 @@ function ListCard({ orderInfo, orderDetails, reload }) {
             </b>
             <div style={{ color: '#8b8b8b' }}>
               주문번호:
+              {' '}
               {orderInfo.id}
             </div>
-            <div style={{ color: '#8b8b8b' }}>
-              주문일시: 
+            <div style={{ color: '#2d2d2d' }}>
+              주문일시:
               {' '}
               {new Date(orderInfo.date).toLocaleString()}
             </div>
