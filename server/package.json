@@ -18,7 +18,8 @@
     "redis-server": "^1.2.2",
     "sequelize": "^6.5.0",
     "sequelize-auto": "^0.7.9",
-    "socket.io": "^4.0.0"
+    "socket.io": "^4.0.0",
+    "uuid4": "^2.0.2"
   },
   "devDependencies": {
     "eslint": "^7.24.0",
