@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useHistory, useLocation, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import queryString from 'query-string';
+import { useDispatch } from 'react-redux';
 import socket from '../SocketInfo';
+import { deleteAll } from '../store/actions';
 
 /*eslint-disable */
 function PaymentResult() {
@@ -10,6 +12,7 @@ function PaymentResult() {
   const { userID } = JSON.parse(sessionStorage.getItem('userInfo'));
   const history = useHistory();
   const location = useLocation();
+  const dispatch = useDispatch();
   let success;
   let isSuccessed;
   let query;
@@ -61,6 +64,7 @@ function PaymentResult() {
   if (location.state === undefined) { // 모바일
     query = queryString.parse(location.search);
     merchant_uid = query.id;
+    dispatch(deleteAll());
     getMerchant(merchant_uid).then((res) => {
       loading = true;
       setReturn();
