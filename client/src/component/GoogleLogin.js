@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import loginInfo from '../config/loginInfo.json';
 import socket from '../SocketInfo';
 
-function Google() {
+function GoogleLogin() {
   const googleLoginBtn = useRef(null);
   const history = useHistory();
 
@@ -46,6 +46,7 @@ function Google() {
                     userName: user.username,
                     userID: user.id,
                     userRole: user.role,
+                    userTel: user.tel,
                   }),
                 );
                 socket.emit('A', { userID: user.id, socketID: socket.id, role: user.role });
@@ -100,4 +101,4 @@ const GoogleLoginStyle = styled.button`
     margin-bottom: 6px;
   }
 `;
-export default withRouter(Google);
+export default withRouter(GoogleLogin);
