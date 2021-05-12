@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import loginInfo from '../config/loginInfo.json';
 import socket from '../SocketInfo';
 
-function Login(props) {
+function KakaoLogin(props) {
   const [userName, setUserName] = useState('');
   const [Authorization, setAuthorization] = useState('');
 
@@ -44,6 +44,7 @@ function Login(props) {
                     userName: user.username,
                     userID: user.id,
                     userRole: user.role,
+                    userTel: user.tel,
                   }),
                 );
                 socket.emit('A', { userID: user.id, socketID: socket.id, role: user.role });
@@ -93,4 +94,4 @@ const KakaoLoginStyle = styled.button`
   }
 `;
 
-export default withRouter(Login);
+export default withRouter(KakaoLogin);
