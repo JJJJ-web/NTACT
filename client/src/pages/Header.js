@@ -15,23 +15,19 @@ function Header() {
         inlineIndent="1"
         mode="horizontal"
         style={{
+          paddingTop: '10px',
           lineHeight: '30px',
-          textAlign: 'center',
           backgroundColor: '#FFF8EA',
         }}
       >
-        <Menu.Item key="1">
+        <Menu.Item key="1" style={{ float: 'left' }}>
           <Link to="/menu">
-            <ReadOutlined />
-            메뉴판
+            <img height="18px" src="/logo-e30.png" alt="logo" style={{ paddingBottom: '5px' }} />
           </Link>
         </Menu.Item>
 
-        <Menu.Item key="2" disabled>
-          {userName}
-        </Menu.Item>
 
-        <Menu.Item key="3">
+        <Menu.Item key="3" style={{ float: 'right' }}>
           <Link to="/payment/history">
             <MenuOutlined />
             결제 내역
