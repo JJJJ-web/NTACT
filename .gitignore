@@ -9,3 +9,4 @@ client/src/config
 */yarn-error.log
 */node_modules/
 */src/containers/LogIn/loginInfo.json
+*/src/Login/loginInfo.json
