@@ -14,7 +14,7 @@ function CategoryTabs() {
         <DefaultTabBar 
           {...props} 
           className="site-custom-tab-bar"
-          style={{ ...style, backgroundColor: 'white' }} 
+          style={{ ...style, backgroundColor: 'white' }}
         />
       )}
     </Sticky>
@@ -25,10 +25,9 @@ function CategoryTabs() {
   }, []);
 
   return (
-    <StickyContainer>
+    <StickyContainer style={{ paddingRight: '10px', paddingLeft: '10px', backgroundColor: 'white' }}>
       <Tabs
         type="card"
-        tabBarGutter="2%"
         defaultActiveKey="0"
         size="large"
         centered="true"

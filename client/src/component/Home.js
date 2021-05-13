@@ -9,28 +9,25 @@ import NonMemberLogin from './NonMemberLogin';
 function Home() {
   const history = useHistory();
 
-  function guid() {
-    function s4() {
-      // eslint-disable-next-line no-bitwise
-      return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
-    }
-    return `${s4() + s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
-  }
-
-  function nonMemberLogin() {
-    const UUID = guid();
-    sessionStorage.setItem(
-      'userInfo',
-      JSON.stringify({ userName: '비회원', userID: UUID, userRole: 'client' }),
-    );
-    history.push('/menu');
-  }
-
   return (
     <Layout>
       <div className="header">
-        <img height="100%" src="./ntact512.png" alt="logo" />
+        <img height="30px" src="./logo40.png" alt="logo" />
       </div>
+      <b className="store-name">
+        이디야커피랩
+      </b>
+      <div className="store-info-tel">
+        02-543-6467
+      </div>
+      <div className="store-info-address">
+        서울특별시 강남구 논현동 논현로 636
+      </div>
+      <b className="introduction">
+        환영합니다.
+        <br />
+        NTACT 간편 주문 서비스입니다.
+      </b>
       <span className="content">
         <GoogleLogin />
         <KakaoLogin />
@@ -48,7 +45,23 @@ const Layout = styled.div`
   text-align: center;
   
   .header{
-    height: 30vw;
+    margin-top: 10px;
+    height: 30px;
+  }
+  .store-name{
+    margin-top: 3rem;
+    font-size: 2rem;
+  }
+  .store-info-tel{
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+  }
+  .store-info-address{
+    margin-top: 0.5rem;
+  }
+  .introduction{
+    margin-top: 3rem;
+    color: #ffb400;
   }
   .content{
     margin-top: 3rem;
