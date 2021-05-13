@@ -22,3 +22,13 @@ export const decrement = (item) => ({
   type: 'DECREMENT',
   payload: item,
 });
+
+export const increment2 = (item) => ({
+  type: 'INCREMENT2',
+  payload: item,
+});
+
+export const decrement2 = (item) => ({
+  type: 'DECREMENT2',
+  payload: item,
+});
