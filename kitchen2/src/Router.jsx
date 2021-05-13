@@ -1,12 +1,12 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import LogIn from './Login/Login';
-import Kitchen from './Shop/Shop';
+import Header from './Header/index';
 
 const wrappedRoutes = () => (
   <div>
     <div className="container__wrap">
-      <Route path="/kitchen" component={Kitchen} />
+      <Route path="/kitchen" component={Header} />
     </div>
   </div>
 );

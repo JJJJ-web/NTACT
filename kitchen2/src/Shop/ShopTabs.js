@@ -22,7 +22,7 @@ function ShopTabs(props) {
   });
 
   return (
-    <Tabs defaultActiveKey="ready" size="large">
+    <Tabs type="card" defaultActiveKey="ready" size="large">
       <TabPane tab={` 접수 ${ready}`} key="ready">
         <ShopList status="ready" setRCount={setRCount} setPCount={setPCount} setCCount={setCCount} />
       </TabPane>
