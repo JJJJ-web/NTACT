@@ -1,21 +1,27 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LazyImage } from 'react-lazy-images';
-import { LoadingOutlined } from '@ant-design/icons';
-import { Collapse, Space } from 'antd';
-import { addCart } from '../store/actions';
+import { 
+  LoadingOutlined, MinusOutlined, PlusOutlined, ShoppingCartOutlined,
+} from '@ant-design/icons';
+import {
+  Collapse, Space, Steps, Divider, Button, Badge,
+} from 'antd';
+import { addCart, increment2, decrement2 } from '../store/actions';
 import socket from '../SocketInfo';
 
 function MenuList({ categoryId }) {
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
+  const cartList = useSelector((store) => store.cartReducer);
   const { Panel } = Collapse;
+  const ButtonGroup = Button.Group;
   const list2 = [];
-
+  const [num, setNum] = useState(0);
+  
   useState(() => {
     axios.get('/api/menus').then((res) => setProducts(res.data));
     socket.on('E', () => {
@@ -35,11 +41,19 @@ function MenuList({ categoryId }) {
     json.Img = list[i].img_url;
     json.Price = list[i].price;
     json.Description = list[i].description;
-    json.Quantity = 1;
+    json.Quantity = 0;
     json.Status = list[i].sales_stat;
     json.DelayTime = list[i].delay_time;
 
     list2.push(json);
+  }
+
+  function countCart(id) {
+    for(let i = 0; i < cartList.spareCart.length; i++) {
+      if(id === cartList.spareCart[i].Id) {
+        setNum(cartList.spareCart[i].Quantity);
+      }
+    }
   }
 
   return (
@@ -52,38 +66,69 @@ function MenuList({ categoryId }) {
             className="site-collapse-custom-collapse"
             key={item.Id}
           >
-            <div role="menu" tabIndex={idx} className="menuItem" onClick={() => dispatch(addCart(item))} onKeyDown={() => dispatch(addCart(item))}>
-              <LazyImage
-                src={item.Img}
-                alt={item.Name}
-                title={item.Name}
-                width="20%"
-                placeholder={({ imageProps, ref }) => (
-                  <LoadingOutlined
-                    style={{ color: 'orange', fontSize: '5rem' }}
-                    ref={ref}
-                    alt={imageProps.alt}
+            <Panel
+              header={(
+                <div role="menu" tabIndex={idx} className="menuItem">
+                  <LazyImage
+                    src={item.Img}
+                    alt={item.Name}
+                    title={item.Name}
+                    width="20%"
+                    placeholder={({ imageProps, ref }) => (
+                      <LoadingOutlined
+                        style={{ color: 'orange', fontSize: '5rem' }}
+                        ref={ref}
+                        alt={imageProps.alt}
+                      />
+                    )}
+                    actual={
+                      ({ imageProps }) => <img {...imageProps} alt="img" />
+                    }
                   />
-                )}
-                actual={
-                  ({ imageProps }) => <img {...imageProps} alt="img" />
-                }
-              />
-              <div className="itmeName">{item.Name}</div>
-              <div className="itmePrice">
-                {item.Price.toLocaleString()}
-                원
-              </div>
+                  <div className="itmeName">{item.Name}</div>
+                  <div className="itmePrice">
+                    {item.Price.toLocaleString()}
+                    원
+                  </div>
+                  <div>
+                    품절: 
+                    {item.Status}
+                    , 지연시간:
+                    {item.DelayTime}
+                    {' '}
+                  </div>
+                </div>
+              )}
+              className="site-collapse-custom-panel"
+            >
               <div>
-                품절: 
-                {item.Status}
-                , 지연시간:
-                {item.DelayTime}
-                {' '}
+                {item.Description}
+                <div>
+                  <ButtonGroup className="button">
+                    <Button 
+                      onClick={() => {
+                        dispatch(decrement2(item));
+                        countCart(item.Id);
+                      }}
+                      min={0}
+                    >
+                      <MinusOutlined />
+                    </Button>
+                    <Button>
+                      {num}
+                    </Button>
+                    <Button 
+                      onClick={() => {
+                        dispatch(increment2(item));
+                        countCart(item.Id);
+                      }}
+                    >
+                      <PlusOutlined />
+                    </Button>
+                  </ButtonGroup>
+                </div>
+                <Button onClick={() => dispatch(addCart(item))} shape="circle" size="large" icon={<ShoppingCartOutlined />} />
               </div>
-            </div>
-            <Panel header="설명보기" className="site-collapse-custom-panel">
-              <p>{item.Description}</p>
             </Panel>
           </Collapse>
         </Space>
@@ -97,15 +142,17 @@ const MenuListStyle = styled.div`
 
   .site-collapse-custom-collapse {
     width: 100vw;
+    expandIcon: 
   }
   .site-collapse-custom-panel {
     display: inline-block;
-    background-color: lightgrey;
+    background-color: white;
   }
 
   .menuItem {
     display: inline;
     width: 100vh;
+    
   }
   .itmePrice {
     position: relative;

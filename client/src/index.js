@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import persistStore from 'redux-persist/es/persistStore';
-import { PersistGate } from 'redux-persist/integration/react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import './index.css';
@@ -10,17 +8,13 @@ import reportWebVitals from './reportWebVitals';
 import App from './App';
 import rootReducer from './store/reducers';
 
-
 const store = createStore(rootReducer);
-const persistor = persistStore(store);
 
 ReactDOM.render(
   <Provider store={store}>
-    <PersistGate persistor={persistor}>
-      <Router>
-        <App />
-      </Router>
-    </PersistGate>
+    <Router>
+      <App />
+    </Router>
   </Provider>,
   document.getElementById('root'),
 );
