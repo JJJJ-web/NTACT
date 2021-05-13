@@ -1,26 +1,23 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { LazyImage } from 'react-lazy-images';
 import { 
-  LoadingOutlined, MinusOutlined, PlusOutlined, ShoppingCartOutlined,
+  LoadingOutlined, ShoppingCartOutlined,
 } from '@ant-design/icons';
 import {
   Collapse, Space, Steps, Divider, Button, Badge,
 } from 'antd';
-import { addCart, increment2, decrement2 } from '../store/actions';
+import { addCart } from '../store/actions';
 import socket from '../SocketInfo';
+import QuantityButtons from './QuantityControl';
 
 function MenuList({ categoryId }) {
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
-  const cartList = useSelector((store) => store.cartReducer);
   const { Panel } = Collapse;
-  const ButtonGroup = Button.Group;
   const list2 = [];
-  const [num, setNum] = useState(0);
   
   useState(() => {
     axios.get('/api/menus').then((res) => setProducts(res.data));
@@ -46,14 +43,6 @@ function MenuList({ categoryId }) {
     json.DelayTime = list[i].delay_time;
 
     list2.push(json);
-  }
-
-  function countCart(id) {
-    for(let i = 0; i < cartList.spareCart.length; i++) {
-      if(id === cartList.spareCart[i].Id) {
-        setNum(cartList.spareCart[i].Quantity);
-      }
-    }
   }
 
   return (
@@ -82,6 +71,7 @@ function MenuList({ categoryId }) {
                       />
                     )}
                     actual={
+                      // eslint-disable-next-line react/jsx-props-no-spreading
                       ({ imageProps }) => <img {...imageProps} alt="img" />
                     }
                   />
@@ -104,28 +94,7 @@ function MenuList({ categoryId }) {
               <div>
                 {item.Description}
                 <div>
-                  <ButtonGroup className="button">
-                    <Button 
-                      onClick={() => {
-                        dispatch(decrement2(item));
-                        countCart(item.Id);
-                      }}
-                      min={0}
-                    >
-                      <MinusOutlined />
-                    </Button>
-                    <Button>
-                      {num}
-                    </Button>
-                    <Button 
-                      onClick={() => {
-                        dispatch(increment2(item));
-                        countCart(item.Id);
-                      }}
-                    >
-                      <PlusOutlined />
-                    </Button>
-                  </ButtonGroup>
+                  <QuantityButtons item={item} />
                 </div>
                 <Button onClick={() => dispatch(addCart(item))} shape="circle" size="large" icon={<ShoppingCartOutlined />} />
               </div>
@@ -142,7 +111,6 @@ const MenuListStyle = styled.div`
 
   .site-collapse-custom-collapse {
     width: 100vw;
-    expandIcon: 
   }
   .site-collapse-custom-panel {
     display: inline-block;
