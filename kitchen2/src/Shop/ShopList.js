@@ -106,17 +106,17 @@ function ShopList(props) {
             .catch((error) => {
               console.log(error);
             });
-        } else if (res.status === 400) {
+        } else if (res.status === 500) {
           console.log(res);
-          message.success('유효하지 않은 요청입니다.');
+          message.error('유효하지 않은 요청입니다.');
         } else {
           console.log(res);
-          alert('환불 실패');
+          message.error('유효하지 않은 요청입니다.');
         }
       })
       .catch((error) => {
         console.log(error);
-        alert('환불 실패');
+        message.error('이미 취소된 주문입니다.');
       });
   }
 
