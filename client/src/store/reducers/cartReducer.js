@@ -11,13 +11,10 @@ const cartReducer = (state = INITIAL_STATE, action) => {
     const spareItem = state.spareCart.find((item) => item.Id === action.payload.Id);
     const cartItem = state.cart.find((item) => item.Id === action.payload.Id);
 
-    if (spareItem) { // 임시 스토어에 들어있고
-      if(cartItem) { // 카트 스토어에 이미 들어 있다면
-        // 해당 배열에서 Quantity 값만 수정
+    if (spareItem) {
+      if(cartItem) {
         cartItem.Quantity = spareItem.Quantity;
-        // 또는 해당 배열에서 삭제 후 현제 값을 배열에 push
-      } else { // 임시 스토어에 있지만 카트 스토어에 없는 경우
-        // 바로 카트 스토어에 push
+      } else {
         state.cart.push(spareItem);
       }
     } else {
@@ -25,7 +22,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
     }
 
     state.total = state.spareTotal;
-    console.log(state);
+
     return {
       ...state,
       spareCart: [...state.cart],
