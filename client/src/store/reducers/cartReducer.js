@@ -8,23 +8,24 @@ const INITIAL_STATE = {
 const cartReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case 'ADD_ITEM': {
-    const cartitem = state.spareCart.find((item) => item.Id === action.payload.Id);
+    const spareItem = state.spareCart.find((item) => item.Id === action.payload.Id);
+    const cartItem = state.cart.find((item) => item.Id === action.payload.Id);
 
-    if (cartitem) {
-      state.cart.push(cartitem);
+    if (spareItem) { // 임시 스토어에 들어있고
+      if(cartItem) { // 카트 스토어에 이미 들어 있다면
+        // 해당 배열에서 Quantity 값만 수정
+        cartItem.Quantity = spareItem.Quantity;
+        // 또는 해당 배열에서 삭제 후 현제 값을 배열에 push
+      } else { // 임시 스토어에 있지만 카트 스토어에 없는 경우
+        // 바로 카트 스토어에 push
+        state.cart.push(spareItem);
+      }
     } else {
-      const addtoCart = {
-        Id: action.payload.Id,
-        Img: action.payload.Img,
-        Name: action.payload.Name,
-        Price: action.payload.Price,
-        Quantity: 1,
-      };
-      state.cart.push(addtoCart);
+      state.spareCart.push(spareItem);
     }
 
     state.total = state.spareTotal;
-
+    console.log(state);
     return {
       ...state,
       spareCart: [...state.cart],
@@ -88,7 +89,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
       spareCart: [...state.spareCart],
       spareTotal: state.spareTotal + action.payload.Price,
       cart: [...state.cart],
-      total: 0,
+      total: state.total,
     };
   }
 
@@ -127,7 +128,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         spareCart: [...state.spareCart],
         spareTotal: state.spareTotal - action.payload.Price,
         cart: [...state.cart],
-        total: 0,
+        total: state.total,
       };
     }
 
