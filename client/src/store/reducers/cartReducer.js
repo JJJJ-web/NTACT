@@ -67,9 +67,16 @@ const cartReducer = (state = INITIAL_STATE, action) => {
 
   case 'INCREMENT2': {
     const add = state.spareCart.find((item) => item.Id === action.payload.Id);
+    const add2 = state.cart.find((item) => item.Id === action.payload.Id);
 
     if(add) {
-      add.Quantity += 1;
+      if(add2) {
+        add.Quantity += 1;
+        add2.Quantity = add.Quantity;
+        state.total = state.spareTotal + action.payload.Price;
+      } else {
+        add.Quantity += 1;
+      }
     } else {
       const addtoSpare = {
         Id: action.payload.Id,
@@ -116,10 +123,17 @@ const cartReducer = (state = INITIAL_STATE, action) => {
 
   case 'DECREMENT2': {
     const del = state.spareCart.find((item) => item.Id === action.payload.Id);
+    const del2 = state.cart.find((item) => item.Id === action.payload.Id);
 
     if (del && del.Quantity > 0) {
-      del.Quantity -= 1;
-
+      if(del2) {
+        del.Quantity -= 1;
+        del2.Quantity = del.Quantity;
+        state.total = state.spareTotal - action.payload.Price;
+      } else {
+        del.Quantity -= 1;
+      }
+      
       return {
         ...state,
         spareCart: [...state.spareCart],
