@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-  Form, Input, Button, Checkbox,
+  Form, Input, Button, Checkbox, message,
 } from 'antd';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
@@ -33,7 +33,7 @@ function Login() {
         }
       })
       .catch((error) => {
-        console.log(error);
+        message.error('ID나 PW를 확인하세요.');
       });
   }
 
