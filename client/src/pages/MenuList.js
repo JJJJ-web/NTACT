@@ -13,18 +13,10 @@ import { addCart } from '../store/actions';
 import socket from '../SocketInfo';
 import QuantityButtons from './QuantityControl';
 
-function MenuList({ categoryId }) {
-  const [products, setProducts] = useState([]);
+function MenuList({ products, categoryId }) {
   const dispatch = useDispatch();
   const { Panel } = Collapse;
   const list2 = [];
-  
-  useState(() => {
-    axios.get('/api/menus').then((res) => setProducts(res.data));
-    socket.on('E', () => {
-      alert('실시간 주문 상태 변경 이벤트 E 수신');
-    });
-  }, []);
 
   const list = products.filter((res) => (
     res.category_id === categoryId
