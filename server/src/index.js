@@ -18,8 +18,6 @@ const corsOption = {
 
 app.use(cors(corsOption));
 
-
-
 // HTTP header 부분을 text로 변환해줍니다. ctx.body로 접근가능합니다.
 // json, text, form 형태로 반환해줍니다.
 app.use(bodyParser({ enableTypes: ['json', 'text', 'form'] }));
