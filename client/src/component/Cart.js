@@ -19,7 +19,7 @@ function Cart() {
         <div className="cartIcon">
           <ShoppingCartOutlined />
         </div>
-        <Badge className="badge" count={list.count} style={{ backgroundColor: 'rgba(0, 0, 0, 0.0)' }} />
+        <Badge className="badge" count={list.count} showZero style={{ backgroundColor: 'rgba(0, 0, 0, 0.0)' }} />
       </Link>
     </CartStyle>
   );
