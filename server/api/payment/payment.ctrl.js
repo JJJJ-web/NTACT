@@ -167,7 +167,7 @@ exports.mobile = async (ctx) => {
         await orderToBeUpdated.save();
       }
       ctx.status = 301;
-      ctx.redirect(`http://localhost:3000/payment/result?id=${orderToBeUpdated.id}`);
+      ctx.redirect(`http://ntact.site:3000/payment/result?id=${orderToBeUpdated.id}`);
     } else { // 위변조된 결제
       throw { status: 'forgery', message: '위조된 결제시도' };
     }
