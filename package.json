@@ -8,8 +8,7 @@
     "start": "node server/src/server.js",
     "backend": "nodemon server/src/server.js",
     "client": "npm run start --prefix client",
-    "wifi": "nodemon wifi-connector/src/index.js",
-    "dev": "concurrently \"npm run backend\" \"npm run wifi\" \"npm run client\""
+    "dev": "concurrently \"npm run backend\" \"npm run client\""
   },
   "repository": {
     "type": "git",
