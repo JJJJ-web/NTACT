@@ -27,7 +27,7 @@
         "redux-persist": "^6.0.0",
         "socket.io-client": "^4.0.0",
         "styled-components": "^5.2.1",
-        "swiper": "^6.6.0",
+        "swiper": "^6.6.1",
         "web-vitals": "^0.2.4"
     },
     "scripts": {
