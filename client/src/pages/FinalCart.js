@@ -7,8 +7,8 @@ import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { 
   deleteCart, increment, decrement, deleteAll,
 } from '../store/actions';
-import Header from '../pages/Header';
-import Payment from '../Payment/index';
+import Header from './Header';
+import Payment from '../Payment';
 
 function FinalCart() {
   const { Step } = Steps;
