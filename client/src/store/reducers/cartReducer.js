@@ -1,5 +1,6 @@
 const INITIAL_STATE = {
   cart: [],
+  count: 0,
   total: 0,
 };
 
@@ -25,6 +26,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       cart: [...state.cart],
+      count: state.count + action.payload.Quantity,
       total: state.total + (action.payload.Price * action.payload.Quantity),
     };
   }
@@ -33,12 +35,14 @@ const cartReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       cart: state.cart.filter((item) => item.Id !== action.payload.Id),
+      count: state.count - action.payload.Quantity,
       total: state.total - action.payload.Price,
     };
 
   case 'DELETE_ALL':
     return {
       cart: [],
+      count: 0,
       total: 0,
     };
 
@@ -52,6 +56,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       cart: [...state.cart],
+      count: state.count + action.payload.Quantity,
       total: state.total + action.payload.Price,
     };
   }
@@ -65,12 +70,14 @@ const cartReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         cart: [...state.cart],
+        count: state.count - action.payload.Quantity,
         total: state.total - action.payload.Price,
       };
     }
     return {
       ...state,
       cart: [...state.cart],
+      count: state.count,
       total: state.total,
     };
   }

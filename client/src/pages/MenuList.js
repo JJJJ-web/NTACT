@@ -37,12 +37,12 @@ function MenuList({ products, categoryId }) {
       {list2.map((item, idx) => (
         <Space key={item.Id} align="center" direction="vertical" wrap>
           <Collapse
-            defaultActiveKey="0"
-            expandIconPosition="right"
+            bordered={false}
             className="site-collapse-custom-collapse"
             key={item.Id}
           >
             <Panel
+              showArrow={false}
               header={(
                 <div role="menu" tabIndex={idx} className="menuItem">
                   <LazyImage
@@ -86,6 +86,7 @@ function MenuList({ products, categoryId }) {
               </div>
             </Panel>
           </Collapse>
+          <br />
         </Space>
       ))}
     </MenuListStyle>
@@ -97,10 +98,13 @@ const MenuListStyle = styled.div`
 
   .site-collapse-custom-collapse {
     width: 100vw;
+    background-color: white;
+    border-bottom: 1px solid #e9e9e9;
   }
   .site-collapse-custom-panel {
     display: inline-block;
     background-color: white;
+    border: 0px;
   }
 
   .menuItem {

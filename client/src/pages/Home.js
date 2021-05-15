@@ -2,9 +2,9 @@ import React from 'react';
 import { Button } from 'antd';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
-import KakaoLogin from './KakaoLogin';
-import GoogleLogin from './GoogleLogin';
-import NonMemberLogin from './NonMemberLogin';
+import KakaoLogin from '../component/KakaoLogin';
+import GoogleLogin from '../component/GoogleLogin';
+import NonMemberLogin from '../component/NonMemberLogin';
 
 function Home() {
   const history = useHistory();
