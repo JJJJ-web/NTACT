@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
 import { LazyImage } from 'react-lazy-images';
 import { 
   LoadingOutlined, ShoppingCartOutlined,
 } from '@ant-design/icons';
 import {
-  Collapse, Space, Steps, Divider, Button, Badge,
+  Collapse, Space,
 } from 'antd';
-import { addCart } from '../store/actions';
-import socket from '../SocketInfo';
 import QuantityButtons from './QuantityControl';
 
 function MenuList({ products, categoryId }) {
-  const dispatch = useDispatch();
   const { Panel } = Collapse;
   const list2 = [];
 
@@ -88,7 +83,6 @@ function MenuList({ products, categoryId }) {
                 <div>
                   <QuantityButtons item={item} />
                 </div>
-                <Button onClick={() => dispatch(addCart(item))} shape="circle" size="large" icon={<ShoppingCartOutlined />} />
               </div>
             </Panel>
           </Collapse>
