@@ -14,7 +14,7 @@ function CategoryTabs() {
   const [categories, setCategories] = useState([]);
   const { TabPane } = Tabs;
   // eslint-disable-next-line prefer-const
-  let [currentPage, setCurrentPage] = useState(100);
+  let [currentPage, setCurrentPage] = useState('100');
 
   const renderTabBar = (props, DefaultTabBar) => (
     <Sticky bottomOffset={80}>
@@ -78,6 +78,7 @@ function CategoryTabs() {
         size="large"
         centered="true"
         renderTabBar={renderTabBar}
+        animated={{ inkBar: false, tabPane: true }}
       >
         {categories.map((item) => (
           <TabPane tab={item.name_kor} key={item.id}>
@@ -86,6 +87,7 @@ function CategoryTabs() {
               loop="true"
               spaceBetween={30}
               className="mySwiper"
+              slidesPerView={1}
             >
               <SwiperSlide virtualIndex={item.id}>
                 <MenuList products={products} categoryId={item.id} />
