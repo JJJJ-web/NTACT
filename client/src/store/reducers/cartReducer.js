@@ -11,13 +11,12 @@ const cartReducer = (state = INITIAL_STATE, action) => {
 
     if (cartitem) {
       cartitem.Quantity += action.payload.Quantity;
-      cartitem.Price += action.payload.Price * action.payload.Quantity;
     } else {
       const addtoCart = {
         Id: action.payload.Id,
         Img: action.payload.Img,
         Name: action.payload.Name,
-        Price: action.payload.Price * action.payload.Quantity,
+        Price: action.payload.Price,
         Quantity: action.payload.Quantity,
       };
       state.cart.push(addtoCart);
@@ -36,7 +35,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
       ...state,
       cart: state.cart.filter((item) => item.Id !== action.payload.Id),
       count: state.count - action.payload.Quantity,
-      total: state.total - action.payload.Price,
+      total: state.total - (action.payload.Price * action.payload.Quantity),
     };
 
   case 'DELETE_ALL':
