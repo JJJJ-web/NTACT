@@ -55,7 +55,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       cart: [...state.cart],
-      count: state.count + action.payload.Quantity,
+      count: state.count + 1,
       total: state.total + action.payload.Price,
     };
   }
@@ -69,7 +69,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         cart: [...state.cart],
-        count: state.count - action.payload.Quantity,
+        count: state.count - 1,
         total: state.total - action.payload.Price,
       };
     }
