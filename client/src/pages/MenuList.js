@@ -120,13 +120,11 @@ const MenuListStyle = styled.div`
   }
 
   .site-collapse-custom-panel {
+    width: 100vw;
+    max-width: 600px;
     display: inline-block;
     background-color: white;
     border: 0px;
-  }
-
-  .site-collapse-custom-panel:active {
-    background-color: #FFF8EA;
   }
   
   .soldout {
@@ -138,6 +136,7 @@ const MenuListStyle = styled.div`
   .delayTime {
     position: absolute;
     left: 18%;
+    font-size: 0.9em;
   }
 
   .menuItem {
@@ -146,13 +145,15 @@ const MenuListStyle = styled.div`
   }
 
   .itmeName {
-    width: 100%;
+    position: absolute;
+    top: 40%;
+    left: 22%;
   }
 
   .itmePrice {
     position: absolute;
-    top: 60%;
-    left: 21.5%;
+    top: 40%;
+    right: 5%;
   }
 
   .menuItem div {
