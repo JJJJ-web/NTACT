@@ -228,6 +228,7 @@ function Payment({ sumAmount, cartItems }) {
           shape="round"
           size="large"
           icon={<CreditCardOutlined />}
+          disabled={sumAmount > 0 ? 0 : 1}
         >
           결제하기
         </Button>
@@ -241,6 +242,10 @@ const FormStyles = styled.div`
   justify-content: center;
   flex-direction: initial;
   text-align: center;
+  margin-bottom: 10vh;
+  margin-top: 50px;
+  
+  
   .ant-btn-primary {
     background-color: #ffb400;
     width: 50vw;

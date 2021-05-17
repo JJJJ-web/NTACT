@@ -153,7 +153,7 @@ const MenuListStyle = styled.div`
   .itmePrice {
     position: absolute;
     top: 40%;
-    right: 5%;
+    right: 10%;
   }
 
   .menuItem div {
