@@ -65,9 +65,8 @@ function CategoryTabs() {
 
   return (
     <StickyContainer style={{
-      paddingRight: '10px',
-      paddingLeft: '10px',
-      backgroundColor: 'white',
+      marginRight: '10px',
+      marginLeft: '10px',
     }}
     >
       <Tabs
@@ -81,13 +80,14 @@ function CategoryTabs() {
         animated={{ inkBar: false, tabPane: true }}
       >
         {categories.map((item) => (
-          <TabPane tab={item.name_kor} key={item.id}>
+          <TabPane tab={item.name_kor} key={item.id} style={{ marginTop: '-12px' }}>
             <Swiper
               onSlideChange={(e) => pageChange(e)}
               loop="true"
-              spaceBetween={30}
+              spaceBetween={3000}
               className="mySwiper"
               slidesPerView={1}
+              style={{ height: '100vh' }}
             >
               <SwiperSlide virtualIndex={item.id}>
                 <MenuList products={products} categoryId={item.id} />
