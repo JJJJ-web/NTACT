@@ -268,19 +268,40 @@ exports.refund = async (ctx) => {
 
 exports.find = async (ctx) => {
   const { id, selected } = ctx.params;
+  const { request } = ctx.request.query;
   let history;
   if (typeof selected === 'undefined') {
     try {
-      history = await orderModel.findAll({
-        attributes: ['id', 'name', 'amount', 'date', 'order_type', 'order_stat'],
-        where: {
-          buyer_id: id,
-          [Op.not]: [
-            { order_stat: 'uncharged' },
-          ],
-        },
-        order: [['date', 'DESC']],
-      });
+      if (typeof request === 'undefined') {
+        const aMonthAgo = new Date();
+        aMonthAgo.setMonth(aMonthAgo.getMonth() - 1);
+        aMonthAgo.setHours(0, 0, 0, 0);
+        history = await orderModel.findAll({
+          attributes: ['id', 'name', 'amount', 'date', 'order_type', 'order_stat'],
+          where: {
+            buyer_id: id,
+            [Op.not]: [
+              { order_stat: 'uncharged' },
+            ],
+            date: {
+              [Op.gt]: aMonthAgo,
+              [Op.lte]: new Date(), // now
+            },
+          },
+          order: [['date', 'DESC']],
+        });
+      } else if (request === 'all') {
+        history = await orderModel.findAll({
+          attributes: ['id', 'name', 'amount', 'date', 'order_type', 'order_stat'],
+          where: {
+            buyer_id: id,
+            [Op.not]: [
+              { order_stat: 'uncharged' },
+            ],
+          },
+          order: [['date', 'DESC']],
+        });
+      }
     } catch (e) {
       ctx.throw(500, e);
     }
