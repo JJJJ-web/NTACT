@@ -4,10 +4,6 @@ import { Link } from 'react-router-dom';
 import { MenuOutlined, ReadOutlined } from '@ant-design/icons';
 
 function Header() {
-  const [userName, setUserName] = useState(
-    JSON.parse(sessionStorage.getItem('userInfo')).userName,
-  );
-
   return (
     <Layout>
       <Menu
