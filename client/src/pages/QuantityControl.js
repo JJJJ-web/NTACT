@@ -32,19 +32,27 @@ function QuantityControl({ item }) {
       <Button
         className="minus"
         onClick={minusButton}
+        style={{ height: '30px' }}
       >
         <MinusOutlined />
       </Button>
-      <Button>
+      <Button style={{ height: '30px' }}>
         {quantity}
       </Button>
       <Button
         className="plus"
         onClick={plusButton}
+        style={{ height: '30px' }}
       >
         <PlusOutlined />
       </Button>
-      <Button disabled={item.Status === 0} onClick={() => cartButton()} shape="circle" size="large" icon={<ShoppingCartOutlined />} />
+      <Button 
+        disabled={item.Status === 0} 
+        onClick={() => cartButton()}
+        type="primary"
+        icon={<ShoppingCartOutlined style={{ fontSize: '1.4rem' }} />}
+        style={{ marginLeft: '2rem', height: '30px', width: '70px' }}
+      />
     </ButtonGroup>
   );
 }

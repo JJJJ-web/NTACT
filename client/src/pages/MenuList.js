@@ -5,11 +5,13 @@ import {
   LoadingOutlined, ShoppingCartOutlined,
 } from '@ant-design/icons';
 import {
-  Collapse, Space,
+  Collapse, Typography,
 } from 'antd';
 import QuantityButtons from './QuantityControl';
 
+const { Text } = Typography;
 function MenuList({ products, categoryId }) {
+  console.log('MenuList', products, categoryId);
   const { Panel } = Collapse;
   const list2 = [];
 
@@ -32,10 +34,25 @@ function MenuList({ products, categoryId }) {
     list2.push(json);
   }
 
+  function delayTime(time) {
+    if(time === 0) return null;
+    return `● 주문이 많아 ${time}분 지연 예상됩니다.`;
+  }
+  function delayTimeColor(time) {
+    if(time <= 10) {
+      return 'success';
+    } if(time <= 30) {
+      return 'warning';
+    } if(time <= 60) {
+      return 'danger';
+    }
+    return '';
+  }
+
   return (
     <MenuListStyle>
       {list2.map((item, idx) => (
-        <Space key={item.Id} align="center" direction="vertical" wrap>
+        <>
           <Collapse
             bordered={false}
             className="site-collapse-custom-collapse"
@@ -43,8 +60,15 @@ function MenuList({ products, categoryId }) {
           >
             <Panel
               showArrow={false}
+              className="site-collapse-custom-panel"
               header={(
                 <div role="menu" tabIndex={idx} className="menuItem">
+                  <img className="soldout" width={item.Status ? '0' : '20%'} src="/soldout.png" alt="logo" />
+
+                  <Text className="delayTime" type={delayTimeColor(item.DelayTime)}>
+                    {delayTime(item.DelayTime)}
+                  </Text>
+
                   <LazyImage
                     src={item.Img}
                     alt={item.Name}
@@ -62,32 +86,24 @@ function MenuList({ products, categoryId }) {
                       ({ imageProps }) => <img {...imageProps} alt="img" />
                     }
                   />
-                  <div className="itmeName">{item.Name}</div>
-                  <div className="itmePrice">
+
+                  <div className="itmeName">
+                    {item.Name}
+                  </div>
+                  <b className="itmePrice">
                     {item.Price.toLocaleString()}
                     원
-                  </div>
-                  <div>
-                    품절: 
-                    {item.Status}
-                    , 지연시간:
-                    {item.DelayTime}
-                    {' '}
-                  </div>
+                  </b>
                 </div>
               )}
-              className="site-collapse-custom-panel"
             >
-              <div>
+              <div className="description">
                 {item.Description}
-                <div>
-                  <QuantityButtons item={item} />
-                </div>
               </div>
+              <QuantityButtons item={item} />
             </Panel>
           </Collapse>
-          <br />
-        </Space>
+        </>
       ))}
     </MenuListStyle>
   );
@@ -95,29 +111,57 @@ function MenuList({ products, categoryId }) {
 
 const MenuListStyle = styled.div`
   display: inline-block;
+  width: 100vw;
 
   .site-collapse-custom-collapse {
     width: 100vw;
     background-color: white;
     border-bottom: 1px solid #e9e9e9;
   }
+
   .site-collapse-custom-panel {
     display: inline-block;
     background-color: white;
     border: 0px;
   }
 
+  .site-collapse-custom-panel:active {
+    background-color: #FFF8EA;
+  }
+  
+  .soldout {
+    position: absolute;
+    top: 15%;
+    left: 1%;
+  }
+
+  .delayTime {
+    position: absolute;
+    left: 18%;
+  }
+
   .menuItem {
     display: inline;
-    width: 100vh;
-    
+    width: 100vw;
   }
+
+  .itmeName {
+    width: 100%;
+  }
+
   .itmePrice {
-    position: relative;
-    top: 3vh;
+    position: absolute;
+    top: 60%;
+    left: 21.5%;
   }
+
   .menuItem div {
     display: inline;
+  }
+
+  .description {
+    color: #9a9a9a;
+    margin-bottom: 20px;
   }
 `;
 export default MenuList;

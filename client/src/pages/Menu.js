@@ -19,12 +19,18 @@ function Menu() {
     </>
   );
 }
-const HeaderStyles = styled.div``;
+const HeaderStyles = styled.div`
+  *:focus {
+    outline:none;
+  }
+`;
+
 const TopStyles = styled.div`
   position: relative;
   width: 100vw;
   height: 42px;
 `;
+
 const CategoryStyles = styled.div`
   position: absolute;
   top: 42px;
