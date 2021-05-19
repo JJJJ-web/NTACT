@@ -161,7 +161,7 @@ const CartList = styled.div`
 
   .quantityButton Button {
     height: 30%;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
   }
 
   .listimage {
@@ -185,7 +185,7 @@ const CartList = styled.div`
 
   .delete {
     position: absolute;
-    right: 8%;
+    right: 5%;
   }
 
   .sumDIV {
