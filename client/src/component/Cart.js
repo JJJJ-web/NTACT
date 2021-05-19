@@ -9,11 +9,20 @@ import {
 
 function Cart() {
   const list = useSelector((store) => store.cartReducer);
+  const [cartAnim, setCartAnim] = useState(false);
 
+  useEffect(() => {
+    if(list.count !== 0) {
+      setCartAnim(true);
+      setTimeout(() => {
+        setCartAnim(false);
+      }, 300);
+    }
+  }, [list.count]);
   return (
     <CartStyle>
       <Link to="/finalcart">
-        <div className="cartBack">
+        <div className={cartAnim ? 'back-animated' : 'back-normal'}>
           <img height="90px" src="/cart.png" alt="cart" />
         </div>
         <div className="cartIcon">
@@ -26,12 +35,32 @@ function Cart() {
 }
 
 const CartStyle = styled.div`
-  .cartBack{
+  .back-normal {
     position: fixed;
     bottom: 13px;
     right: 13px;
     z-index: 50;
   }
+  .back-animated {
+    position: fixed;
+    bottom: 13px;
+    right: 13px;
+    z-index: 50;
+    transform-origin: top;
+    animation: bell 1s linear;
+  }
+  @keyframes bell {
+    0%, 50% {
+      transform: rotate(0deg);
+    }
+    5%, 15%, 25%, 35%, 45% {
+      transform: rotate(7deg);
+    }
+    10%, 20%, 30%, 40% {
+      transform: rotate(-7deg);
+    }
+  }
+  
   .cartIcon{
     position: fixed;
     bottom: 7px;
