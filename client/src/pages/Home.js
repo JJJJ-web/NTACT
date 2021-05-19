@@ -12,7 +12,7 @@ function Home() {
   return (
     <Layout>
       <div className="header">
-        <img height="30px" src="./logo40.png" alt="logo" />
+        <img height="30px" src="/logo40.png" alt="logo" />
       </div>
       <b className="store-name">
         이디야커피랩

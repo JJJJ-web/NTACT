@@ -39,7 +39,7 @@ function NonMemberLogin(withRouter) {
 
   return (
     <NonMemberLoginStyle onClick={Login}>
-      <img src="./non-member.png" id="icon-img" alt="비회원로그인" />
+      <img src="/non-member.png" id="icon-img" alt="비회원로그인" />
       비회원으로 시작하기
     </NonMemberLoginStyle>
   );
