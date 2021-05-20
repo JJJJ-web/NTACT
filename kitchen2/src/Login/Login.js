@@ -27,7 +27,7 @@ function Login() {
           ); // 백에서 jwtToken받아옴
           sessionStorage.setItem(
             'userInfo',
-            JSON.stringify({ userName: user.name, userRole: user.role }),
+            JSON.stringify({ userID: user.id, userName: user.name, userRole: user.role }),
           );
           history.push('/kitchen');
         }

@@ -62,6 +62,7 @@ function ShopList(props) {
       .patch(`/api/orders/${item.id}`, {
         headers: {
           status: changeStatus(item),
+          userID: JSON.parse(sessionStorage.getItem('userInfo')).userID,
         },
       })
       .then((res) => {
@@ -96,6 +97,7 @@ function ShopList(props) {
               // 주문 취소: server에 주문 상태 변경
               headers: {
                 status: 'canceled',
+                userID: JSON.parse(sessionStorage.getItem('userInfo')).userID,
               },
             })
             .then((res) => {
