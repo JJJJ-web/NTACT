@@ -1,5 +1,7 @@
 const { Op } = require('sequelize');
 const orderModel = require('../../models').dev_orders;
+const RedisClient = require('../../redis');
+const server = require('../../src/server');
 
 exports.list = async (ctx) => {
   const { status } = ctx.params;
@@ -24,13 +26,15 @@ exports.list = async (ctx) => {
 };
 
 exports.status = async (ctx) => {
-  // id 파라미터를 받아 해당 주문 DB 찾아오기 
-  const { id } = ctx.params;
+  // 주문 id 파라미터를 받아 해당 주문 DB 찾아오기
+  
+  const { orderID } = ctx.params;
   const { status } = ctx.request.body.headers;
+  const { userID } = ctx.request.body.headers;
   let order;
 
   try {
-    order = await orderModel.findByPk(id);
+    order = await orderModel.findByPk(orderID);
   } catch (e) {
     ctx.throw(500, e);
   }
@@ -38,9 +42,18 @@ exports.status = async (ctx) => {
   // 해당 주문을 headers에 있는 status로 변경
   if(order.order_stat) {
     try {
-      orderModel.update({ order_stat: status }, { where: { id } });
+      orderModel.update({ order_stat: status }, { where: { orderID } });
     } catch (e) {
       ctx.throw(500, e);
     }
-  } ctx.status = 200;
+  } 
+  // 레디스에서 userID를 통해 socketID를 찾는다.
+  RedisClient.get(userID, (err, value) => {
+    if(err) console.log(err);
+    // ID를 통해 해당 소켓에게 C 이벤트를 송신한다.
+    server.io.to(value).emit('C');
+    console.log(`소켓ID:${value}에게 소켓이벤트 C (주문상태 변동) 전송`); 
+  });
+
+  ctx.status = 200;
 };
