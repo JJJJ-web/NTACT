@@ -38,14 +38,14 @@ function CategoryTabs() {
 
   function pageChange(e) {
     if(e.swipeDirection === 'next') {
-      if (currentPage >= '400') {
+      if (currentPage >= '800') {
         setCurrentPage(currentPage = '100');
       } else {
         setCurrentPage(currentPage = (Number(currentPage) + 100).toString());
       }
     } else if(e.swipeDirection === 'prev') {
       if (currentPage === '0' || currentPage === '100') {
-        setCurrentPage(currentPage = '400');
+        setCurrentPage(currentPage = '800');
       } else {
         setCurrentPage(currentPage = (Number(currentPage) - 100).toString());
       }

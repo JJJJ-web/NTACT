@@ -100,7 +100,6 @@ function PaymentHistory({ location }) {
   return (
     <div style={{ backgroundColor: '#eeeeee', minHeight: '100vh' }}>
       <Header />
-      <br />
       <RadioStyle>
         <Radio.Group onChange={checkListButton} value={moreButton}>
           <Radio.Button value={1}>30일 이내 결제내역</Radio.Button>
@@ -154,5 +153,19 @@ function PaymentHistory({ location }) {
 const RadioStyle = styled.div`
   width: 100vw;
   margin: 0 auto;
+
+  .ant-radio-button-wrapper {
+    background-color: rgba(245, 245, 245, 0);
+    color: #8d8d8d;
+    width: 50vw;
+    height: 100%;
+    text-align: center;
+    border-color: rgba(255, 255, 255, 0);
+    border-bottom: 1px solid #ffb400;
+  }
+
+  .ant-radio-button-wrapper-checked {
+    background-color: white;
+  }
 `;
 export default withRouter(PaymentHistory);
