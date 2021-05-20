@@ -11,7 +11,6 @@ import QuantityButtons from './QuantityControl';
 
 const { Text } = Typography;
 function MenuList({ products, categoryId }) {
-  console.log('MenuList', products, categoryId);
   const { Panel } = Collapse;
   const list2 = [];
 
@@ -52,7 +51,7 @@ function MenuList({ products, categoryId }) {
   return (
     <MenuListStyle>
       {list2.map((item, idx) => (
-        <>
+        <div key={item.Id}>
           <Collapse
             bordered={false}
             className="site-collapse-custom-collapse"
@@ -103,7 +102,7 @@ function MenuList({ products, categoryId }) {
               <QuantityButtons item={item} />
             </Panel>
           </Collapse>
-        </>
+        </div>
       ))}
     </MenuListStyle>
   );
