@@ -242,10 +242,11 @@ const FormStyles = styled.div`
   justify-content: center;
   flex-direction: initial;
   text-align: center;
-  margin-bottom: 10vh;
   margin-top: 50px;
-  
-  
+
+  #paymentForm {
+    margin-bottom: 20vh;
+  }
   .ant-btn-primary {
     background-color: #ffb400;
     width: 50vw;

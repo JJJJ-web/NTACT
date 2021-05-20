@@ -7,11 +7,12 @@ import { LeftOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import ListCard from './ListCard';
 
-function PaymentDetail({ match }) {
+function PaymentDetail({ match, location }) {
   const [orderInfo, setOrderInfo] = useState([]);
   const [orderDetails, setOrderDetails] = useState([]);
   const { userID } = JSON.parse(sessionStorage.getItem('userInfo'));
   const { orderId } = match.params;
+  const { more } = location.state;
 
   function getList() {
     axios.post(`/api/payments/${userID}/${orderId}`).then((res) => {
@@ -36,7 +37,13 @@ function PaymentDetail({ match }) {
           style={{ lineHeight: '30px', backgroundColor: '#FFF8EA' }}
         >
           <Menu.Item key="1">
-            <Link to="/payment/history">
+            <Link to={{
+              pathname: '/payment/history',
+              state: {
+                more,
+              },
+            }}
+            >
               <LeftOutlined />
               뒤로가기
             </Link>
