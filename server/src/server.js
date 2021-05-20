@@ -10,11 +10,12 @@ RedisClient.on('error', (error) => {
 
 const options = {
   cors: {
-    origin: ['http://ntact.site:3000',
-      'http://admin.ntact.site:3000',
+    origin: ['https://ntact.site',
+      'https://manager.ntact.site',
       'http://localhost:3000',
       'http://localhost:3001',
-      'http://kitchen.ntact.site:3000'],
+      'http://tmp.ntact.site:3000',
+      'http://tmp.kitchen.ntact.site:3000'],
     methods: ['GET', 'POST'],
   },
 };
