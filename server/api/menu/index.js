@@ -14,9 +14,9 @@ menus.patch('/status/:id', menusCtrl.saleStat);
 menus.patch('/delaytime/:id', menusCtrl.delayTime);
 // 특정 메뉴에 대한 전체 stat 변경 
 menus.put('/status', menusCtrl.status);
-// 특정 메뉴에 DB 삭제  
+// 특정 메뉴 삭제  
 menus.delete('/:id', menusCtrl.delete);
-// 특정 메뉴에 대한 전체 stat 변경 
+// 새로운 메뉴 생성
 menus.post('/menu', menusCtrl.create);
 
 module.exports = menus;
