@@ -10,25 +10,21 @@ import {
 import QuantityButtons from './QuantityControl';
 
 const { Text } = Typography;
-function MenuList({ products, categoryId }) {
+function MenuList({ products }) {
   const { Panel } = Collapse;
   const list2 = [];
 
-  const list = products.filter((res) => (
-    res.category_id === categoryId
-  ));
-
-  for (let i = 0; i < list.length; i++) {
+  for (let i = 0; i < products.length; i++) {
     const json = Object.create(null);
-    json.Id = list[i].id;
-    json.Name = list[i].name_kor;
-    json.CategoryId = list[i].category_id;
-    json.Img = list[i].img_url;
-    json.Price = list[i].price;
-    json.Description = list[i].description;
+    json.Id = products[i].id;
+    json.Name = products[i].name_kor;
+    json.CategoryId = products[i].category_id;
+    json.Img = products[i].img_url;
+    json.Price = products[i].price;
+    json.Description = products[i].description;
     json.Quantity = 0;
-    json.Status = list[i].sales_stat;
-    json.DelayTime = list[i].delay_time;
+    json.Status = products[i].sales_stat;
+    json.DelayTime = products[i].delay_time;
 
     list2.push(json);
   }
@@ -51,7 +47,7 @@ function MenuList({ products, categoryId }) {
   return (
     <MenuListStyle>
       {list2.map((item, idx) => (
-        <div key={item.Id}>
+        <>
           <Collapse
             bordered={false}
             className="site-collapse-custom-collapse"
@@ -102,7 +98,7 @@ function MenuList({ products, categoryId }) {
               <QuantityButtons item={item} />
             </Panel>
           </Collapse>
-        </div>
+        </>
       ))}
     </MenuListStyle>
   );

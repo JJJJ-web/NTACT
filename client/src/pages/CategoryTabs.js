@@ -9,8 +9,7 @@ import 'swiper/swiper.min.css';
 import socket from '../SocketInfo';
 
 function CategoryTabs() {
-  // eslint-disable-next-line prefer-const
-  let [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const { TabPane } = Tabs;
   // eslint-disable-next-line prefer-const
@@ -30,11 +29,6 @@ function CategoryTabs() {
 
   useEffect(() => {
     axios.get('/api/categories').then((res) => setCategories(res.data));
-  }, []);
-
-  useState(() => {
-    console.log(products);
-    // eslint-disable-next-line no-return-assign
     axios.get('/api/menus').then((res) => setProducts(res.data));
     socket.on('E', () => {
       alert('실시간 주문 상태 변경 이벤트 E 수신');
@@ -61,6 +55,10 @@ function CategoryTabs() {
   function tabChange(e) {
     console.log('tabChange', e);
     setCurrentPage(currentPage = e);
+  }
+
+  function filterProduct(c) {
+    return products.filter((res) => res.category_id === c);
   }
 
   return (
@@ -90,7 +88,7 @@ function CategoryTabs() {
               style={{ height: '100vh' }}
             >
               <SwiperSlide virtualIndex={item.id}>
-                <MenuList products={products} categoryId={item.id} />
+                <MenuList products={filterProduct(item.id)} />
               </SwiperSlide>
             </Swiper>
           </TabPane>
