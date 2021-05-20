@@ -1,6 +1,6 @@
 const app = require('./index');
 const syncDb = require('./sync-db');
-const httpServer = require('http').createServer(app.callback());
+const httpsServer = require('https').createServer(app.callback());
 const RedisClient = require('../redis');
 
 RedisClient.on('error', (error) => {
@@ -16,10 +16,11 @@ const options = {
       'http://localhost:3001',
       'http://tmp.ntact.site:3000',
       'http://tmp.kitchen.ntact.site:3000'],
-    methods: ['GET', 'POST'],
+    // methods를 일단 전부 허용으로 바꿔봤습니다. 
+    // methods: 'GET,POST',
   },
 };
-const io = require('socket.io')(httpServer, options);
+const io = require('socket.io')(httpsServer, options);
 
 // 소켓이 연결 되었을 경우
 io.on('connection', (socket) => {
@@ -78,10 +79,9 @@ io.on('connection', (socket) => {
 syncDb().then((_) => {
   console.log('Sync database!');
   const PORT = process.env.PORT || 4000;
-  httpServer.listen(PORT, () => {
-    console.log(`HTTPServer is running on ${PORT} port`);
+  httpsServer.listen(PORT, () => {
+    console.log(`HTTPS Server is running on ${PORT} port`);
   });
 });
 
-module.exports = httpServer;
 module.exports.io = io;
