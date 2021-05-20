@@ -74,7 +74,7 @@ const CartStyle = styled.div`
     font-size: 30px;
     width: 40px;
     position: fixed;
-    bottom: 50px;
+    bottom: 52px;
     right: 34px;
     z-index: 70;
   }
