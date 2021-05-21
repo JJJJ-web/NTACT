@@ -80,5 +80,5 @@
             }
         }
     },
-    "proxy": "http://localhost:4000"
+    "proxy": "https://dev.ntact.site"
 }
