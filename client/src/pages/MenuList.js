@@ -47,7 +47,7 @@ function MenuList({ products }) {
   return (
     <MenuListStyle>
       {list2.map((item, idx) => (
-        <>
+        <div key={item.Id}>
           <Collapse
             bordered={false}
             className="site-collapse-custom-collapse"
@@ -98,7 +98,7 @@ function MenuList({ products }) {
               <QuantityButtons item={item} />
             </Panel>
           </Collapse>
-        </>
+        </div>
       ))}
     </MenuListStyle>
   );
