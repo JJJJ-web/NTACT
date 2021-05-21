@@ -30,13 +30,6 @@ function AddMenu() {
     imageLoading: false,
   });
 
-  const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div style={{ marginTop: 8 }}>이미지 업로드</div>
-    </div>
-  );
-
   function handleSubmit(res) {
     const data = res.addMenus[0];
     console.log(data);
@@ -73,32 +66,7 @@ function AddMenu() {
     if (!isJpgOrPng) {
       message.error('JPG 또는 PNG 이미지만 등록 할 수 있습니다.');
     }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error('2MB 이하 이미지만 등록 가능합니다.');
-    }
-    return isJpgOrPng && isLt2M;
-  }
-
-  function getBase64(img, callback) {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-  }
-
-  function handleChange(info) {
-    console.log(info);
-    if (info.file.status === 'uploading') {
-      setImageLoading({ imageLoading: true });
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (imageUrl) => setImageLoading({
-        imageUrl,
-        imageLoading: false,
-      }));
-    }
+    return isJpgOrPng ? true : Upload.LIST_IGNORE;
   }
 
   function newCategoryKorChange(e) {
@@ -137,11 +105,10 @@ function AddMenu() {
                   align="baseline"
                 >
                   <Form.Item
-                    label="이미지"
+                    label="이미지 업로드"
                     name={[field.name, 'image']}
                     valuePropName="fileList"
                     getValueFromEvent={normFile}
-                    noStyle
                     rules={[
                       {
                         required: true,
@@ -149,16 +116,8 @@ function AddMenu() {
                       },
                     ]}
                   >
-                    <Upload
-                      name="uploadImage"
-                      listType="picture-card"
-                      className="image-uploader"
-                      showUploadList={false}
-                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                      beforeUpload={beforeUpload}
-                      onChange={handleChange}
-                    >
-                      {imageLoading.imageUrl ? <img src={imageLoading.imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                    <Upload name="logo" listType="picture" maxCount={1} beforeUpload={beforeUpload}>
+                      <Button icon={<PlusOutlined />}>이미지 선택</Button>
                     </Upload>
                   </Form.Item>
                   <Form.Item
