@@ -1,60 +1,121 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import {
-  Input, Select, InputNumber, Upload, Form, Button, Space, 
+  Input, Select, InputNumber, Upload, Form, Button, Space, message, Divider,
 } from 'antd';
-import { InboxOutlined, DeleteFilled, PlusOutlined } from '@ant-design/icons';
+import { LoadingOutlined, DeleteFilled, PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const { Option } = Select;
 const { TextArea } = Input;
 
 const normFile = (e) => {
   console.log('Upload event:', e);
-
   if (Array.isArray(e)) {
     return e;
   }
-
   return e && e.fileList;
 };
 
 function AddMenu() {
   const formRef = React.createRef();
+  const [form] = Form.useForm();
+  const [categories, setCategories] = useState([]);
+  const [newCategoryNameKor, setNewCategoryNameKor] = useState();
+  const [newCategoryNameEng, setNewCategoryNameEng] = useState();
+  const [imageUploadStatus, setImageUploadStatus] = useState();
+  const [imageLoading, setImageLoading] = useState({
+    imageUrl: null,
+    imageLoading: false,
+  });
 
-  function handleSubmit() {
+  const uploadButton = (
+    <div>
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>이미지 업로드</div>
+    </div>
+  );
 
+  function handleSubmit(res) {
+    const data = res.addMenus[0];
+    console.log(data);
+    const image = data.image[data.image.length - 1].name.split('.');
+
+    /*
+    axios.post('/api/menus', {
+      fileName: image[0],
+      fileType: image[1],
+      price: data.price, // 가격
+      name_kor: data.nameKor,
+      name_eng: data.nameEng,
+      description: data.description,
+      category_kor: data.selectCategory,
+      category_eng: categories.filter((res) => res.name_kor === data.selectCategory),
+    })
+      .then((res) => {
+        if (res.status === 200) {
+        }
+      });
+     */
   }
 
-  function onCategoryChange(value) {
-    console.log(`selected ${value}`);
-    // eslint-disable-next-line default-case
-    switch (value) {
-    case 'Ade':
-      formRef.current.setFieldsValue({
-        note: 'Ade',
-      });
-      return;
-    case 'Coffee':
-      formRef.current.setFieldsValue({
-        note: 'Coffee',
-      });
-      return;
-    case 'MilkBeverage':
-      formRef.current.setFieldsValue({
-        note: 'MilkBeverage',
-      });
-      return;
-    case 'Shake':
-      formRef.current.setFieldsValue({
-        note: 'Shake',
-      });
-      return;
-    case '카테고리 추가':
-      formRef.current.setFieldsValue({
-        note: '카테고리 추가',
-      });
+  useEffect(() => {
+    axios.get('/api/categories').then((res) => {
+      console.log(res.data);
+      setCategories(res.data);
+    });
+  }, []);
+
+
+  function beforeUpload(file) {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('JPG 또는 PNG 이미지만 등록 할 수 있습니다.');
     }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error('2MB 이하 이미지만 등록 가능합니다.');
+    }
+    return isJpgOrPng && isLt2M;
+  }
+
+  function getBase64(img, callback) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+  }
+
+  function handleChange(info) {
+    console.log(info);
+    if (info.file.status === 'uploading') {
+      setImageLoading({ imageLoading: true });
+      return;
+    }
+    if (info.file.status === 'done') {
+      // Get this url from response in real world.
+      getBase64(info.file.originFileObj, (imageUrl) => setImageLoading({
+        imageUrl,
+        imageLoading: false,
+      }));
+    }
+  }
+
+  function newCategoryKorChange(e) {
+    setNewCategoryNameKor(e.target.value);
+  }
+  function newCategoryEngChange(e) {
+    setNewCategoryNameEng(e.target.value);
+  }
+
+  function onNewCategory(e) {
+    categories.push({
+      name_kor: newCategoryNameKor,
+      name_eng: newCategoryNameEng,
+    });
+    form.setFieldsValue({
+      카테고리: newCategoryNameKor,
+    });
   }
 
   return (
@@ -75,50 +136,47 @@ function AddMenu() {
                   style={{ display: 'flex', marginBottom: 8 }}
                   align="baseline"
                 >
-                  <Form.Item label="이미지">
-                    <Form.Item
-                      name="image"
-                      valuePropName="fileList"
-                      getValueFromEvent={normFile}
-                      noStyle
-                      rules={[
-                        {
-                          required: true,
-                          message: '이미지 등록은 필수입니다.',
-                        },
-                      ]}
+                  <Form.Item
+                    label="이미지"
+                    name={[field.name, 'image']}
+                    valuePropName="fileList"
+                    getValueFromEvent={normFile}
+                    noStyle
+                    rules={[
+                      {
+                        required: true,
+                        message: '이미지 등록은 필수입니다.',
+                      },
+                    ]}
+                  >
+                    <Upload
+                      name="uploadImage"
+                      listType="picture-card"
+                      className="image-uploader"
+                      showUploadList={false}
+                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                      beforeUpload={beforeUpload}
+                      onChange={handleChange}
                     >
-                      <Upload.Dragger name="files" action="/upload.do">
-                        <p className="ant-upload-drag-icon">
-                          <InboxOutlined />
-                        </p>
-                        <p className="ant-upload-text">
-                          이곳에 이미지 파일을 드래그하거나
-                          클릭하세요.
-                        </p>
-                        <p className="ant-upload-hint">이미지 등록은 필수입니다.</p>
-                      </Upload.Dragger>
-                    </Form.Item>
+                      {imageLoading.imageUrl ? <img src={imageLoading.imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                    </Upload>
                   </Form.Item>
-                  <Form.Item label="가격">
-                    <Form.Item
-                      name="inputAmount"
-                      noStyle
-                      rules={[
-                        {
-                          required: true,
-                          message: '가격은 필수입력입니다.',
-                        },
-                      ]}
-                    >
-                      <InputNumber min={1} max={999999} />
-                      {' '}
-                      원
-                    </Form.Item>
+                  <Form.Item
+                    label="가격 (원)"
+                    name={[field.name, 'price']}
+                    rules={[
+                      {
+                        type: 'number',
+                        required: true,
+                        message: '가격은 필수입력입니다.',
+                      },
+                    ]}
+                  >
+                    <InputNumber min={1} max={999999} step={100} />
                   </Form.Item>
 
                   <Form.Item
-                    name="category"
+                    name={[field.name, 'selectCategory']}
                     label="카테고리"
                     rules={[
                       {
@@ -129,42 +187,50 @@ function AddMenu() {
                     <Select
                       showSearch
                       style={{ width: 200 }}
-                      placeholder="카테고리를 선택하세요"
                       optionFilterProp="children"
-                      onChange={onCategoryChange}
-                      filterOption={(input, option) => option.children.toLowerCase()
-                        .indexOf(input.toLowerCase()) >= 0}
+                      /* eslint-disable-next-line max-len */
+                      filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                      dropdownRender={(menu) => (
+                        <div>
+                          <Form.Item
+                            rules={[
+                              {
+                                required: true,
+                                message: '영어, 한국어 필수 입력입니다.',
+                              },
+                            ]}
+                          >
+                            <Input style={{ flex: 'auto' }} placeholder="새 카테고리 영어명 입력" onChange={newCategoryEngChange} />
+                            <Input style={{ flex: 'auto' }} placeholder="새 카테고리 한국어명 입력" onChange={newCategoryKorChange} />
+                          </Form.Item>
+                          <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}>
+                            <Button
+                              style={{ flex: 'auto' }}
+                              onClick={onNewCategory}
+                            >
+                              새 카테고리 등록
+                            </Button>
+                          </div>
+                          <Divider style={{ margin: '4px 0' }} />
+                          {menu}
+                        </div>
+                      )}
                     >
-                      <Option value="Ade">Ade</Option>
-                      <Option value="Coffee">Coffee</Option>
-                      <Option value="MilkBeverage">MilkBeverage</Option>
-                      <Option value="Shake">Shake</Option>
-                      <Option value="카테고리 추가">...카테고리 추가</Option>
+                      {
+                        categories.map((item) => (
+                          <Option
+                            key={item.name_kor}
+                            value={item.name_kor}
+                          >
+                            {item.name_kor}
+                          </Option>
+                        ))
+                      }
                     </Select>
                   </Form.Item>
+
                   <Form.Item
-                    noStyle
-                    shouldUpdate={(
-                      prevValues, currentValues,
-                    ) => prevValues.category
-                      !== currentValues.category}
-                  >
-                    {({ getFieldValue }) => (getFieldValue('category') === '카테고리 추가' ? (
-                      <Form.Item
-                        name="카테고리 새로 추가"
-                        label="카테고리 새로 추가"
-                        rules={[
-                          {
-                            required: true,
-                          },
-                        ]}
-                      >
-                        <Input maxLength={25} />
-                      </Form.Item>
-                    ) : null)}
-                  </Form.Item>
-                  <Form.Item
-                    name="nameKor"
+                    name={[field.name, 'nameKor']}
                     label="메뉴 이름(한국어)"
                     rules={[
                       {
@@ -176,7 +242,7 @@ function AddMenu() {
                     <Input placeholder="메뉴 이름(한국어)" allowClear maxLength={45} />
                   </Form.Item>
                   <Form.Item
-                    name="nameEng"
+                    name={[field.name, 'nameEng']}
                     label="메뉴 이름(영어)"
                     rules={[
                       {
@@ -187,7 +253,7 @@ function AddMenu() {
                   >
                     <Input placeholder="메뉴 이름(영어)" allowClear maxLength={45} />
                   </Form.Item>
-                  <Form.Item label="메뉴 상세설명">
+                  <Form.Item label="메뉴 상세설명" name={[field.name, 'description']}>
                     <TextArea placeholder="메뉴 상세설명 입력" maxLength={100} />
                   </Form.Item>
                   <DeleteFilled
