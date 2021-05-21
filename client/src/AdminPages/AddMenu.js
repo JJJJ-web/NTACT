@@ -9,7 +9,6 @@ import axios from 'axios';
 
 const { Option } = Select;
 const { TextArea } = Input;
-
 const normFile = (e) => {
   console.log('Upload event:', e);
   if (Array.isArray(e)) {
@@ -24,11 +23,6 @@ function AddMenu() {
   const [categories, setCategories] = useState([]);
   const [newCategoryNameKor, setNewCategoryNameKor] = useState();
   const [newCategoryNameEng, setNewCategoryNameEng] = useState();
-  const [imageUploadStatus, setImageUploadStatus] = useState();
-  const [imageLoading, setImageLoading] = useState({
-    imageUrl: null,
-    imageLoading: false,
-  });
 
   function handleSubmit(res) {
     const data = res.addMenus[0];
@@ -55,7 +49,6 @@ function AddMenu() {
 
   useEffect(() => {
     axios.get('/api/categories').then((res) => {
-      console.log(res.data);
       setCategories(res.data);
     });
   }, []);
