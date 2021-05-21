@@ -85,7 +85,7 @@ function CategoryTabs() {
               spaceBetween={3000}
               className="mySwiper"
               slidesPerView={1}
-              style={{ height: '100vh' }}
+              style={{ minHeight: '100vh' }}
             >
               <SwiperSlide virtualIndex={item.id}>
                 <MenuList products={filterProduct(item.id)} />
