@@ -10,7 +10,6 @@ import axios from 'axios';
 const { Option } = Select;
 const { TextArea } = Input;
 const normFile = (e) => {
-  console.log('Upload event:', e);
   if (Array.isArray(e)) {
     return e;
   }
@@ -24,12 +23,11 @@ function AddMenu() {
   const [newCategoryNameKor, setNewCategoryNameKor] = useState();
   const [newCategoryNameEng, setNewCategoryNameEng] = useState();
 
-  function handleSubmit(res) {
-    const data = res.addMenus[0];
-    console.log(data);
+  function handleSubmit(formdata) {
+    const data = formdata.addMenus[0];
+    const imageObj = data.image[data.image.length - 1].originFileObj;
     const image = data.image[data.image.length - 1].name.split('.');
 
-    /*
     axios.post('/api/menus', {
       fileName: image[0],
       fileType: image[1],
@@ -41,10 +39,30 @@ function AddMenu() {
       category_eng: categories.filter((res) => res.name_kor === data.selectCategory)[0].name_eng,
     })
       .then((res) => {
-        if (res.status === 200) {
+        console.log(res);
+        if (res.status === 201) {
+          const { data } = res.data;
+          const options = {
+            headers: {
+              'Content-Type': image[1],
+            },
+          };
+          axios.put(data.signedRequest, imageObj, options)
+            .then((result) => {
+              message.success(`${data.selectCategory}에 ${data.nameKor} 메뉴 등록을 완료했습니다.`, 3);
+            })
+            .catch((error) => {
+              console.log('Response from s3', error);
+            });
+        } else if (res.status === 500) {
+          message.error('이미지 등록에 실패하였습니다. 다시 시도해주세요.', 3);
+        } else if (res.status === 422) {
+          message.error('메뉴 등록에 실패하였습니다. 다시 시도해주세요.', 3);
         }
+      })
+      .catch((err) => {
+        message.error('메뉴 등록에 실패하였습니다. 다시 시도해주세요.', 3);
       });
-     */
   }
 
   useEffect(() => {
