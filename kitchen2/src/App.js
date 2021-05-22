@@ -1,13 +1,23 @@
-import { BrowserRouter } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, useHistory, useLocation } from 'react-router-dom';
+import Router from './Router';
 import './App.less';
 import 'antd/dist/antd.css';
 import socket from './SocketInfo';
-import Router from './Router';
 
 function App() {
+  const location = useLocation();
+  const history = useHistory();
+
+  if(location.pathname !== '/') {
+    console.log(location.pathname);
+    if (sessionStorage.getItem('userInfo') == undefined) {
+      history.push('/');
+    }
+  }
+
   socket.on('connect', () => {
     console.log('connection server');
-    console.log(sessionStorage.getItem('userInfo'));
     if (sessionStorage.getItem('userInfo') != null) {
       socket.emit('A', {
         userID: JSON.parse(sessionStorage.getItem('userInfo')).userID,
@@ -18,11 +28,9 @@ function App() {
   });
 
   return (
-    <BrowserRouter>
-      <div>
-        <Router />
-      </div>
-    </BrowserRouter>
+    <div>
+      <Router />
+    </div>
   );
 }
 

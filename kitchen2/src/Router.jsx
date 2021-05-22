@@ -1,24 +1,19 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import LogIn from './Login/Login';
-import Header from './Header/index';
-
-const wrappedRoutes = () => (
-  <div>
-    <div className="container__wrap">
-      <Route path="/kitchen" component={Header} />
-    </div>
-  </div>
-);
+import Kitchen from './Pages/KitchenManage';
+import Situation from './Pages/SituationManage';
+import Admin from './Pages/AdminManage';
+import NotFound from './Pages/NotFound';
 
 const Router = () => (
-  <main>
-    <Switch>
-      <Route exact path="/" component={LogIn} />
-      <Route exact path="/log_in" component={LogIn} />
-      <Route path="/" component={wrappedRoutes} />
-    </Switch>
-  </main>
+  <Switch>
+    <Route exact path="/" component={LogIn} />
+    <Route path="/kitchen" component={Kitchen} />
+    <Route path="/situation" component={Situation} />
+    <Route path="/admin" component={Admin} />
+    <Route component={NotFound} />
+  </Switch>
 );
 
 export default Router;
