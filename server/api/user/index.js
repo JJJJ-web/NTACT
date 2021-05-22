@@ -14,10 +14,7 @@ users.post('/google', ctrl.google);
 // 고객 비회원 로그인
 users.post('/anonymous', ctrl.anonymous);
 
-// 주방관리자 로그인
-users.post('/chef', ctrl.chef);
-
-// 관리자 로그인
-users.post('/admin', ctrl.admin);
+// 근무자 통합 로그인
+users.post('/staff', ctrl.staff);
 
 module.exports = users;

@@ -3,7 +3,6 @@ const axios = require('axios');
 const jwt = require('jsonwebtoken');
 
 const userModel = require('../../models').dev_user;
-const chefModel = require('../../models').dev_chef;
 const adminModel = require('../../models').dev_admin;
 const passwordConfig = require('../../config/password-config.json');
 
@@ -52,8 +51,8 @@ exports.kakao = async (ctx) => {
         },
       });
     })
-    .catch((error) => {
-      console.log(error);
+    .catch((e) => {
+      ctx.throw(500, e);
     });
 
   ctx.body = { jwtToken };
@@ -103,8 +102,8 @@ exports.google = async (ctx) => {
         },
       });
     })
-    .catch((error) => {
-      console.log(error);
+    .catch((e) => {
+      ctx.throw(500, e);
     });
 
   ctx.body = { jwtToken };
@@ -129,74 +128,51 @@ exports.anonymous = async (ctx) => {
   ctx.status = 200;
 };
 
-// 주방관리자 로그인 Post 버전
-exports.chef = async (ctx) => {
+// 근무자 통합 로그인
+exports.staff = async (ctx) => {
   // header로 보낸 request payload를 접근하려면 body로 접근
   // 로그인시 이메일과 비밀번호 헤더로 받음.
   const { email, password } = ctx.request.body;
 
-  const result = await chefModel.findOne({
+  const checkEmail = await adminModel.findOne({
     where: {
       email,
-      password,
     },
-  }).catch((err) => {
-    console.log(err);
+  }).catch((e) => {
+    ctx.throw(500, e);
   });
 
-  if (result === null) {
-    console.log('로그인 실패');
-    ctx.status = 403;
+  if (checkEmail === null) {
+    ctx.status = 801;
     return;
   }
   // 로그인 성공 시
   // chef 권한,이름을 담은 토큰 생성 후 200전송
 
-  console.log('Chef DB를 찾았습니다. 로그인 성공');
-  console.log(`주방조리사 이름 : ${result.name}`);
-
-  const jwtToken = jwt.sign(
-    {
-      id: result.id,
-      name: result.name,
-      role: 'chef',
-    },
-    passwordConfig.jwt_password, // secret Key
-  );
-  ctx.body = { jwtToken };
-};
-
-// 관리자 로그인 Post 버전
-exports.admin = async (ctx) => {
-  // header로 보낸 request payload를 접근하려면 body로 접근
-  // 로그인시 이메일과 비밀번호 jwt로 프론트에서 보내줌
-  const { email, password } = ctx.request.body;
-
-  const result = await adminModel.findOne({
+  const checkPW = await adminModel.findOne({
     where: {
       email,
       password,
     },
-  }).catch((err) => {
-    console.log(err);
+  }).catch((e) => {
+    ctx.throw(500, e);
   });
 
-  if (result === null) {
-    console.log('로그인 실패');
-    ctx.status = 403;
+  if (checkPW === null) {
+    ctx.status = 802;
     return;
   }
-  // 로그인 성공 시
-  // admin 권한,이름을 담은 토큰 생성 후 200전송
 
-  console.log('Admin DB를 찾았습니다. 로그인 성공');
-  console.log(`관리자 이름 : ${result.name}`);
+  const result = checkPW;
+
+  // console.log('관리자 DB를 찾았습니다. 로그인 성공');
+  // console.log(`이름 : ${result.name} ID : ${result.id} role : ${result.role}`);
 
   const jwtToken = jwt.sign(
     {
       id: result.id,
       name: result.name,
-      role: 'admin',
+      role: result.role,
     },
     passwordConfig.jwt_password, // secret Key
   );
