@@ -9,7 +9,7 @@ function ShopTabs(props) {
   const [completed, setCCount] = useState();
   const { TabPane } = Tabs;
 
-  useState(() => {
+  function getList() {
     axios.get('/api/orders/ready').then((res) => {
       setRCount(res.data.length);
     });
@@ -19,10 +19,14 @@ function ShopTabs(props) {
     axios.get('/api/orders/completed').then((res) => {
       setCCount(res.data.length);
     });
-  });
+  }
+
+  useState(() => {
+    getList();
+  }, []);
 
   return (
-    <Tabs type="card" defaultActiveKey="ready" size="large">
+    <Tabs type="card" defaultActiveKey="ready" size="large" onTabClick={() => getList()}>
       <TabPane tab={` 접수 ${ready}`} key="ready">
         <ShopList status="ready" setRCount={setRCount} setPCount={setPCount} setCCount={setCCount} />
       </TabPane>

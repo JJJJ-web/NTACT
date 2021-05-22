@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-  Layout, Popover, Button, Badge, notification,
+  Layout, Popover, Button, Divider, notification, Avatar,
 } from 'antd';
-import { LogoutOutlined } from '@ant-design/icons';
-import Kitchen from '../Shop/Shop';
+import {
+  LogoutOutlined, UserOutlined, BellTwoTone, ClockCircleTwoTone, FolderAddTwoTone,
+} from '@ant-design/icons';
 import socket from '../SocketInfo';
 
-const { Header, Content, Footer } = Layout;
+const { Header } = Layout;
 
 function Tabs() {
   const history = useHistory();
   const [userName, setUserName] = useState('');
-  // eslint-disable-next-line prefer-const
-  let [count, setCount] = useState(0);
 
   const openNotificationWithIcon = (info) => {
     notification[info]({
@@ -25,13 +24,10 @@ function Tabs() {
 
   useState(() => {
     socket.on('G', () => {
-      setCount(count += 1);
       openNotificationWithIcon('info');
-      // eslint-disable-next-line no-use-before-define
-      setNoti(content());
     });
     if (sessionStorage.getItem('userInfo') === null) {
-      history.push('/log_in');
+      history.push('/');
     }else {
       setUserName(JSON.parse(sessionStorage.getItem('userInfo')).userName);
     }
@@ -39,12 +35,12 @@ function Tabs() {
 
   function logOut() {
     sessionStorage.removeItem('userInfo');
-    history.push('/log_in');
+    history.push('/');
   }
 
   const logout = (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    <div onClick={() => logOut()} onKeyDown={() => logOut()}>
+    <div onClick={() => logOut()} onKeyDown={() => logOut()} style={{ cursor: 'pointer' }}>
       <LogoutOutlined
         onClick={() => logOut()}
         alt="로그아웃"
@@ -55,40 +51,43 @@ function Tabs() {
   );
 
   function content() {
-    for (let i = 0; i < count; i++) {
-      return (
-        <div>
-          새 주문이 접수되었습니다.
-        </div>
-      );
-    }
-    return null;
+    return (
+      <div style={{ width: '180px', marginLeft: '-10px', fontSize: '1.3rem' }}>
+        <Button type="link" icon={<BellTwoTone />} onClick={() => history.push('/kitchen')}>
+          주문 관리
+        </Button>
+        <Button type="link" icon={<ClockCircleTwoTone />} onClick={() => history.push('/situation')}>
+          실시간 메뉴상황 관리
+        </Button>
+        <Button type="link" icon={<FolderAddTwoTone />} onClick={() => history.push('/admin')}>
+          관리자 메뉴 관리
+        </Button>
+      </div>
+    );
   }
 
-  const [noti, setNoti] = useState(content());
-
   return(
-    <Layout style={{ backgroundColor: 'white' }}>
-      <Header style={{
-        position: 'fixed', zIndex: 1, width: '100%', backgroundColor: '#FFF8EA',
-      }}
-      >
-        <img height="30px" src="/logo40.png" alt="logo" />
+    <Header style={{
+      position: 'fixed', zIndex: 1, width: '100%', backgroundColor: '#FFF8EA',
+    }}
+    >
+      <img height="30px" src="/logo40.png" alt="logo" />
 
-        <b style={{ float: 'right' }}>
-          <Badge count={count} dot text=" ">
-            {/* eslint-disable-next-line no-return-assign */}
-            <Popover content={noti} title={logout} trigger="click" onClick={() => setCount(count = 0)}>
-              {userName}
-            </Popover>
-          </Badge>
-        </b>
-      </Header>
-      <Content className="site-layout" style={{ padding: '0 30px', marginTop: 80, backgroundColor: 'white' }}>
-        <Kitchen />
-      </Content>
-      <Footer style={{ textAlign: 'center', backgroundColor: 'white' }}>한성대학교 2021년 캡스톤디자인</Footer>
-    </Layout>
+      <b style={{ float: 'right' }}>
+        {/* eslint-disable-next-line no-return-assign */}
+        <Popover placement="bottomRight" content={content} title={logout} trigger="click">
+          <Avatar
+            size={35}
+            icon={<UserOutlined />}
+            style={{
+              backgroundColor: '#ffb400',
+              marginRight: '5px',
+            }}
+          />
+          {userName}
+        </Popover>
+      </b>
+    </Header>
   );
 }
 
