@@ -4,7 +4,6 @@ import {
 } from 'antd';
 import axios from 'axios';
 import styled from 'styled-components';
-import SituationManage from './SituationManage';
 import socket from '../SocketInfo';
 
 function ShopList(props) {
@@ -21,7 +20,7 @@ function ShopList(props) {
       .then((res) => setData(res.data.reverse()));
   }
 
-  useEffect(() => {
+  useState(() => {
     // 역순 출력
     socket.on('G', () => {
       alert('실시간 주문 접수 이벤트 G 수신');
@@ -258,7 +257,6 @@ function ShopList(props) {
           </div>
         ))}
       </DivList>
-      <SituationManage />
     </>
   );
 }
