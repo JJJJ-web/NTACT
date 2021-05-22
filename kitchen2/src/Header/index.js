@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Layout, Popover, Button, Divider, notification, Avatar,
@@ -15,23 +15,28 @@ function Tabs() {
   const [userName, setUserName] = useState('');
 
   const openNotificationWithIcon = (info) => {
-    notification[info]({
+    notification.open({
+      key: 'updatable',
       message: '알림',
       description:
         '새 주문이 접수되었습니다.',
-    });
+      icon: <BellTwoTone style={{ color: '#ffb400' }} />,
+    }, 1000);
   };
 
   useState(() => {
-    socket.on('G', () => {
-      openNotificationWithIcon('info');
-    });
     if (sessionStorage.getItem('userInfo') === null) {
       history.push('/');
     }else {
       setUserName(JSON.parse(sessionStorage.getItem('userInfo')).userName);
     }
   });
+
+  useEffect(() => {
+    socket.on('G', () => {
+      openNotificationWithIcon('info');
+    });
+  }, []);
 
   function logOut() {
     sessionStorage.removeItem('userInfo');
