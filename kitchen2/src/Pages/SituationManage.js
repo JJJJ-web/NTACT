@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-  Layout, Popover, Button, Badge, notification, Avatar,
+  Layout,
 } from 'antd';
-import Kitchen from '../Shop/Shop';
+import Situation from '../Shop/SituationManage';
 import Header from '../Header/index';
 
 const { Content, Footer } = Layout;
@@ -13,7 +13,7 @@ function SituationManage() {
     <Layout style={{ backgroundColor: 'white' }}>
       <Header />
       <Content className="site-layout" style={{ padding: '0 30px', marginTop: 80, backgroundColor: 'white' }}>
-        <Kitchen />
+        <Situation />
       </Content>
       <Footer style={{ textAlign: 'center', backgroundColor: 'white' }}>한성대학교 2021년 캡스톤디자인</Footer>
 
