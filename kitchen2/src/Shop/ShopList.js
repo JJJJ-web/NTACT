@@ -20,24 +20,6 @@ function ShopList(props) {
       .then((res) => setData(res.data.reverse()));
   }
 
-  useState(() => {
-    // 역순 출력
-    socket.on('G', () => {
-      alert('실시간 주문 접수 이벤트 G 수신');
-      getList();
-    });
-    getList();
-  }, []);
-  
-  // eslint-disable-next-line consistent-return
-  function changeStatus(item) {
-    // 주문 진행 상태 변경
-    if (item.order_stat === 'ready') {
-      return 'in-progress';
-    } if (item.order_stat === 'in-progress') {
-      return 'completed';
-    }
-  }
   function changeTabCountReady() {
     axios.get('/api/orders/ready').then((res) => {
       props.setRCount(res.data.length);
@@ -54,6 +36,26 @@ function ShopList(props) {
     });
   }
 
+  useState(() => {
+    socket.on('G', () => {
+      getList();
+      changeTabCountReady();
+    });
+  }, []);
+
+  useEffect(() => {
+    getList();
+  }, []);
+  
+  // eslint-disable-next-line consistent-return
+  function changeStatus(item) {
+    // 주문 진행 상태 변경
+    if (item.order_stat === 'ready') {
+      return 'in-progress';
+    } if (item.order_stat === 'in-progress') {
+      return 'completed';
+    }
+  }
 
   async function changeStateHandler(item) {
     // <> server 주문 진행 상태 변경
@@ -102,6 +104,9 @@ function ShopList(props) {
             .then((res) => {
               if (res.status === 200) {
                 getList();
+                changeTabCountReady();
+                changeTabCountProgress();
+                changeTabCountCompleted();
               }
             })
             .catch((error) => {
