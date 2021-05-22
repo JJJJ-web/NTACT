@@ -1,9 +1,19 @@
 const { Sequelize } = require('sequelize');
+const aws = require('aws-sdk');
+const s3Config = require('../../config/s3-config.json');
 const menuModel = require('../../models').dev_menu;
 const categoryModel = require('../../models').dev_category;
 
 menuModel.belongsTo(categoryModel, { foreignKey: 'category_id', sourceKey: 'id' });
 categoryModel.hasMany(menuModel, { foreignKey: 'category_id', targetKey: 'id' });
+
+aws.config.update({
+  region: 'ap-northeast-2',
+  accessKeyId: s3Config.AWSAccessKeyId,
+  secretAccessKey: s3Config.AWSSecretKey,
+});
+
+const S3_BUCKET = s3Config.Bucket;
 
 exports.list = async (ctx) => {
   let menus;
@@ -141,29 +151,53 @@ exports.delete = async (ctx) => {
 
 // 프론트와 미연동 상태
 exports.create = async (ctx) => {
-  // menu Object를 받아 해당 메뉴를 stat을 수정 
-  const { menu } = ctx.request.body.headers;
-  console.log(menu);
+  const newMenu = ctx.request.body;
+
+  const s3 = new aws.S3();
+  const s3Params = {
+    Bucket: S3_BUCKET,
+    Key: newMenu.fileName,
+    Expires: 500,
+    ContentType: newMenu.fileType,
+    ACL: 'public-read',
+  };
 
   try {
-    // DB 에서 id로 해당 메뉴를 검색
-    await menuModel.create(
-      {
-        name_kor: `${menu.menu_kor}`,
-        name_eng: `${menu.menu_eng}`,
-        price: `${menu.price}`,
-        description: `${menu.description}`,
-        category_id: `${menu.category_id}`,
-        img_url: `${menu.img_url}`,
-      },
-    ).then((res) => {
-      // isAdmin의 기본값이 false라고 가정하자
-      ctx.status = 200;
-      console.log(res.get({
-        plain: true,
-      })); // => { username: 'barfooz', isAdmin: false }
+    const signedRequest = s3.getSignedUrl('putObject', s3Params);
+    const url = `https://${S3_BUCKET}.s3.ap-northeast-2.amazonaws.com/${newMenu.category_eng}/${newMenu.fileName}`;
+
+    const category = await categoryModel.findOne({
+      attributes: ['id'],
+      where: { name_eng: newMenu.category_eng },
     });
-  } catch (e) {
-    ctx.throw(500, e);
+    const categoryId = category.dataValues.id;
+
+    try {
+      await menuModel.create({
+        name_kor: newMenu.name_kor,
+        name_eng: newMenu.name_eng,
+        price: newMenu.price,
+        description: newMenu.description,
+        img_url: url,
+        sales_stat: 1,
+        category_id: categoryId,
+        delay_time: 0,
+      });
+
+      ctx.status = 201;
+      ctx.body = {
+        success: true,
+        data: {
+          signedRequest,
+          url,
+        },
+      };
+    } catch (e) {
+      ctx.status = 422;
+      ctx.body = { success: false, error: 'Could not create requested menu.' };
+    }
+  } catch (err) {
+    ctx.status = 500;
+    ctx.body = { success: false, error: 'Could not get signed url from S3.' };
   }
 };
