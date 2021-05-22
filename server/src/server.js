@@ -19,7 +19,7 @@ const options = {
       'http://localhost:3001',
       'http://tmp.ntact.site:3000',
       'http://tmp.kitchen.ntact.site:3000'],
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
   },
 };
 const io = require('socket.io')(httpServer, options);
@@ -44,16 +44,16 @@ io.on('connection', (socket) => {
     });
   });
 
-  // // 해당 주문 상태변경시 오는 이벤트
-  // socket.on('B', (data) => {
-  //   // 레디스에서 userID를 통해 socketID를 찾는다.
-  //   RedisClient.get(data.userID, (err, value) => {
-  //     if(err) console.log(err);
-  //     // ID를 통해 해당 소켓에게 C 이벤트를 송신한다.
-  //     io.to(value).emit('C');
-  //     console.log(`소켓ID:${value}에게 소켓이벤트 C (주문상태 변동) 전송`);
-  //   });
-  // });
+  // 해당 주문 상태변경시 오는 이벤트
+  socket.on('B', (data) => {
+    // 레디스에서 userID를 통해 socketID를 찾는다.
+    RedisClient.get(data.userID, (err, value) => {
+      if(err) console.log(err);
+      // ID를 통해 해당 소켓에게 C 이벤트를 송신한다.
+      io.to(value).emit('C');
+      console.log(`소켓ID:${value}에게 소켓이벤트 C (주문상태 변동) 전송`);
+    });
+  });
 
   // 메뉴 상태 변경시 오는 이벤트
   socket.on('D', () => {
@@ -85,6 +85,3 @@ syncDb().then((_) => {
     console.log(`HTTPServer is running on ${PORT} port`);
   });
 });
-
-module.exports = httpServer;
-module.exports.io = io;
