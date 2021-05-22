@@ -164,7 +164,7 @@ exports.create = async (ctx) => {
 
   try {
     const signedRequest = s3.getSignedUrl('putObject', s3Params);
-    const url = `https://${S3_BUCKET}.s3.ap-northeast-2.amazonaws.com/${newMenu.category_eng}/${newMenu.fileName}`;
+    const url = `https://${S3_BUCKET}.s3.ap-northeast-2.amazonaws.com/${newMenu.category_eng}/${newMenu.fileName}.${newMenu.fileType}`;
 
     const category = await categoryModel.findOne({
       attributes: ['id'],
