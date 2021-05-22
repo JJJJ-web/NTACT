@@ -1,5 +1,6 @@
 import React from'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
+import { Result, Button } from 'antd';
 import {
   Home,
   FinalCart,
@@ -10,6 +11,7 @@ import {
   PaymentFailed,
   PaymentHistory,
   PaymentDetail,
+  NotFound,
   MenuManage,
 } from './index';
 
@@ -26,7 +28,7 @@ const Router = () => (
     <Route exact path="/payment/history" component={PaymentHistory} />
     <Route exact path="/payment/history/:orderId" component={PaymentDetail} />
     <Route path="/menu_manage" component={MenuManage} />
-    <Route render={() => <div>에러</div>} />
+    <Route component={NotFound} />
   </Switch>
 );
 
