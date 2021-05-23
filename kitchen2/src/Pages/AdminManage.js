@@ -5,6 +5,7 @@ import {
 } from 'antd';
 import Kitchen from '../Shop/Shop';
 import Header from '../Header/index';
+import MenuManage from '../Admin/MenuManage';
 
 const { Content, Footer } = Layout;
 
