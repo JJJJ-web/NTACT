@@ -39,7 +39,6 @@ function AddMenu() {
       category_eng: categories.filter((res) => res.name_kor === data.selectCategory)[0].name_eng,
     })
       .then((res) => {
-        console.log(res);
         if (res.status === 201) {
           const { data } = res.data;
           const options = {
