@@ -31,7 +31,6 @@ function CategoryTabs() {
     axios.get('/api/categories').then((res) => setCategories(res.data));
     axios.get('/api/menus').then((res) => setProducts(res.data));
     socket.on('E', () => {
-      alert('실시간 주문 상태 변경 이벤트 E 수신');
       axios.get('/api/menus').then((res) => setProducts(res.data));
     });
   }, []);
@@ -53,7 +52,6 @@ function CategoryTabs() {
   }
 
   function tabChange(e) {
-    console.log('tabChange', e);
     setCurrentPage(currentPage = e);
   }
 
