@@ -193,91 +193,109 @@ function ShopList(props) {
   return (
     <>
       <DivList>
-        {data.map((item, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <div className="cardList" key={index}>
-            <Card
-              title={item.id}
-              style={{ width: 300 }}
-              className="items"
-              bodyStyle={{ height: 500 }}
-              headStyle={{ fontSize: 20 }}
-            >
-              <div>
-                <b
-                  className="order_type"
-                  style={{ color: colorOrderType(item.order_type) }}
-                >
-                  {convertOrderType(item.order_type)}
-                </b>
-                <span className="date">{formatDate(item.date)}</span>
+        <div className="list">
+          {data.map((item, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <div className="cardList" key={index}>
+              <Card
+                title={item.id}
+                style={{ width: 300 }}
+                className="items"
+                bodyStyle={{ height: 500 }}
+                headStyle={{ fontSize: 20 }}
+              >
                 <div>
-                  <Popconfirm
-                    onConfirm={() => canceledMenu(item)}
-                    title={text}
-                    okText="확인"
-                    cancelText="닫기"
-                    className="reject"
+                  <b
+                    className="order_type"
+                    style={{ color: colorOrderType(item.order_type) }}
                   >
-                    <Button
-                      style={{ visibility: chectStatReady(item.order_stat) }}
-                      danger
-                      type="primary"
+                    {convertOrderType(item.order_type)}
+                  </b>
+                  <span className="date">{formatDate(item.date)}</span>
+                  <div>
+                    <Popconfirm
+                      onConfirm={() => canceledMenu(item)}
+                      title={text}
+                      okText="확인"
+                      cancelText="닫기"
+                      className="reject"
                     >
-                      주문 취소
+                      <Button
+                        style={{ visibility: chectStatReady(item.order_stat) }}
+                        danger
+                        type="primary"
+                      >
+                        주문 취소
+                      </Button>
+                    </Popconfirm>
+                  </div>
+                  <hr />
+                  <div className="menus">
+                    <List itemLayout="vertical">
+                      {item.order_detail.map((order, index) => (
+                        // eslint-disable-next-line react/no-array-index-key
+                        <List.Item className="menus_item" key={index}>
+                          <div className="menu">{order.Name}</div>
+                          <b className="quantity">{order.Quantity}</b>
+                        </List.Item>
+                      ))}
+                    </List>
+                  </div>
+                  <div className="select">
+                    <Select
+                      defaultValue={10}
+                      onChange={(e) => setValue(e)}
+                      style={{
+                        width: 105,
+                        visibility: chectStatReady(item.order_stat),
+                      }}
+                    >
+                      <Option value={5}>5</Option>
+                      <Option value={10}>10</Option>
+                      <Option value={15}>15</Option>
+                      <Option value={20}>20</Option>
+                    </Select>
+                    <Button
+                      type="primary"
+                      disabled={checkOrderStat(item.order_stat)}
+                      className="Button"
+                      onClick={() => changeStateHandler(item)}
+                    >
+                      {returnStat(item.order_stat)}
                     </Button>
-                  </Popconfirm>
+                  </div>
                 </div>
-                <hr />
-                <div className="menus">
-                  <List itemLayout="vertical">
-                    {item.order_detail.map((order, index) => (
-                      // eslint-disable-next-line react/no-array-index-key
-                      <List.Item className="menus_item" key={index}>
-                        <div className="menu">{order.Name}</div>
-                        <b className="quantity">{order.Quantity}</b>
-                      </List.Item>
-                    ))}
-                  </List>
-                </div>
-                <div className="select">
-                  <Select
-                    defaultValue={10}
-                    onChange={(e) => setValue(e)}
-                    style={{
-                      width: 105,
-                      visibility: chectStatReady(item.order_stat),
-                    }}
-                  >
-                    <Option value={5}>5</Option>
-                    <Option value={10}>10</Option>
-                    <Option value={15}>15</Option>
-                    <Option value={20}>20</Option>
-                  </Select>
-                  <Button
-                    type="primary"
-                    disabled={checkOrderStat(item.order_stat)}
-                    className="Button"
-                    onClick={() => changeStateHandler(item)}
-                  >
-                    {returnStat(item.order_stat)}
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          </div>
-        ))}
+              </Card>
+            </div>
+          ))}
+        </div>
       </DivList>
     </>
   );
 }
 
 const DivList = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  overflow-x: auto;
-  white-space: nowrap;
-  height: 600px;
+  .list {
+    display: flex;
+    justify-content: flex-start;
+    overflow-x: auto;
+    white-space: nowrap;
+    height: 600px;
+  }
+
+  .list::-webkit-scrollbar {
+    height: 10px;
+  }
+
+  .list::-webkit-scrollbar-thumb {
+    background-color: #ffb400;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }
+
+  .list::-webkit-scrollbar-track {
+    background-color: white;
+  }
 
   .order_type {
     font-size: 2rem;
@@ -293,17 +311,35 @@ const DivList = styled.div`
     color: #0062ff;
     font-size: 1rem;
   }
-  .menus{
+
+  .menus {
     width: 270px;
-    overflow-y:scroll;
-    overFlow : auto;
+    overflow-y: scroll;
+    overFlow: auto;
     height: 300px;
   }
+
+  .menus::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  .menus::-webkit-scrollbar-thumb {
+    background-color: white;
+    border: 1px solid #ffb400;
+    box-shadow: inset 0px 0px 3px #ffb400;
+  }
+
+  .menus::-webkit-scrollbar-track {
+    background-color: white;
+    border: 0.5px solid #bababa;
+  }
+
   .menus_item {
     width: 250px;
     height: 50px;
     border-bottom: 1.5px dashed #b9b9b9;
   }
+
   .menu {
     position: absolute;
     left: 0px;
@@ -318,10 +354,12 @@ const DivList = styled.div`
     right: 30px;
     font-size: 1.3rem;
   }
+
   .select {
     position: absolute;
     bottom: 30px;
   }
+
   Button {
     margin-left: 25px;
   }
