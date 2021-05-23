@@ -12,7 +12,7 @@ function Login() {
   
   function login(values) {
     axios({
-      url: '/api/users/chef',
+      url: '/api/users/staff',
       method: 'POST',
       data: {
         email: values.ID,
