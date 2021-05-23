@@ -7,6 +7,7 @@ function ShopTabs(props) {
   const [ready, setRCount] = useState();
   const [progress, setPCount] = useState();
   const [completed, setCCount] = useState();
+  const [canceled, setCanCount] = useState();
   const { TabPane } = Tabs;
 
   function getList() {
@@ -19,6 +20,9 @@ function ShopTabs(props) {
     axios.get('/api/orders/completed').then((res) => {
       setCCount(res.data.length);
     });
+    axios.get('/api/orders/canceled').then((res) => {
+      setCanCount(res.data.length);
+    });
   }
 
   useState(() => {
@@ -28,13 +32,16 @@ function ShopTabs(props) {
   return (
     <Tabs type="card" defaultActiveKey="ready" size="large" onTabClick={() => getList()}>
       <TabPane tab={` 접수 ${ready}`} key="ready">
-        <ShopList status="ready" setRCount={setRCount} setPCount={setPCount} setCCount={setCCount} />
+        <ShopList status="ready" setRCount={setRCount} setPCount={setPCount} setCCount={setCCount} setCanCount={setCanCount} />
       </TabPane>
       <TabPane tab={` 조리 중 ${progress}`} key="in-progress">
-        <ShopList status="in-progress" setRCount={setRCount} setPCount={setPCount} setCCount={setCCount} />
+        <ShopList status="in-progress" setRCount={setRCount} setPCount={setPCount} setCCount={setCCount} setCanCount={setCanCount} />
       </TabPane>
       <TabPane tab={` 완료 ${completed}`} key="completed">
-        <ShopList status="completed" setRCount={setRCount} setPCount={setPCount} setCCount={setCCount} />
+        <ShopList status="completed" setRCount={setRCount} setPCount={setPCount} setCCount={setCCount} setCanCount={setCanCount} />
+      </TabPane>
+      <TabPane tab={` 취소 ${canceled}`} key="canceled">
+        <ShopList status="canceled" setRCount={setRCount} setPCount={setPCount} setCCount={setCCount} setCanCount={setCanCount} />
       </TabPane>
     </Tabs>
   );
