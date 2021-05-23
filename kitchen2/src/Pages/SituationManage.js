@@ -15,7 +15,7 @@ function SituationManage() {
       <Content className="site-layout" style={{ padding: '0 30px', marginTop: 80, backgroundColor: 'white' }}>
         <Situation />
       </Content>
-      <Footer style={{ textAlign: 'center', backgroundColor: 'white' }}>한성대학교 2021년 캡스톤디자인</Footer>
+      <Footer style={{ textAlign: 'center', backgroundColor: 'white', padding: '0px' }}>한성대학교 2021년 캡스톤디자인</Footer>
 
     </Layout>
   );
