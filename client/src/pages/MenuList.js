@@ -143,7 +143,7 @@ const MenuListStyle = styled.div`
     position: absolute;
     top: 40%;
     left: 22%;
-    width: 50vw;
+    width: 47vw;
   }
 
   .itmePrice {
