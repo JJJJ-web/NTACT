@@ -155,8 +155,8 @@ exports.create = async (ctx) => {
 
   const s3 = new aws.S3();
   const s3Params = {
-    Bucket: S3_BUCKET,
-    Key: newMenu.fileName,
+    Bucket: `${S3_BUCKET}/${newMenu.category_eng}`,
+    Key: `${newMenu.fileName}.${newMenu.fileType}`,
     Expires: 500,
     ContentType: newMenu.fileType,
     ACL: 'public-read',
