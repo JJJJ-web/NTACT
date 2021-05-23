@@ -35,6 +35,11 @@ function ShopList(props) {
       props.setCCount(res.data.length);
     });
   }
+  function changeTabCountCanceled() {
+    axios.get('api/orders/canceled').then((res) => {
+      props.setCanCount(res.data.length);
+    });
+  }
 
   useState(() => {
     socket.on('G', () => {
@@ -73,6 +78,7 @@ function ShopList(props) {
           changeTabCountReady();
           changeTabCountProgress();
           changeTabCountCompleted();
+          changeTabCountCanceled();
         }
       })
       .catch((error) => {
@@ -107,6 +113,7 @@ function ShopList(props) {
                 changeTabCountReady();
                 changeTabCountProgress();
                 changeTabCountCompleted();
+                changeTabCountCanceled();
               }
             })
             .catch((error) => {
@@ -177,8 +184,10 @@ function ShopList(props) {
       return '조리 시작';
     } if (stat === 'in-progress') {
       return '조리 완료';
-    } 
-    return '완료';
+    } if(stat === 'completed') {
+      return '완료';
+    }
+    return '취소';
   }
   function chectStatReady(stat) {
     if (stat === 'ready') {
