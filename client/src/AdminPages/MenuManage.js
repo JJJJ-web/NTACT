@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import axios from 'axios';
 import {
@@ -11,6 +11,7 @@ import {
   Input,
   Select,
   InputNumber,
+  Table,
 } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import AddMenu from './AddMenu';
@@ -27,22 +28,8 @@ function MenuManage() {
     setVisible(false);
   };
 
-  useState(() => {
-    // axois한번으로 메뉴+카테고리명 데이터 받아오기
-    axios.get('/api/menus?category=true').then((res) => setProducts(res.data));
-  }, []);
-
   function getThisMenu(menu) {
     setSelectThisMenu(selectThisMenu = menu);
-  }
-
-  function getCategory() {
-    const list = [];
-    products.forEach((item) => {
-      list.push(item.category_kor);
-    });
-    const c = list.filter((item, index) => list.indexOf(item) === index);
-    return c;
   }
 
   async function statClickHandler(product) {
@@ -63,6 +50,107 @@ function MenuManage() {
         // window.alert('토글 실패111');
       }
     });
+  }
+
+  const columns = [
+    {
+      title: '이미지',
+      dataIndex: 'img_url',
+      render: (item) => <img src={item} width="70vw" alt="" />,
+      width: '10%',
+    },
+    {
+      title: '카테고리',
+      dataIndex: 'category_id',
+      defaultSortOrder: 'ascend',
+      sorter: (a, b) => a.category_id - b.category_id,
+      width: '10%',
+    },
+    {
+      title: '한국어 메뉴',
+      dataIndex: 'menu_kor',
+      sortDirections: ['descend', 'ascend'],
+      sorter: (a, b) => a.menu_kor < b.menu_kor,
+      width: '20%',
+    },
+    {
+      title: '영어 메뉴',
+      dataIndex: 'menu_eng',
+      width: '20%',
+    },
+    {
+      title: '판매가능',
+      dataIndex: 'sales_stat',
+      filters: [
+        { text: '판매', value: 1 },
+        { text: '비판매', value: 0 },
+      ],
+      onFilter: (value, record) => record.sales_stat === value,
+      render: (value, record) => (
+        <Switch
+          checkedChildren="판매중"
+          unCheckedChildren="숨기기"
+          onClick={() => statClickHandler(record)}
+          checked={record.sales_stat === 1}
+        />
+      ),
+      width: '15%',
+    },
+    {
+      title: '가격',
+      dataIndex: 'price',
+      render: (price) => `${price}원`,
+      sortDirections: ['descend', 'ascend'],
+      sorter: (a, b) => a.price - b.price,
+      width: '20%',
+    },
+    {
+      title: '수정',
+      dataIndex: 'modify',
+      render: (value, record) => (
+        <>
+          <Button
+            type="primary"
+            onClick={() => {
+              setVisible(true);
+              getThisMenu(record);
+            }}
+          >
+            <FormOutlined style={{ fontSize: '18px', color: '#fff' }} />
+            수정
+          </Button>
+          <CollectionCreateForm
+            menu={record}
+            visible={visible}
+            onCreate={onCreate}
+            onCancel={() => {
+              setVisible(false);
+            }}
+          />
+        </>
+      ),
+      width: '20%',
+    },
+  ];
+
+  function fetch() {
+    // axois한번으로 메뉴+카테고리명 데이터 받아오기
+    axios.get('/api/menus?category=true').then((res) => {
+      setProducts(res.data);
+    });
+  }
+
+  useEffect(() => {
+    fetch();
+  }, []);
+
+  function getCategory() {
+    const list = [];
+    products.forEach((item) => {
+      list.push(item.category_kor);
+    });
+    const c = list.filter((item, index) => list.indexOf(item) === index);
+    return c;
   }
 
   async function editMenuClickHandler() {
@@ -221,71 +309,11 @@ function MenuManage() {
 
   return (
     <>
-      <div className="allMenus">
-        <Row key="listTable" justify="space-around" gutter={[10, 20]}>
-          <Col className="gutter-row" span={2}>이미지</Col>
-          <Col className="gutter-row" span={2}>카테고리</Col>
-          <Col className="gutter-row" span={4}>한국어</Col>
-          <Col className="gutter-row" span={4}>영어</Col>
-          <Col className="gutter-row" span={3}>판매가능상태</Col>
-          <Col className="gutter-row" span={5}>가격</Col>
-        </Row>
-        <hr />
-        {
-          products.map((product) => (
-            <Row key={product.id} justify="space-around" gutter={[10, 20]}>
-              <Col className="gutter-row" span={2}>
-                <img
-                  src={product.img_url}
-                  width="50vw"
-                  alt=""
-                />
-              </Col>
-              <Col
-                className="gutter-row"
-                span={1}
-              >
-                {product.category_kor}
-              </Col>
-              <Col className="gutter-row" span={4}>{product.menu_kor}</Col>
-              <Col className="gutter-row" span={4}>{product.menu_eng}</Col>
-              <Col className="gutter-row" span={2}>
-                <Switch
-                  checkedChildren="판매중"
-                  unCheckedChildren="숨기기"
-                  onClick={() => statClickHandler(product)}
-                  checked={product.sales_stat === true}
-                />
-              </Col>
-              <Col
-                className="gutter-row"
-                span={3}
-              >
-                {product.price.toLocaleString()}
-                원
-              </Col>
-              <Button
-                type="primary"
-                onClick={() => {
-                  setVisible(true);
-                  getThisMenu(product);
-                }}
-              >
-                <FormOutlined style={{ fontSize: '18px', color: '#fff' }} />
-                수정
-              </Button>
-              <CollectionCreateForm
-                menu={product}
-                visible={visible}
-                onCreate={onCreate}
-                onCancel={() => {
-                  setVisible(false);
-                }}
-              />
-            </Row>
-          ))
-        }
-      </div>
+      <Table
+        columns={columns}
+        rowKey={(item) => item.id}
+        dataSource={products}
+      />
       <br />
       <hr />
       <AddMenu />
