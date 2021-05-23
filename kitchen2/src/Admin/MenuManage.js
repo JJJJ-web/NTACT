@@ -139,6 +139,9 @@ function MenuManage() {
   }
 
   useEffect(() => {
+    if(JSON.parse(sessionStorage.getItem('userInfo')).userRole !== 'admin') {
+      window.location.replace('/kitchen');
+    }
     fetch();
   }, []);
 

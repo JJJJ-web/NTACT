@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import {
-  Layout, Popover, Button, Divider, notification, Avatar,
+  Layout, Popover, Button, Divider, notification, Avatar, message,
 } from 'antd';
 import {
   LogoutOutlined, UserOutlined, BellTwoTone, ClockCircleTwoTone,
@@ -57,6 +57,14 @@ function Tabs() {
     history.push('/');
   }
 
+  function checkAdmin() {
+    if(JSON.parse(sessionStorage.getItem('userInfo')).userRole === 'admin') {
+      history.push('/admin');
+    } else {
+      message.error('접근 권한이 없습니다. 관리자 계정으로 로그인하세요.', 5);
+    }
+  }
+
   const logout = (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div onClick={() => logOut()} onKeyDown={() => logOut()} style={{ cursor: 'pointer' }}>
@@ -72,13 +80,18 @@ function Tabs() {
   function content() {
     return (
       <div style={{ width: '180px', marginLeft: '-10px', fontSize: '1.3rem' }}>
-        <Button type="link" icon={<BellTwoTone />} onClick={() => history.push('/kitchen')}>
+        <Button type="link" icon={<BellTwoTone twoToneColor="#ffb400" />} onClick={() => history.push('/kitchen')}>
           주문 관리
         </Button>
-        <Button type="link" icon={<ClockCircleTwoTone />} onClick={() => history.push('/situation')}>
+        <Button type="link" icon={<ClockCircleTwoTone twoToneColor="#ffb400" />} onClick={() => history.push('/situation')}>
           실시간 메뉴상황 관리
         </Button>
-        <Button type="link" icon={<FolderAddTwoTone />} onClick={() => history.push('/admin')}>
+        <Button
+          type="link"
+          icon={<FolderAddTwoTone twoToneColor={JSON.parse(sessionStorage.getItem('userInfo')).userRole === 'admin' ? '#ffb400' : '#acabab'} />}
+          onClick={() => checkAdmin()}
+          style={JSON.parse(sessionStorage.getItem('userInfo')).userRole === 'admin' ? { color: '#ffb400' } : { color: '#acabab' }}
+        >
           관리자 메뉴 관리
         </Button>
       </div>
