@@ -186,6 +186,10 @@ function ShopList(props) {
     } 
     return 'hidden';
   }
+
+  function timerHandler() {
+  }
+
   return (
     <>
       <DivList>
@@ -225,15 +229,17 @@ function ShopList(props) {
                   </Popconfirm>
                 </div>
                 <hr />
-                <List itemLayout="vertical">
-                  {item.order_detail.map((order, index) => (
-                    // eslint-disable-next-line react/no-array-index-key
-                    <List.Item key={index}>
-                      <span className="menu">{order.Name}</span>
-                      <b className="quantity">{order.Quantity}</b>
-                    </List.Item>
-                  ))}
-                </List>
+                <div className="menus">
+                  <List itemLayout="vertical">
+                    {item.order_detail.map((order, index) => (
+                      // eslint-disable-next-line react/no-array-index-key
+                      <List.Item className="menus_item" key={index}>
+                        <div className="menu">{order.Name}</div>
+                        <b className="quantity">{order.Quantity}</b>
+                      </List.Item>
+                    ))}
+                  </List>
+                </div>
                 <div className="select">
                   <Select
                     defaultValue={10}
@@ -287,14 +293,29 @@ const DivList = styled.div`
     color: #0062ff;
     font-size: 1rem;
   }
-
+  .menus{
+    width: 270px;
+    overflow-y:scroll;
+    overFlow : auto;
+    height: 300px;
+  }
+  .menus_item {
+    width: 250px;
+    height: 50px;
+    border-bottom: 1.5px dashed #b9b9b9;
+  }
   .menu {
+    position: absolute;
+    left: 0px;
+    width: 210px;
     font-size: 1.1rem;
+    overFlow: hidden;
+    text-overflow: ellipsis;
   }
 
   .quantity {
     position: absolute;
-    right: 10px;
+    right: 30px;
     font-size: 1.3rem;
   }
   .select {
