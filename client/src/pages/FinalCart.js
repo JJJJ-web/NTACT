@@ -97,7 +97,7 @@ function FinalCart() {
       </Steps>
 
       <Alert
-        message="테스트 결제 모드입니다. 저녁에 자동 환불 처리되오니 걱정 않고 결제해보시길 바랍니다."
+        message="테스트 결제 모드입니다. 당일 23시 이후에 자동 환불 처리되오니 걱정 않고 결제해보시길 바랍니다."
         type="success"
         closable
         style={{ textAlign: 'center', maxWidth: '650px', margin: '0 auto' }}
