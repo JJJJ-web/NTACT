@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { Button, Popconfirm, message } from 'antd';
 import axios from 'axios';
+import socket from '../SocketInfo';
 
 function CancelButton({ orderInfo, reload }) {
   const [popVisible, setPopVisible] = useState(false);
@@ -25,6 +26,7 @@ function CancelButton({ orderInfo, reload }) {
         // 환불 성공시
         if (res.status === 200) {
           // 정상 처리
+          socket.emit('H');
           orderInfo.order_stat = res.data.order_stat;
           reload(res.data.order_stat);
           message.success('주문 취소 완료. 환불 요청되었습니다.');

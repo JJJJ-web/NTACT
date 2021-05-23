@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Modal, Button, Form, Switch, Col, Row, Select, message, Table,
@@ -27,6 +27,12 @@ function SituationManage() {
     });
   }
 
+  useEffect(() => {
+    socket.on('E', () => {
+      getMenuSituation();
+    });
+  }, []);
+
   useState(() => {
     getMenuSituation();
   });
@@ -52,12 +58,12 @@ function SituationManage() {
     {
       title: '카테고리',
       dataIndex: 'category_kor',
-      width: '10%',
+      width: '15%',
     },
     {
       title: '메뉴명(한글)',
       dataIndex: 'menu_kor',
-      width: '20%',
+      width: '30%',
     },
     {
       title: '판매 상태',
