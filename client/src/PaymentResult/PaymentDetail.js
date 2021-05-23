@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Card, Layout, Menu, Progress, List, Button, Popover, 
+  Card, Layout, Menu, Progress, List, Button, Popover, notification,
 } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
-import { LeftOutlined } from '@ant-design/icons';
+import { LeftOutlined, NotificationTwoTone } from '@ant-design/icons';
 import axios from 'axios';
 import ListCard from './ListCard';
+import socket from '../SocketInfo';
 
 function PaymentDetail({ match, location }) {
   const [orderInfo, setOrderInfo] = useState([]);
@@ -20,8 +21,19 @@ function PaymentDetail({ match, location }) {
       setOrderDetails(res.data.order_detail);
     });
   }
-  useState(() => {
+
+  useEffect(() => {
     getList();
+    socket.on('K', () => {
+      getList();
+      notification.open({
+        key: 'updatable',
+        message: '알림',
+        description:
+          '접수 전 주문이 고객에 의해 취소되었습니다.',
+        icon: <NotificationTwoTone twoToneColor="#d50d1e" />,
+      }, 1000);
+    });
   }, []);
 
   function reload() {

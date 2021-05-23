@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Badge, Tabs } from 'antd';
 import axios from 'axios';
 import ShopList from './ShopList';
+import socket from '../SocketInfo';
 
 function ShopTabs(props) {
   const [ready, setRCount] = useState();
@@ -10,7 +11,21 @@ function ShopTabs(props) {
   const [canceled, setCanCount] = useState();
   const { TabPane } = Tabs;
 
-  function getList() {
+  function getList(item) {
+    axios.get(`/api/orders/${item}`).then((res) => {
+      if(item === 'ready') {
+        setRCount(res.data.length);
+      } if(item === 'in-progress') {
+        setPCount(res.data.length);
+      } if(item === 'completed') {
+        setCCount(res.data.length);
+      } if(item === 'canceled') {
+        setCanCount(res.data.length);
+      }
+    });
+  }
+
+  function getDefaultList() {
     axios.get('/api/orders/ready').then((res) => {
       setRCount(res.data.length);
     });
@@ -24,13 +39,12 @@ function ShopTabs(props) {
       setCanCount(res.data.length);
     });
   }
-
   useState(() => {
-    getList();
+    getDefaultList();
   }, []);
 
   return (
-    <Tabs type="card" defaultActiveKey="ready" size="large" onTabClick={() => getList()}>
+    <Tabs type="card" defaultActiveKey="ready" size="large" onTabClick={getList}>
       <TabPane tab={` 접수 ${ready}`} key="ready">
         <ShopList status="ready" setRCount={setRCount} setPCount={setPCount} setCCount={setCCount} setCanCount={setCanCount} />
       </TabPane>

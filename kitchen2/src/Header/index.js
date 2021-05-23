@@ -4,7 +4,8 @@ import {
   Layout, Popover, Button, Divider, notification, Avatar,
 } from 'antd';
 import {
-  LogoutOutlined, UserOutlined, BellTwoTone, ClockCircleTwoTone, FolderAddTwoTone,
+  LogoutOutlined, UserOutlined, BellTwoTone, ClockCircleTwoTone,
+  FolderAddTwoTone, NotificationTwoTone,
 } from '@ant-design/icons';
 import socket from '../SocketInfo';
 
@@ -14,13 +15,23 @@ function Tabs() {
   const history = useHistory();
   const [userName, setUserName] = useState('');
 
-  const openNotificationWithIcon = (info) => {
+  const onNewOrder = () => {
     notification.open({
       key: 'updatable',
       message: '알림',
       description:
         '새 주문이 접수되었습니다.',
-      icon: <BellTwoTone style={{ color: '#ffb400' }} />,
+      icon: <BellTwoTone twoToneColor="#ffb400" />,
+    }, 1000);
+  };
+
+  const onCancelOrder = () => {
+    notification.open({
+      key: 'updatable',
+      message: '알림',
+      description:
+        '접수 전 주문이 고객에 의해 취소되었습니다.',
+      icon: <NotificationTwoTone twoToneColor="#d50d1e" />,
     }, 1000);
   };
 
@@ -34,7 +45,10 @@ function Tabs() {
 
   useEffect(() => {
     socket.on('G', () => {
-      openNotificationWithIcon('info');
+      onNewOrder();
+    });
+    socket.on('I', () => {
+      onCancelOrder();
     });
   }, []);
 

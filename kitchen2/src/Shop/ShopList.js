@@ -17,6 +17,7 @@ function ShopList(props) {
   async function getList() {
     axios
       .get(`/api/orders/${status}`)
+      // eslint-disable-next-line no-return-assign
       .then((res) => setData(res.data.reverse()));
   }
 
@@ -41,15 +42,20 @@ function ShopList(props) {
     });
   }
 
-  useState(() => {
+  useEffect(() => {
+    getList();
     socket.on('G', () => {
       getList();
       changeTabCountReady();
     });
-  }, []);
-
-  useEffect(() => {
-    getList();
+    socket.on('I', () => {
+      getList();
+      changeTabCountReady();
+      changeTabCountCanceled();
+    });
+    socket.on('C', () => {
+      getList();
+    });
   }, []);
   
   // eslint-disable-next-line consistent-return
@@ -98,6 +104,7 @@ function ShopList(props) {
     })
       .then((res) => {
         if (res.status === 200) {
+          socket.emit('J', { userID: item.buyer_id });
           message.success('주문이 취소되었습니다.');
           axios
             .patch(`/api/orders/${item.id}`, {
