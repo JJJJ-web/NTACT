@@ -7,5 +7,4 @@ export { default as PaymentFailed } from '../Payment/PayFailed';
 export { default as PaymentResult } from '../PaymentResult/index';
 export { default as PaymentHistory } from '../PaymentResult/PaymentHistory';
 export { default as PaymentDetail } from '../PaymentResult/PaymentDetail';
-export { default as MenuManage } from '../AdminPages/MenuManage';
 export { default as NotFound } from '../component/NotFound';
