@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
   Layout, Popover, Button, Divider, notification, Avatar,
 } from 'antd';
@@ -76,7 +76,9 @@ function Tabs() {
       position: 'fixed', zIndex: 1, width: '100%', backgroundColor: '#FFF8EA',
     }}
     >
-      <img height="30px" src="/logo40.png" alt="logo" />
+      <Link to="/kitchen">
+        <img height="30px" src="/logo40.png" alt="logo" />
+      </Link>
 
       <b style={{ float: 'right' }}>
         {/* eslint-disable-next-line no-return-assign */}
