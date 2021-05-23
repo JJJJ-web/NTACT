@@ -61,25 +61,25 @@ function MenuManage() {
     },
     {
       title: '카테고리',
-      dataIndex: 'category_id',
+      dataIndex: 'category_kor',
       defaultSortOrder: 'ascend',
-      sorter: (a, b) => a.category_id - b.category_id,
-      width: '10%',
+      sorter: (a, b) => a.category_kor - b.category_kor,
+      width: '15%',
     },
     {
-      title: '한국어 메뉴',
+      title: '메뉴명 (한국어)',
       dataIndex: 'menu_kor',
       sortDirections: ['descend', 'ascend'],
       sorter: (a, b) => a.menu_kor < b.menu_kor,
       width: '20%',
     },
     {
-      title: '영어 메뉴',
+      title: '메뉴명 (영어)',
       dataIndex: 'menu_eng',
       width: '20%',
     },
     {
-      title: '판매가능',
+      title: '판매 상태',
       dataIndex: 'sales_stat',
       filters: [
         { text: '판매', value: 1 },
@@ -94,7 +94,7 @@ function MenuManage() {
           checked={record.sales_stat === 1}
         />
       ),
-      width: '15%',
+      width: '10%',
     },
     {
       title: '가격',
@@ -102,7 +102,7 @@ function MenuManage() {
       render: (price) => `${price}원`,
       sortDirections: ['descend', 'ascend'],
       sorter: (a, b) => a.price - b.price,
-      width: '20%',
+      width: '10%',
     },
     {
       title: '수정',
@@ -129,7 +129,7 @@ function MenuManage() {
           />
         </>
       ),
-      width: '20%',
+      width: '10%',
     },
   ];
 
@@ -310,6 +310,7 @@ function MenuManage() {
   return (
     <>
       <Table
+        bordered
         columns={columns}
         rowKey={(item) => item.id}
         dataSource={products}
