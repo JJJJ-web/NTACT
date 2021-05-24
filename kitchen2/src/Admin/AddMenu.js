@@ -48,19 +48,19 @@ function AddMenu() {
           };
           axios.put(data.signedRequest, imageObj, options)
             .then((result) => {
-              message.success(`${form.selectCategory}에 ${form.nameKor} 메뉴 등록을 완료했습니다.`, 3);
+              message.success(`${form.selectCategory}에 ${form.nameKor} 메뉴 등록을 완료했습니다.`, 10);
             })
             .catch((error) => {
               console.log('Response from s3', error);
             });
         } else if (res.status === 500) {
-          message.error('이미지 등록에 실패하였습니다. 다시 시도해주세요.', 3);
+          message.error('이미지 등록에 실패하였습니다. 다시 시도해주세요.', 10);
         } else if (res.status === 422) {
-          message.error('메뉴 등록에 실패하였습니다. 다시 시도해주세요.', 3);
+          message.error('메뉴 등록에 실패하였습니다. 다시 시도해주세요.', 10);
         }
       })
       .catch((err) => {
-        message.error('메뉴 등록에 실패하였습니다. 다시 시도해주세요.', 3);
+        message.error('메뉴 등록에 실패하였습니다. 다시 시도해주세요.', 10);
       });
   }
 
@@ -74,7 +74,7 @@ function AddMenu() {
   function beforeUpload(file) {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
-      message.error('JPG 또는 PNG 이미지만 등록 할 수 있습니다.');
+      message.error('JPG 또는 PNG 이미지만 등록 할 수 있습니다.', 10);
     }
     return isJpgOrPng ? true : Upload.LIST_IGNORE;
   }

@@ -33,7 +33,7 @@ function Login() {
         }
       })
       .catch((error) => {
-        message.error('ID나 PW를 확인하세요.');
+        message.error('ID나 PW를 확인하세요.', 10);
       });
   }
 
