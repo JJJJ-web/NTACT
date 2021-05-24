@@ -55,6 +55,10 @@ function ShopList(props) {
     });
     socket.on('C', () => {
       getList();
+      changeTabCountReady();
+      changeTabCountProgress();
+      changeTabCountCompleted();
+      changeTabCountCanceled();
     });
   }, []);
   
