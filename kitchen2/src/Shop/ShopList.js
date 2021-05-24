@@ -79,7 +79,7 @@ function ShopList(props) {
       })
       .then((res) => {
         if (res.status === 200) {
-          socket.emit('B', { userID: item.buyer_id });
+          socket.emit('B', { userID: item.buyer_id, status: changeStatus(item) });
           getList();
           changeTabCountReady();
           changeTabCountProgress();
