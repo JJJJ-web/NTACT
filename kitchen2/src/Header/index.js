@@ -92,7 +92,7 @@ function Tabs() {
           onClick={() => checkAdmin()}
           style={JSON.parse(sessionStorage.getItem('userInfo')).userRole === 'admin' ? { color: '#ffb400' } : { color: '#acabab' }}
         >
-          관리자 메뉴 관리
+          메뉴 관리
         </Button>
       </div>
     );
