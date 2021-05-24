@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card, Avatar, Radio,
+  Card, Avatar, Radio, Badge,
 } from 'antd';
 import { withRouter, Link } from 'react-router-dom';
 import axios from 'axios';
@@ -13,6 +13,7 @@ function PaymentHistory({ location }) {
   const [histories, setHistories] = useState([]);
   const [moreButton, setMoreButton] = useState(1);
   const { userID } = JSON.parse(sessionStorage.getItem('userInfo'));
+  const currentTime = new Date().getTime();
   let more;
   if(location.state !== undefined) {
     more = location.state.more;
@@ -89,13 +90,47 @@ function PaymentHistory({ location }) {
       return '#fdb916';
     } if (type === 'pick-up') {
       return '#a2d52a';
-    } 
+    }
     return '#adadad';
   }
 
-  function formatPrice(price) {
-    return `${price.toLocaleString()}원`;
+  function convertStatType(stat, data) {
+    // const elapsedTime = ((currentTime - new Date(data).getTime()) / 1000 / 60 / 60);
+    // if(elapsedTime > 24) {
+    //   return '';
+    // }
+    if (stat === 'ready') {
+      return '접수완료';
+    } if (stat === 'in-progress') {
+      return '조리 중';
+    } if (stat === 'completed') {
+      return '조리완료';
+    }
+    return '';
   }
+  function colorStatType(stat) {
+    if (stat === 'ready') {
+      return 'rgb(203 192 152)';
+    } if (stat === 'in-progress') {
+      return 'rgb(255 176 76)';
+    } if (stat === 'completed') {
+      return 'rgb(251 99 26)';
+    }
+    return '';
+  }
+
+  const ordersCard = (item) => (
+    <>
+      <div style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        {item.name}
+      </div>
+
+      <span style={{ margin: 'right' }}>
+        {item.amount.toLocaleString()}
+        원
+      </span>
+    </>
+  );
 
   return (
     <div style={{ backgroundColor: '#eeeeee', minHeight: '100vh' }}>
@@ -110,7 +145,7 @@ function PaymentHistory({ location }) {
         {histories.map((item) => (
           <Card
             key={item.id}
-            title={item.name}
+            title="이디야 한성대점"
             extra={(
               <Link to={{
                 pathname: `/payment/history/${item.id}`,
@@ -126,21 +161,29 @@ function PaymentHistory({ location }) {
           >
             <Meta
               avatar={(
-                <Avatar
-                  shape="square"
-                  size={60}
-                  style={{
-                    color: '#ffffff',
-                    backgroundColor: colorOrderType(
-                      item.order_type,
-                      item.order_stat,
-                    ),
-                  }}
+                <Badge
+                  count={convertStatType(item.order_stat, item.date)}
+                  offset={[-30, 70]}
+                  style={{ padding: '0 10px', backgroundColor: colorStatType(item.order_stat) }}
                 >
-                  {convertOrderType(item.order_type, item.order_stat)}
-                </Avatar>
+                  <Avatar
+                    shape="square"
+                    size={52}
+                    style={{
+                      whiteSpace: 'pre',
+                      width: '60px',
+                      color: '#ffffff',
+                      backgroundColor: colorOrderType(
+                        item.order_type,
+                        item.order_stat,
+                      ),
+                    }}
+                  >
+                    {convertOrderType(item.order_type, item.order_stat)}
+                  </Avatar>
+                </Badge>
               )}
-              title={formatPrice(item.amount)}
+              title={ordersCard(item)}
               description={new Date(item.date).toLocaleString()}
             />
           </Card>

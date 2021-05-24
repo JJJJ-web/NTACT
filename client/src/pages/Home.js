@@ -15,13 +15,13 @@ function Home() {
         <img height="30px" src="/logo40.png" alt="logo" />
       </div>
       <b className="store-name">
-        이디야커피랩
+        이디야 한성대점
       </b>
       <div className="store-info-tel">
-        02-543-6467
+        02-747-9667
       </div>
       <div className="store-info-address">
-        서울특별시 강남구 논현동 논현로 636
+        서울 성북구 삼선교로10길 45
       </div>
       <b className="introduction">
         환영합니다.

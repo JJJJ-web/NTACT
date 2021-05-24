@@ -19,8 +19,6 @@ function ListCard({ orderInfo, orderDetails, reload }) {
   function convertOrderStat(stat) {
     if (stat === 'ready') {
       return '접수 완료';
-    } if (stat === 'accept') {
-      return '주문 승인';
     } if (stat === 'in-progress') {
       return '조리 중';
     } if (stat === 'completed') {
