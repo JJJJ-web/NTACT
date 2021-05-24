@@ -318,6 +318,10 @@ const DivList = styled.div`
     text-overflow: initial;
   }
   
+  .ant-card-head-title::-webkit-scrollbar {
+    display: none;
+  }
+  
   .order_type {
     font-size: 2rem;
   }
