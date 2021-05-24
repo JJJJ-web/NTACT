@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
+import {
   Card, Button, Select, List, Popconfirm, message,
 } from 'antd';
 import axios from 'axios';
@@ -17,7 +17,7 @@ function ShopList(props) {
   async function getList() {
     axios
       .get(`/api/orders/${status}`)
-      // eslint-disable-next-line no-return-assign
+    // eslint-disable-next-line no-return-assign
       .then((res) => setData(res.data.reverse()));
   }
 
@@ -57,7 +57,7 @@ function ShopList(props) {
       getList();
     });
   }, []);
-  
+
   // eslint-disable-next-line consistent-return
   function changeStatus(item) {
     // 주문 진행 상태 변경
@@ -79,7 +79,7 @@ function ShopList(props) {
       })
       .then((res) => {
         if (res.status === 200) {
-          socket.emit('B', { userID: item.buyer_id });
+          socket.emit('B', { userID: item.buyer_id, status: changeStatus(item) });
           getList();
           changeTabCountReady();
           changeTabCountProgress();
@@ -168,7 +168,7 @@ function ShopList(props) {
       return '테이블';
     } if (type === 'pick-up') {
       return '포장';
-    } 
+    }
     return '-';
   }
 
@@ -177,13 +177,13 @@ function ShopList(props) {
       return '#fda200';
     } if (type === 'pick-up') {
       return '#87bd00';
-    } 
+    }
     return '#8b8b8b';
   }
   function checkOrderStat(stat) {
     if (stat === 'ready' || stat === 'in-progress') {
       return false;
-    } 
+    }
     return true;
   }
   function returnStat(stat) {
@@ -199,7 +199,7 @@ function ShopList(props) {
   function chectStatReady(stat) {
     if (stat === 'ready') {
       return 'visible';
-    } 
+    }
     return 'hidden';
   }
 
@@ -312,7 +312,16 @@ const DivList = styled.div`
   .list::-webkit-scrollbar-track {
     background-color: white;
   }
-
+  
+  .ant-card-head-title {
+    overflow: auto;
+    text-overflow: initial;
+  }
+  
+  .ant-card-head-title::-webkit-scrollbar {
+    display: none;
+  }
+  
   .order_type {
     font-size: 2rem;
   }
@@ -361,8 +370,11 @@ const DivList = styled.div`
     left: 0px;
     width: 210px;
     font-size: 1.1rem;
-    overFlow: hidden;
-    text-overflow: ellipsis;
+    overFlow: auto;
+  }
+  
+  .menu::-webkit-scrollbar {
+    display: none;
   }
 
   .quantity {
