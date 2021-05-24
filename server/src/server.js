@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
     RedisClient.get(data.userID, (err, value) => {
       if(err) console.log(err);
       // ID를 통해 해당 소켓에게 C 이벤트를 송신한다.
-      io.to(value).emit('C');
+      io.to(value).emit('C', data.status);
       io.in('staff').emit('C');
       console.log(`소켓ID:${value}에게 소켓이벤트 C (주문상태 변동) 전송`);
     });
