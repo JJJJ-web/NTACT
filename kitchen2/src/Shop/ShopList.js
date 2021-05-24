@@ -18,7 +18,13 @@ function ShopList(props) {
     axios
       .get(`/api/orders/${status}`)
     // eslint-disable-next-line no-return-assign
-      .then((res) => setData(res.data.reverse()));
+      .then((res) => {
+        if(status === 'in-progress') {
+          setData(res.data);
+        } else {
+          setData(res.data.reverse());
+        }
+      });
   }
 
   function changeTabCountReady() {
@@ -228,23 +234,6 @@ function ShopList(props) {
                     {convertOrderType(item.order_type)}
                   </b>
                   <span className="date">{formatDate(item.date)}</span>
-                  <div>
-                    <Popconfirm
-                      onConfirm={() => canceledMenu(item)}
-                      title={text}
-                      okText="확인"
-                      cancelText="닫기"
-                      className="reject"
-                    >
-                      <Button
-                        style={{ visibility: chectStatReady(item.order_stat) }}
-                        danger
-                        type="primary"
-                      >
-                        주문 취소
-                      </Button>
-                    </Popconfirm>
-                  </div>
                   <hr />
                   <div className="menus">
                     <List itemLayout="vertical">
@@ -258,27 +247,33 @@ function ShopList(props) {
                     </List>
                   </div>
                   <div className="select">
-                    <Select
-                      defaultValue={10}
-                      onChange={(e) => setValue(e)}
-                      style={{
-                        width: 105,
-                        visibility: chectStatReady(item.order_stat),
-                      }}
-                    >
-                      <Option value={5}>5</Option>
-                      <Option value={10}>10</Option>
-                      <Option value={15}>15</Option>
-                      <Option value={20}>20</Option>
-                    </Select>
-                    <Button
-                      type="primary"
-                      disabled={checkOrderStat(item.order_stat)}
-                      className="Button"
-                      onClick={() => changeStateHandler(item)}
-                    >
-                      {returnStat(item.order_stat)}
-                    </Button>
+                    <div className="order">
+                      <Button
+                        type="primary"
+                        disabled={checkOrderStat(item.order_stat)}
+                        className="Button"
+                        onClick={() => changeStateHandler(item)}
+                      >
+                        {returnStat(item.order_stat)}
+                      </Button>
+                    </div>
+                    <div className="canceled">
+                      <Popconfirm
+                        onConfirm={() => canceledMenu(item)}
+                        title={text}
+                        okText="확인"
+                        cancelText="닫기"
+                        className="reject"
+                      >
+                        <Button
+                          style={{ visibility: chectStatReady(item.order_stat) }}
+                          danger
+                          type="primary"
+                        >
+                          주문 취소
+                        </Button>
+                      </Popconfirm>
+                    </div>
                   </div>
                 </div>
               </Card>
@@ -385,11 +380,22 @@ const DivList = styled.div`
 
   .select {
     position: absolute;
-    bottom: 30px;
+    bottom: 20px;
+  }
+
+  .canceled {
+    position: absolute;
+    right: 5vw;
+    bottom: 0px;
+  }
+
+  .order {
+    position: relative;
+    left: 5vw;
   }
 
   Button {
-    margin-left: 25px;
+    margin-left: 50px;
   }
 `;
 
