@@ -121,6 +121,8 @@ function Tabs() {
           {userName}
         </Popover>
       </b>
+
+      <b style={{ fontSize: '15px', float: 'right', marginRight: '25px' }}>이디야커피 한성대점</b>
     </Header>
   );
 }
