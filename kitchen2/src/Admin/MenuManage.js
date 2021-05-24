@@ -56,13 +56,24 @@ function MenuManage() {
       dataIndex: 'img_url',
       render: (item) => <img src={item} width="70vw" alt="" />,
       width: '10%',
+      align: 'center',
     },
     {
       title: '카테고리',
       dataIndex: 'category_kor',
-      defaultSortOrder: 'ascend',
-      sorter: (a, b) => a.category_kor - b.category_kor,
+      filters: [
+        { text: '커피', value: 100 },
+        { text: '음료', value: 200 },
+        { text: '에이드', value: 300 },
+        { text: '쉐이크', value: 400 },
+        { text: '블렌딩 티', value: 500 },
+        { text: '플랫치노', value: 600 },
+        { text: '빙수', value: 700 },
+        { text: '병음료', value: 800 },
+      ],
+      onFilter: (value, record) => record.category_id === value,
       width: '15%',
+      align: 'center',
     },
     {
       title: '메뉴명 (한국어)',
@@ -70,29 +81,32 @@ function MenuManage() {
       sortDirections: ['descend', 'ascend'],
       sorter: (a, b) => a.menu_kor < b.menu_kor,
       width: '20%',
+      align: 'center',
     },
     {
       title: '메뉴명 (영어)',
       dataIndex: 'menu_eng',
       width: '20%',
+      align: 'center',
     },
     {
       title: '판매 상태',
       dataIndex: 'sales_stat',
       filters: [
-        { text: '판매', value: 1 },
-        { text: '비판매', value: 0 },
+        { text: '판매중', value: 1 },
+        { text: '품절', value: 0 },
       ],
       onFilter: (value, record) => record.sales_stat === value,
       render: (value, record) => (
         <Switch
           checkedChildren="판매중"
-          unCheckedChildren="숨기기"
+          unCheckedChildren="품절"
           onClick={() => statClickHandler(record)}
           checked={record.sales_stat === 1}
         />
       ),
-      width: '10%',
+      width: '8%',
+      align: 'center',
     },
     {
       title: '가격',
@@ -101,6 +115,7 @@ function MenuManage() {
       sortDirections: ['descend', 'ascend'],
       sorter: (a, b) => a.price - b.price,
       width: '10%',
+      align: 'center',
     },
     {
       title: '수정',
@@ -128,6 +143,7 @@ function MenuManage() {
         </>
       ),
       width: '10%',
+      align: 'center',
     },
   ];
 

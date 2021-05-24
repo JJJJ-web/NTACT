@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import axios from 'axios';
 import {
   Modal, Button, Form, Switch, Col, Row, Select, message, Table,
 } from 'antd';
 import socket from '../SocketInfo';
+
 
 const { Option } = Select;
 
@@ -63,19 +65,31 @@ function SituationManage() {
     {
       title: '카테고리',
       dataIndex: 'category_kor',
+      filters: [
+        { text: '커피', value: 100 },
+        { text: '음료', value: 200 },
+        { text: '에이드', value: 300 },
+        { text: '쉐이크', value: 400 },
+        { text: '블렌딩 티', value: 500 },
+        { text: '플랫치노', value: 600 },
+        { text: '빙수', value: 700 },
+        { text: '병음료', value: 800 },
+      ],
+      onFilter: (value, record) => record.category_id === value,
       width: '15%',
+      align: 'center',
     },
     {
       title: '메뉴명(한글)',
       dataIndex: 'menu_kor',
       width: '30%',
+      align: 'center',
     },
     {
       title: '판매 상태',
       dataIndex: 'sales_stat',
       filters: [
-        { text: '판매', value: 1 },
-        { text: '비판매', value: 0 },
+        { text: '품절', value: 0 },
       ],
       onFilter: (value, record) => record.sales_stat === value,
       render: (value, record, index) => (
@@ -85,10 +99,11 @@ function SituationManage() {
           style={{ width: '4.5rem' }}
           onChange={() => soldoutMenuClickHandler(record)}
           /* eslint-disable-next-line eqeqeq */
-          checked={products[index].sales_stat}
+          checked={(products[index].sales_stat && record.sales_stat)}
         />
       ),
-      width: '10%',
+      width: '15%',
+      align: 'center',
     },
     {
       title: '지연상태',
@@ -110,20 +125,27 @@ function SituationManage() {
           <Option value="40">40분 지연</Option>
         </Select>
       ),
-      width: '20%',
+      width: '15%',
+      align: 'center',
     },
   ];
 
   return (
-    <>
+    <TableStyle>
       <Table
         bordered
         columns={columns}
         rowKey={(item) => item.id}
         dataSource={products}
       />
-    </>
+    </TableStyle>
   );
 }
+
+const TableStyle = styled.div`
+  max-width: 85vw;
+  margin-left: 5vw;
+  margin-right: 5vw;
+`;
 
 export default SituationManage;
