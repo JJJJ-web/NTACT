@@ -24,19 +24,19 @@ function AddMenu() {
   const [newCategoryNameEng, setNewCategoryNameEng] = useState();
 
   function handleSubmit(formdata) {
-    const data = formdata.addMenus[0];
-    const imageObj = data.image[data.image.length - 1].originFileObj;
-    const image = data.image[data.image.length - 1].name.split('.');
+    const form = formdata.addMenus[0];
+    const imageObj = form.image[form.image.length - 1].originFileObj;
+    const image = form.image[form.image.length - 1].name.split('.');
 
     axios.post('/api/menus', {
       fileName: image[0],
       fileType: image[1],
-      price: data.price, // 가격
-      name_kor: data.nameKor,
-      name_eng: data.nameEng,
-      description: data.description,
-      category_kor: data.selectCategory,
-      category_eng: categories.filter((res) => res.name_kor === data.selectCategory)[0].name_eng,
+      price: form.price, // 가격
+      name_kor: form.nameKor,
+      name_eng: form.nameEng,
+      description: form.description,
+      category_kor: form.selectCategory,
+      category_eng: categories.filter((res) => res.name_kor === form.selectCategory)[0].name_eng,
     })
       .then((res) => {
         if (res.status === 201) {
@@ -48,7 +48,7 @@ function AddMenu() {
           };
           axios.put(data.signedRequest, imageObj, options)
             .then((result) => {
-              message.success(`${data.selectCategory}에 ${data.nameKor} 메뉴 등록을 완료했습니다.`, 3);
+              message.success(`${form.selectCategory}에 ${form.nameKor} 메뉴 등록을 완료했습니다.`, 3);
             })
             .catch((error) => {
               console.log('Response from s3', error);
