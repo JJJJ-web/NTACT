@@ -27,7 +27,7 @@ function Header() {
         description:
           '접수 전 주문이 고객에 의해 취소되었습니다.',
         icon: <NotificationTwoTone twoToneColor="#d50d1e" />,
-      }, 1000);
+      }, 10000);
     });
     socket.on('C', (stat) => {
       const status = convertOrderStat(stat);
@@ -37,7 +37,7 @@ function Header() {
         description:
           `내 주문표가 ${status} 되었습니다.`,
         icon: <BellTwoTone twoToneColor="#ffb400" />,
-      }, 1000);
+      }, 10000);
     });
   });
 

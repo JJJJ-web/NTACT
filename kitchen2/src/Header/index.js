@@ -22,7 +22,7 @@ function Tabs() {
       description:
         '새 주문이 접수되었습니다.',
       icon: <BellTwoTone twoToneColor="#ffb400" />,
-    }, 1000);
+    }, 10000);
   };
 
   const onCancelOrder = () => {
@@ -32,7 +32,7 @@ function Tabs() {
       description:
         '접수 전 주문이 고객에 의해 취소되었습니다.',
       icon: <NotificationTwoTone twoToneColor="#d50d1e" />,
-    }, 1000);
+    }, 10000);
   };
 
   useState(() => {
@@ -92,7 +92,7 @@ function Tabs() {
           onClick={() => checkAdmin()}
           style={JSON.parse(sessionStorage.getItem('userInfo')).userRole === 'admin' ? { color: '#ffb400' } : { color: '#acabab' }}
         >
-          관리자 메뉴 관리
+          메뉴 관리
         </Button>
       </div>
     );

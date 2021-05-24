@@ -111,7 +111,7 @@ function ShopList(props) {
       .then((res) => {
         if (res.status === 200) {
           socket.emit('J', { userID: item.buyer_id });
-          message.success('주문이 취소되었습니다.');
+          message.success('주문이 취소되었습니다.', 10);
           axios
             .patch(`/api/orders/${item.id}`, {
               // 주문 취소: server에 주문 상태 변경
@@ -134,15 +134,15 @@ function ShopList(props) {
             });
         } else if (res.status === 500) {
           console.log(res);
-          message.error('유효하지 않은 요청입니다.');
+          message.error('유효하지 않은 요청입니다.', 10);
         } else {
           console.log(res);
-          message.error('유효하지 않은 요청입니다.');
+          message.error('유효하지 않은 요청입니다.', 10);
         }
       })
       .catch((error) => {
         console.log(error);
-        message.error('이미 취소된 주문입니다.');
+        message.error('이미 취소된 주문입니다.', 10);
       });
   }
 
@@ -151,7 +151,7 @@ function ShopList(props) {
     if (item.order_stat === 'ready') {
       cancelPay(item);
     } else {
-      message.warning('조리 중에는 주문을 취소할 수 없습니다.');
+      message.warning('조리 중에는 주문을 취소할 수 없습니다.', 10);
     }
   }
 
