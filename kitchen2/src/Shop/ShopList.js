@@ -188,9 +188,9 @@ function ShopList(props) {
   }
   function checkOrderStat(stat) {
     if (stat === 'ready' || stat === 'in-progress') {
-      return false;
+      return 'visible';
     }
-    return true;
+    return'hidden';
   }
   function returnStat(stat) {
     if (stat === 'ready') {
@@ -250,8 +250,8 @@ function ShopList(props) {
                     <div className="order">
                       <Button
                         type="primary"
-                        disabled={checkOrderStat(item.order_stat)}
-                        className="Button"
+                        style={{ visibility: checkOrderStat(item.order_stat) }}
+                        className="statButton"
                         onClick={() => changeStateHandler(item)}
                       >
                         {returnStat(item.order_stat)}
@@ -268,7 +268,7 @@ function ShopList(props) {
                         <Button
                           style={{ visibility: chectStatReady(item.order_stat) }}
                           danger
-                          type="primary"
+                          className="cancelButton"
                         >
                           주문 취소
                         </Button>
@@ -394,8 +394,11 @@ const DivList = styled.div`
     left: 5vw;
   }
 
-  Button {
-    margin-left: 50px;
+  .statButton {
+    margin-left: 90px;
+  }
+  .cancelButton {
+    margin-right: 120px;
   }
 `;
 
