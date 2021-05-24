@@ -8,22 +8,25 @@ import socket from '../SocketInfo';
 const { Option } = Select;
 
 function SituationManage() {
-  const [products, setProducts] = useState([]);
-
-  async function soldoutMenuClickHandler(product) {
-    await axios.patch(`/api/menus/status/${product.id}`, {}).then((res) => {
-      if (res.status === 200) {
-        socket.emit('D');
-        message.success(`${product.menu_kor} 의 판매 상태가 변경되었습니다.`);
-      } else {
-        // window.alert('토글 실패111');
-      }
-    });
-  }
+  // eslint-disable-next-line prefer-const
+  let [products, setProducts] = useState([]);
 
   function getMenuSituation() {
     axios.get('/api/menus?category=true').then((res) => {
       setProducts(res.data);
+    });
+  }
+
+  async function soldoutMenuClickHandler(product) {
+    // eslint-disable-next-line consistent-return
+    await axios.patch(`/api/menus/status/${product.id}`, {}).then((res) => {
+      if (res.status === 200) {
+        getMenuSituation();
+        socket.emit('D');
+        message
+          .loading('변경 중', 0.5)
+          .then(() => message.success(`${product.menu_kor} 의 판매 상태가 변경되었습니다.`, 5));
+      }
     });
   }
 
@@ -46,8 +49,10 @@ function SituationManage() {
       })
       .then((res) => {
         if (res.status === 200) {
-          socket.emit('D');
-          message.success(`${product.menu_kor} 의 지연시간이 변경되었습니다.`);
+          getMenuSituation();
+          socket.emit('D'); message
+            .loading('변경 중', 0.5)
+            .then(() => message.success(`${product.menu_kor} 의 지연시간이 변경되었습니다.`, 5));
         } else {
         // window.alert('토글 실패111');
         }
@@ -73,14 +78,14 @@ function SituationManage() {
         { text: '비판매', value: 0 },
       ],
       onFilter: (value, record) => record.sales_stat === value,
-      render: (value, record) => (
+      render: (value, record, index) => (
         <Switch
           checkedChildren="판매중"
           unCheckedChildren="품절"
           style={{ width: '4.5rem' }}
           onChange={() => soldoutMenuClickHandler(record)}
           /* eslint-disable-next-line eqeqeq */
-          defaultChecked={record.sales_stat == 1}
+          checked={products[index].sales_stat}
         />
       ),
       width: '10%',
@@ -88,12 +93,12 @@ function SituationManage() {
     {
       title: '지연상태',
       dataIndex: 'delay_time',
-      render: (value, record) => (
+      render: (value, record, index) => (
         <Select
-          defaultValue={
-            record.delay_time === 0
+          value={
+            products[index].delay_time === 0
               ? '정상 판매'
-              : `${record.delay_time}분 지연`
+              : `${products[index].delay_time}분 지연`
           }
           style={{ width: 120 }}
           onChange={(e) => changeDelay(e, record)}
