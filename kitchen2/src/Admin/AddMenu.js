@@ -6,6 +6,7 @@ import {
 import { LoadingOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import axios from 'axios';
+import AddCategory from './AddCategory';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -20,8 +21,6 @@ function AddMenu() {
   const formRef = React.createRef();
   const [form] = Form.useForm();
   const [categories, setCategories] = useState([]);
-  const [newCategoryNameKor, setNewCategoryNameKor] = useState();
-  const [newCategoryNameEng, setNewCategoryNameEng] = useState();
   let addCount = 0;
   let addSuccess = false;
   console.log(formRef, form);
@@ -85,25 +84,9 @@ function AddMenu() {
     return isJpgOrPng ? true : Upload.LIST_IGNORE;
   }
 
-  function newCategoryKorChange(e) {
-    setNewCategoryNameKor(e.target.value);
-  }
-  function newCategoryEngChange(e) {
-    setNewCategoryNameEng(e.target.value);
-  }
-
-  function onNewCategory(e) {
-    categories.push({
-      name_kor: newCategoryNameKor,
-      name_eng: newCategoryNameEng,
-    });
-    form.setFieldsValue({
-      카테고리: newCategoryNameKor,
-    });
-  }
-
   return (
     <Container>
+      <AddCategory />
       <Form
         onFinish={handleSubmit}
         ref={formRef}
@@ -160,31 +143,6 @@ function AddMenu() {
                       optionFilterProp="children"
                       /* eslint-disable-next-line max-len */
                       filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                      dropdownRender={(menu) => (
-                        <div>
-                          <Form.Item
-                            rules={[
-                              {
-                                required: true,
-                                message: '영어, 한국어 필수 입력입니다.',
-                              },
-                            ]}
-                          >
-                            <Input style={{ flex: 'auto' }} placeholder="새 카테고리 영어명 입력" onChange={newCategoryEngChange} />
-                            <Input style={{ flex: 'auto' }} placeholder="새 카테고리 한국어명 입력" onChange={newCategoryKorChange} />
-                          </Form.Item>
-                          <div style={{ display: 'flex', flexWrap: 'nowrap', padding: 8 }}>
-                            <Button
-                              style={{ flex: 'auto' }}
-                              onClick={onNewCategory}
-                            >
-                              새 카테고리 등록
-                            </Button>
-                          </div>
-                          <Divider style={{ margin: '4px 0' }} />
-                          {menu}
-                        </div>
-                      )}
                     >
                       {
                         categories.map((item) => (
@@ -269,10 +227,11 @@ function AddMenu() {
                     if(addCount === 0) {
                       add();
                     }
-                    addCount++;
+                    ++addCount;
                   }}
                   block
                   icon={<PlusOutlined />}
+                  style={{ visibility: addCount ? 'hidden' : 'visible' }}
                 >
                   새 메뉴 생성
                 </Button>
@@ -305,10 +264,12 @@ const Container = styled.div`
   .addBottom{
     border-bottom: 2px dotted #cecece;
     margin-top: 50px;
+    margin-bottom: 10px;
   }
   
   .addBtn {
-    margin: 50px 0px;
+    display:inline;
+    width: 40%;
   }
 
   .addDeleteBtn {
