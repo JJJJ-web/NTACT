@@ -3,7 +3,7 @@ import 'antd/dist/antd.css';
 import {
   Input, Select, InputNumber, Upload, Form, Button, Space, message, Divider,
 } from 'antd';
-import { LoadingOutlined, DeleteFilled, PlusOutlined } from '@ant-design/icons';
+import { LoadingOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -22,8 +22,12 @@ function AddMenu() {
   const [categories, setCategories] = useState([]);
   const [newCategoryNameKor, setNewCategoryNameKor] = useState();
   const [newCategoryNameEng, setNewCategoryNameEng] = useState();
+  let addCount = 0;
+  let addSuccess = false;
+  console.log(formRef, form);
 
   function handleSubmit(formdata) {
+    console.log(formdata);
     const form = formdata.addMenus[0];
     const imageObj = form.image[form.image.length - 1].originFileObj;
     const image = form.image[form.image.length - 1].name.split('.');
@@ -49,6 +53,8 @@ function AddMenu() {
           axios.put(data.signedRequest, imageObj, options)
             .then((result) => {
               message.success(`${form.selectCategory}에 ${form.nameKor} 메뉴 등록을 완료했습니다.`, 10);
+              setTimeout(() => window.location.replace('/admin'), 5000);
+              addSuccess = true;
             })
             .catch((error) => {
               console.log('Response from s3', error);
@@ -102,47 +108,41 @@ function AddMenu() {
         onFinish={handleSubmit}
         ref={formRef}
         name="addMenuForm"
-        layout="vertical"
         autoComplete="off"
+        layout="vertical"
       >
         <Form.List name="addMenus">
           {(fields, { add, remove }) => (
             <>
               {fields.map((field) => (
-                <Space
-                  key={field.key}
-                  style={{ display: 'flex', marginBottom: 8 }}
-                  align="baseline"
-                >
-                  <Form.Item
-                    label="이미지 업로드"
-                    name={[field.name, 'image']}
-                    valuePropName="fileList"
-                    getValueFromEvent={normFile}
-                    rules={[
-                      {
-                        required: true,
-                        message: '이미지 등록은 필수입니다.',
-                      },
-                    ]}
-                  >
-                    <Upload name="logo" listType="picture" maxCount={1} beforeUpload={beforeUpload}>
-                      <Button icon={<PlusOutlined />}>이미지 선택</Button>
-                    </Upload>
-                  </Form.Item>
-                  <Form.Item
-                    label="가격 (원)"
-                    name={[field.name, 'price']}
-                    rules={[
-                      {
-                        type: 'number',
-                        required: true,
-                        message: '가격은 필수입력입니다.',
-                      },
-                    ]}
-                  >
-                    <InputNumber min={1} max={999999} step={100} />
-                  </Form.Item>
+                <>
+                  <div className="addTop">
+                    <Button
+                      className="addDeleteBtn"
+                      onClick={() => {
+                        remove(field.name);
+                        addCount = 0;
+                      }}
+                    >
+                      취소
+                    </Button>
+                    <b>
+                      새 메뉴 등록
+                    </b>
+                    <Button
+                      className="addSubmitBtn"
+                      type="primary"
+                      htmlType="submit"
+                      onClick={() => {
+                        if(addSuccess) {
+                          setTimeout(() => remove(field.name), 500);
+                          addCount = 0;
+                        }
+                      }}
+                    >
+                      메뉴 등록
+                    </Button>
+                  </div>
 
                   <Form.Item
                     name={[field.name, 'selectCategory']}
@@ -150,12 +150,13 @@ function AddMenu() {
                     rules={[
                       {
                         required: true,
+                        message: '카테고리는 필수입력입니다.',
                       },
                     ]}
                   >
                     <Select
                       showSearch
-                      style={{ width: 200 }}
+                      style={{ width: '200px' }}
                       optionFilterProp="children"
                       /* eslint-disable-next-line max-len */
                       filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -199,6 +200,20 @@ function AddMenu() {
                   </Form.Item>
 
                   <Form.Item
+                    label="가격 (원)"
+                    name={[field.name, 'price']}
+                    rules={[
+                      {
+                        type: 'number',
+                        required: true,
+                        message: '가격은 필수입력입니다.',
+                      },
+                    ]}
+                  >
+                    <InputNumber min={1} max={999999} step={100} style={{ width: '200px' }} />
+                  </Form.Item>
+
+                  <Form.Item
                     name={[field.name, 'nameKor']}
                     label="메뉴 이름(한국어)"
                     rules={[
@@ -222,19 +237,40 @@ function AddMenu() {
                   >
                     <Input placeholder="메뉴 이름(영어)" allowClear maxLength={45} />
                   </Form.Item>
+
+                  <Form.Item
+                    label="이미지 업로드"
+                    name={[field.name, 'image']}
+                    valuePropName="fileList"
+                    getValueFromEvent={normFile}
+                    rules={[
+                      {
+                        required: true,
+                        message: '이미지 등록은 필수입니다.',
+                      },
+                    ]}
+                  >
+                    <Upload name="logo" listType="picture" maxCount={1} beforeUpload={beforeUpload}>
+                      <Button type="dashed" danger icon={<PlusOutlined />} style={{ width: '100vh', maxWidth: '500px' }}>이미지 선택</Button>
+                    </Upload>
+                  </Form.Item>
+
                   <Form.Item label="메뉴 상세설명" name={[field.name, 'description']}>
                     <TextArea placeholder="메뉴 상세설명 입력" maxLength={100} />
                   </Form.Item>
-                  <DeleteFilled
-                    onClick={() => remove(field.name)}
-                    style={{ fontSize: '22px', color: '#FF0000' }}
-                  />
-                </Space>
+
+                  <div className="addBottom" />
+                </>
               ))}
               <Form.Item>
                 <Button
-                  type="dashed"
-                  onClick={() => add()}
+                  className="addBtn"
+                  onClick={() => {
+                    if(addCount === 0) {
+                      add();
+                    }
+                    addCount++;
+                  }}
                   block
                   icon={<PlusOutlined />}
                 >
@@ -244,31 +280,44 @@ function AddMenu() {
             </>
           )}
         </Form.List>
-
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            메뉴 등록
-          </Button>
-        </Form.Item>
       </Form>
     </Container>
   );
 }
 
 const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  background-color: #fff;
-  border-radius: 4px;
-  top: 2rem;
-  left: 2rem;
-  right: 2rem;
-  bottom: 2rem;
-  padding: 2rem;
+  margin: 0px auto;
+  width: 100vh;
+  max-width: 500px;
 
-  inputText {
-    padding-left: 2rem;
+  .addTop {
+    text-align: center;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 2px dotted #cecece;
+
+    b {
+      font-size: 1.3rem;
+      color: #5a5a5a;
+    }
+  }
+  
+  .addBottom{
+    border-bottom: 2px dotted #cecece;
+    margin-top: 50px;
+  }
+  
+  .addBtn {
+    margin: 50px 0px;
+  }
+
+  .addDeleteBtn {
+    float: left;
+    margin: 5px;
+  }
+
+  .addSubmitBtn {
+    float: right;
   }
 `;
 export default AddMenu;
