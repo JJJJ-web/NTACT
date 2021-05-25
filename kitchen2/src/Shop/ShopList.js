@@ -360,7 +360,6 @@ const DivList = styled.div`
 
   .menus::-webkit-scrollbar-track {
     background-color: white;
-    border: 0.5px solid #bababa;
   }
   
   .menus_item {
