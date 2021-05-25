@@ -31,7 +31,6 @@ function Payment({ sumAmount, cartItems }) {
     buyer_tel: phoneNumber, // 구매자 전화번호
     buyer_email: email, // 구매자 이메일
     m_redirect_url: 'https://dev.ntact.site/api/payments/complete/mobile',
-    //m_redirect_url: 'http://localhost:4000/api/payments/complete/mobile',
   };
   async function sendCartData(sumAmount, cartItems) {
     let sendStat;
@@ -62,7 +61,6 @@ function Payment({ sumAmount, cartItems }) {
       .post(`/api/payments/${userID}/${data.merchant_uid}`)
       .then((res) => {
         history.push({
-          // pathname: '/payment_success',
           pathname: '/payment/result',
           state: { orderInfo: res.data },
         });
