@@ -333,9 +333,9 @@ const DivList = styled.div`
   }
 
   .menus {
-    width: 270px;
-    overflow-y: scroll;
-    overFlow: auto;
+    width: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
     height: 300px;
   }
 
@@ -353,7 +353,7 @@ const DivList = styled.div`
     background-color: white;
     border: 0.5px solid #bababa;
   }
-
+  
   .menus_item {
     width: 250px;
     height: 50px;
@@ -362,8 +362,8 @@ const DivList = styled.div`
 
   .menu {
     position: absolute;
-    left: 0px;
-    width: 210px;
+    left: 0;
+    width: 200px;
     font-size: 1.1rem;
     overFlow: auto;
   }
@@ -374,7 +374,7 @@ const DivList = styled.div`
 
   .quantity {
     position: absolute;
-    right: 30px;
+    right: 15px;
     font-size: 1.3rem;
   }
 
