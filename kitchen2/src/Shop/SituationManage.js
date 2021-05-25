@@ -82,7 +82,7 @@ function SituationManage() {
     {
       title: '메뉴명(한글)',
       dataIndex: 'menu_kor',
-      width: '30%',
+      width: '40%',
       align: 'center',
     },
     {
@@ -102,7 +102,7 @@ function SituationManage() {
           checked={(products[index].sales_stat && record.sales_stat)}
         />
       ),
-      width: '15%',
+      width: '10%',
       align: 'center',
     },
     {
@@ -143,9 +143,8 @@ function SituationManage() {
 }
 
 const TableStyle = styled.div`
-  max-width: 85vw;
-  margin-left: 5vw;
-  margin-right: 5vw;
+  max-width: 800px;
+  margin: 0 auto;
 `;
 
 export default SituationManage;
