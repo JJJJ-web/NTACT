@@ -7,11 +7,9 @@ import styled from 'styled-components';
 import socket from '../SocketInfo';
 
 function ShopList(props) {
-  const { Option } = Select;
   const [data, setData] = useState([]);
   // eslint-disable-next-line react/destructuring-assignment
-  const [status, setStatus] = useState(props.status);
-  const [value, setValue] = useState(10);
+  const [status] = useState(props.status);
   const text = '해당 주문을 취소하겠습니까?';
 
   async function getList() {
@@ -202,7 +200,7 @@ function ShopList(props) {
     }
     return '취소';
   }
-  function chectStatReady(stat) {
+  function checkStatReady(stat) {
     if (stat === 'ready') {
       return 'visible';
     }
@@ -266,7 +264,7 @@ function ShopList(props) {
                         className="reject"
                       >
                         <Button
-                          style={{ visibility: chectStatReady(item.order_stat) }}
+                          style={{ visibility: checkStatReady(item.order_stat) }}
                           danger
                           className="cancelButton"
                         >
@@ -301,7 +299,7 @@ const DivList = styled.div`
   .list::-webkit-scrollbar-thumb {
     background-color: #ffb400;
     border-radius: 10px;
-    box-shadow: inset 0px 0px 5px white;
+    box-shadow: inset 0 0 5px white;
   }
 
   .list::-webkit-scrollbar-track {
@@ -355,7 +353,7 @@ const DivList = styled.div`
   .menus::-webkit-scrollbar-thumb {
     background-color: white;
     border: 1px solid #ffb400;
-    box-shadow: inset 0px 0px 3px #ffb400;
+    box-shadow: inset 0 0 3px #ffb400;
   }
 
   .menus::-webkit-scrollbar-track {
@@ -370,8 +368,8 @@ const DivList = styled.div`
 
   .menu {
     position: absolute;
-    left: 0;
-    width: 200px;
+    left: 10px;
+    width: 190px;
     font-size: 1.1rem;
     overFlow: auto;
   }
@@ -382,6 +380,7 @@ const DivList = styled.div`
 
   .quantity {
     position: absolute;
+    margin-top: -3px;
     right: 15px;
     font-size: 1.3rem;
   }
@@ -394,7 +393,7 @@ const DivList = styled.div`
   .canceled {
     position: absolute;
     right: 5vw;
-    bottom: 0px;
+    bottom: 0;
   }
 
   .order {
