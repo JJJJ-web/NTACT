@@ -14,6 +14,7 @@ import {
   Table,
 } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
 import AddMenu from './AddMenu';
 
 const { Option } = Select;
@@ -52,13 +53,6 @@ function MenuManage() {
 
   const columns = [
     {
-      title: '이미지',
-      dataIndex: 'img_url',
-      render: (item) => <img src={item} width="70vw" alt="" />,
-      width: '10%',
-      align: 'center',
-    },
-    {
       title: '카테고리',
       dataIndex: 'category_kor',
       filters: [
@@ -76,21 +70,28 @@ function MenuManage() {
       align: 'center',
     },
     {
+      title: '이미지',
+      dataIndex: 'img_url',
+      render: (item) => <img src={item} width="70vw" alt="" />,
+      width: '10%',
+      align: 'center',
+    },
+    {
       title: '메뉴명 (한국어)',
       dataIndex: 'menu_kor',
       sortDirections: ['descend', 'ascend'],
       sorter: (a, b) => a.menu_kor < b.menu_kor,
-      width: '20%',
+      width: '30%',
       align: 'center',
     },
     {
       title: '메뉴명 (영어)',
       dataIndex: 'menu_eng',
-      width: '20%',
+      width: '30%',
       align: 'center',
     },
     {
-      title: '판매 상태',
+      title: '상태',
       dataIndex: 'sales_stat',
       filters: [
         { text: '판매중', value: 1 },
@@ -101,24 +102,25 @@ function MenuManage() {
         <Switch
           checkedChildren="판매중"
           unCheckedChildren="품절"
+          style={{ width: '4.5rem' }}
           onClick={() => statClickHandler(record)}
           checked={record.sales_stat === 1}
         />
       ),
-      width: '8%',
+      width: '10%',
       align: 'center',
     },
     {
       title: '가격',
       dataIndex: 'price',
-      render: (price) => `${price}원`,
+      render: (price) => `${price.toLocaleString()}원`,
       sortDirections: ['descend', 'ascend'],
       sorter: (a, b) => a.price - b.price,
-      width: '10%',
+      width: '15%',
       align: 'center',
     },
     {
-      title: '수정',
+      title: '메뉴 수정',
       dataIndex: 'modify',
       render: (value, record) => (
         <>
@@ -128,8 +130,9 @@ function MenuManage() {
               setVisible(true);
               getThisMenu(record);
             }}
+            size="small"
           >
-            <FormOutlined style={{ fontSize: '18px', color: '#fff' }} />
+            <FormOutlined style={{ fontSize: '15px', color: '#fff' }} />
             수정
           </Button>
           <CollectionCreateForm
@@ -142,7 +145,7 @@ function MenuManage() {
           />
         </>
       ),
-      width: '10%',
+      width: '5%',
       align: 'center',
     },
   ];
@@ -155,7 +158,7 @@ function MenuManage() {
   }
 
   useEffect(() => {
-    if(JSON.parse(sessionStorage.getItem('userInfo')).userRole !== 'admin') {
+    if(sessionStorage.getItem('userInfo') !== null && JSON.parse(sessionStorage.getItem('userInfo')).userRole !== 'admin') {
       window.location.replace('/kitchen');
     }
     fetch();
@@ -324,7 +327,7 @@ function MenuManage() {
   }
 
   return (
-    <>
+    <TableStyle>
       <Table
         bordered
         columns={columns}
@@ -334,8 +337,13 @@ function MenuManage() {
       <br />
       <hr />
       <AddMenu />
-    </>
+    </TableStyle>
   );
 }
+
+const TableStyle = styled.div`
+  max-width: 1000px;
+  margin: 0 auto;
+`;
 
 export default MenuManage;
