@@ -20,7 +20,7 @@ function GoogleLogin() {
       window.gapi.load('auth2', () => {
         const auth2 = window.gapi.auth2.init({
           client_id:
-            '126813901957-hvo7qgtpljnpn7rm7i2j0c8o0f6d00lg.apps.googleusercontent.com',
+            '316015064596-sq2bs0k1u0j0pv3f4lufe8gdvvgj93sv.apps.googleusercontent.com',
           scope: 'profile email',
         });
 
