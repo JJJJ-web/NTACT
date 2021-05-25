@@ -20,6 +20,7 @@ function Login() {
       },
     })
       .then((res) => { // 로그인 성공시
+        console.log(res);
         if (res.status === 200) {
           const user = jwt.verify(
             res.data.jwtToken,
@@ -33,7 +34,12 @@ function Login() {
         }
       })
       .catch((error) => {
-        message.error('ID나 PW를 확인하세요.', 10);
+        console.log(error.response);
+        if (error.response.status === 801) {
+          message.error('ID를 확인하세요.', 10);
+        }else if(error.response.status === 802) {
+          message.error('비밀번호를 확인하세요.', 10);
+        }
       });
   }
 
