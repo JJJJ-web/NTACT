@@ -49,9 +49,19 @@ function Login() {
       }}
       onFinish={onFinish}
       style={{
-        width: '300px', height: '300px', position: 'absolute', margin: 'auto', left: 0, right: 0, top: 0, bottom: 0,
+        width: '300px', height: '400px', position: 'absolute', margin: 'auto', left: 0, right: 0, top: 0, bottom: 0,
       }}
     >
+      <div style={{ textAlign: 'center', marginBottom: '50px' }}>
+        <img src="/logo40.png" alt="logo" style={{ marginBottom: '0.8rem' }} />
+        <br />
+        (이디야커피 한성대점)
+        <b>
+          {' '}
+          매장 관리
+        </b>
+      </div>
+
       <Form.Item
         label="ID"
         name="ID"
@@ -76,10 +86,6 @@ function Login() {
         ]}
       >
         <Input.Password />
-      </Form.Item>
-
-      <Form.Item name="remember" valuePropName="checked">
-        <Checkbox>Remember me</Checkbox>
       </Form.Item>
 
       <Form.Item>

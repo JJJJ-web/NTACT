@@ -221,7 +221,7 @@ function ShopList(props) {
                 title={item.id}
                 style={{ width: 300 }}
                 className="items"
-                bodyStyle={{ height: 500 }}
+                bodyStyle={{ height: '65vh', maxHeight: '550px', paddingTop: '10px' }}
                 headStyle={{ fontSize: 20 }}
               >
                 <div>
@@ -245,18 +245,9 @@ function ShopList(props) {
                     </List>
                   </div>
                   <div className="select">
-                    <div className="order">
-                      <Button
-                        type="primary"
-                        style={{ visibility: checkOrderStat(item.order_stat) }}
-                        className="statButton"
-                        onClick={() => changeStateHandler(item)}
-                      >
-                        {returnStat(item.order_stat)}
-                      </Button>
-                    </div>
                     <div className="canceled">
                       <Popconfirm
+                        placement="topLeft"
                         onConfirm={() => canceledMenu(item)}
                         title={text}
                         okText="확인"
@@ -272,6 +263,16 @@ function ShopList(props) {
                         </Button>
                       </Popconfirm>
                     </div>
+                    <div className="order">
+                      <Button
+                        type="primary"
+                        style={{ visibility: checkOrderStat(item.order_stat) }}
+                        className="statButton"
+                        onClick={() => changeStateHandler(item)}
+                      >
+                        {returnStat(item.order_stat)}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </Card>
@@ -284,12 +285,14 @@ function ShopList(props) {
 }
 
 const DivList = styled.div`
+  height: 80vh;
+  
   .list {
     display: flex;
     justify-content: flex-start;
     overflow-x: auto;
     white-space: nowrap;
-    height: 600px;
+    padding-bottom: 15px;
   }
 
   .list::-webkit-scrollbar {
@@ -319,10 +322,6 @@ const DivList = styled.div`
     font-size: 2rem;
   }
 
-  .reject {
-    left: 50%;
-  }
-
   .date {
     position: relative;
     left: 10px;
@@ -334,7 +333,8 @@ const DivList = styled.div`
     width: 250px;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 300px;
+    height: 42vh;
+    max-height: 380px;
     background-image: linear-gradient(to top, white, white),
       linear-gradient(to top, white, white),
       linear-gradient(to top, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0)),
@@ -390,22 +390,16 @@ const DivList = styled.div`
     bottom: 20px;
   }
 
+  .statButton {
+    position: absolute;
+    left: 150px;
+    bottom: 0.1vh;
+  }
+
   .canceled {
     position: absolute;
-    right: 5vw;
-    bottom: 0;
-  }
-
-  .order {
-    position: relative;
-    left: 5vw;
-  }
-
-  .statButton {
-    margin-left: 90px;
-  }
-  .cancelButton {
-    margin-right: 120px;
+    left: 10px;
+    bottom: 0.1vh;
   }
 `;
 

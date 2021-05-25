@@ -88,9 +88,9 @@ function Tabs() {
         </Button>
         <Button
           type="link"
-          icon={<FolderAddTwoTone twoToneColor={JSON.parse(sessionStorage.getItem('userInfo')).userRole === 'admin' ? '#ffb400' : '#acabab'} />}
+          icon={<FolderAddTwoTone twoToneColor={sessionStorage.getItem('userInfo') !== null && JSON.parse(sessionStorage.getItem('userInfo')).userRole === 'admin' ? '#ffb400' : '#acabab'} />}
           onClick={() => checkAdmin()}
-          style={JSON.parse(sessionStorage.getItem('userInfo')).userRole === 'admin' ? { color: '#ffb400' } : { color: '#acabab' }}
+          style={sessionStorage.getItem('userInfo') !== null && JSON.parse(sessionStorage.getItem('userInfo')).userRole === 'admin' ? { color: '#ffb400' } : { color: '#acabab' }}
         >
           메뉴 관리
         </Button>
