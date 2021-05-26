@@ -328,6 +328,7 @@ function MenuManage() {
 
   return (
     <TableStyle>
+      <AddMenu />
       <Table
         bordered
         columns={columns}
@@ -335,8 +336,6 @@ function MenuManage() {
         dataSource={products}
       />
       <br />
-      <hr />
-      <AddMenu />
     </TableStyle>
   );
 }

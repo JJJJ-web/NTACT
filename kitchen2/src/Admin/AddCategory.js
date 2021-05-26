@@ -13,11 +13,26 @@ function AddCategory() {
   return(
     <>
       <Form name="dynamic_form_nest_item" autoComplete="off">
-        <Form.List name="newCategory">
+        <Form.List name="newCaaddMenustegory">
           {(fields, { add, remove }) => (
             <>
+              <Form.Item className="addBtn">
+                <Button
+                  onClick={() => {
+                    if(addCount === 0) {
+                      add();
+                    }
+                    addCount++;
+                  }}
+                  block
+                  icon={<PlusOutlined />}
+                  // style={{ visibility: addCount ? 'hidden' : 'visible' }}
+                >
+                  새 카테고리 생성
+                </Button>
+              </Form.Item>
               {fields.map(({ key, name, fieldKey }) => (
-                <>
+                <div className="addFields" key="add2">
                   <div className="addTop">
                     <Button
                       className="addDeleteBtn"
@@ -29,7 +44,7 @@ function AddCategory() {
                       취소
                     </Button>
                     <b>
-                      새 카테고리 등록
+                      새 카테고리 생성
                     </b>
                     <Button type="primary" htmlType="submit" className="addSubmitBtn">
                       등록
@@ -50,25 +65,8 @@ function AddCategory() {
                   </Form.Item>
 
                   <div className="addBottom" />
-                </>
+                </div>
               ))}
-              <Form.Item>
-                <Button
-                  className="addBtn"
-                  type="dashed"
-                  onClick={() => {
-                    if(addCount === 0) {
-                      add();
-                    }
-                    addCount++;
-                  }}
-                  block 
-                  icon={<PlusOutlined />}
-                  style={{ visibility: addCount ? 'hidden' : 'visible' }}
-                >
-                  새 카테고리 생성
-                </Button>
-              </Form.Item>
             </>
           )}
         </Form.List>

@@ -10,7 +10,6 @@ function App() {
   const history = useHistory();
 
   if(location.pathname !== '/') {
-    console.log(location.pathname);
     if (sessionStorage.getItem('userInfo') == undefined) {
       history.push('/');
     }

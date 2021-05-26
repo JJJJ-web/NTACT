@@ -217,6 +217,8 @@ function ShopList(props) {
   }
 
   function timerHandler() {
+    // 카운트 구현 필요
+    return '';
   }
 
   return (
@@ -241,6 +243,9 @@ function ShopList(props) {
                     {convertOrderType(item.order_type)}
                   </b>
                   <span className="date">{formatDate(item.date)}</span>
+                  <div className="timerCount">
+                    {timerHandler()}
+                  </div>
                   <hr />
                   <div className="menus">
                     <List itemLayout="vertical">
