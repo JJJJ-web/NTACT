@@ -97,8 +97,23 @@ function AddMenu() {
         <Form.List name="addMenus">
           {(fields, { add, remove }) => (
             <>
+              <Form.Item className="addBtn">
+                <Button
+                  onClick={() => {
+                    if(addCount === 0) {
+                      add();
+                    }
+                    ++addCount;
+                  }}
+                  block
+                  icon={<PlusOutlined />}
+                  // style={{ visibility: addCount ? 'hidden' : 'visible' }}
+                >
+                  새 메뉴 생성
+                </Button>
+              </Form.Item>
               {fields.map((field) => (
-                <>
+                <div className="addFields" key="add1">
                   <div className="addTop">
                     <Button
                       className="addDeleteBtn"
@@ -110,7 +125,7 @@ function AddMenu() {
                       취소
                     </Button>
                     <b>
-                      새 메뉴 등록
+                      새 메뉴 생성
                     </b>
                     <Button
                       className="addSubmitBtn"
@@ -123,7 +138,7 @@ function AddMenu() {
                         }
                       }}
                     >
-                      메뉴 등록
+                      등록
                     </Button>
                   </div>
 
@@ -209,7 +224,7 @@ function AddMenu() {
                     ]}
                   >
                     <Upload name="logo" listType="picture" maxCount={1} beforeUpload={beforeUpload}>
-                      <Button type="dashed" danger icon={<PlusOutlined />} style={{ width: '100vh', maxWidth: '500px' }}>이미지 선택</Button>
+                      <Button type="dashed" danger icon={<PlusOutlined />} style={{ width: '36vw', maxWidth: '400px' }}>이미지 선택</Button>
                     </Upload>
                   </Form.Item>
 
@@ -218,24 +233,8 @@ function AddMenu() {
                   </Form.Item>
 
                   <div className="addBottom" />
-                </>
+                </div>
               ))}
-              <Form.Item>
-                <Button
-                  className="addBtn"
-                  onClick={() => {
-                    if(addCount === 0) {
-                      add();
-                    }
-                    ++addCount;
-                  }}
-                  block
-                  icon={<PlusOutlined />}
-                  style={{ visibility: addCount ? 'hidden' : 'visible' }}
-                >
-                  새 메뉴 생성
-                </Button>
-              </Form.Item>
             </>
           )}
         </Form.List>
@@ -245,14 +244,36 @@ function AddMenu() {
 }
 
 const Container = styled.div`
+  display: inline-flex;
   margin: 0px auto;
-  width: 100vh;
-  max-width: 500px;
+  width: 90vw;
+  max-width: 1000px;
 
+  .ant-form {
+    width: 45vw;
+    max-width: 500px;
+  }
+  
+  .addFields {
+    margin: 0px auto;
+    width: 80%;
+  }
+  
+  .addBtn {
+    width: 40vw;
+    min-width: 300px;
+    max-width: 500px;
+    margin: 30px 0px 50px 0px;
+    padding: 0 10%;
+  }
+  
   .addTop {
+    display: block;
+    width: 100%;
     text-align: center;
     padding: 20px 0;
     margin-bottom: 30px;
+    border-top: 2px solid #cecece;
     border-bottom: 2px dotted #cecece;
 
     b {
@@ -262,14 +283,9 @@ const Container = styled.div`
   }
   
   .addBottom{
-    border-bottom: 2px dotted #cecece;
-    margin-top: 50px;
-    margin-bottom: 10px;
-  }
-  
-  .addBtn {
-    display:inline;
-    width: 40%;
+    border-bottom: 2px solid #cecece;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 
   .addDeleteBtn {
