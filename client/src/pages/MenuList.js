@@ -107,6 +107,7 @@ function MenuList({ products }) {
 const MenuListStyle = styled.div`
   display: inline-block;
   width: 100vw;
+  margin-bottom: 120px;
 
   .site-collapse-custom-collapse {
     width: 100vw;
