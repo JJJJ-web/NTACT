@@ -50,6 +50,9 @@ function Tabs() {
     socket.on('I', () => {
       onCancelOrder();
     });
+    socket.on('K', () => {
+      onCancelOrder();
+    });
   }, []);
 
   function logOut() {

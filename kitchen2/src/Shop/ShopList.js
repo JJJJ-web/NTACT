@@ -48,17 +48,26 @@ function ShopList(props) {
 
   useEffect(() => {
     getList();
-    socket.on('G', () => {
+    socket.on('G', () => { // 고객에게서 온 주문접수 이벤트
       getList();
       changeTabCountReady();
     });
-    socket.on('I', () => {
+    socket.on('I', () => { // 고객에게서 온 취소 이벤트
       getList();
       changeTabCountReady();
       changeTabCountCanceled();
     });
-    socket.on('C', () => {
+    socket.on('K', () => { // 관리자에서 온 취소 이벤트 관리자끼리
       getList();
+      changeTabCountReady();
+      changeTabCountCanceled();
+    });
+    socket.on('C', () => { // 관리자에서 온 주문변경 이벤트 관리자끼리
+      getList();
+      changeTabCountReady();
+      changeTabCountProgress();
+      changeTabCountCompleted();
+      changeTabCountCanceled();
     });
   }, []);
 
@@ -286,7 +295,7 @@ function ShopList(props) {
 
 const DivList = styled.div`
   height: 80vh;
-  
+
   .list {
     display: flex;
     justify-content: flex-start;
@@ -308,16 +317,16 @@ const DivList = styled.div`
   .list::-webkit-scrollbar-track {
     background-color: white;
   }
-  
+
   .ant-card-head-title {
     overflow: auto;
     text-overflow: initial;
   }
-  
+
   .ant-card-head-title::-webkit-scrollbar {
     display: none;
   }
-  
+
   .order_type {
     font-size: 2rem;
   }
@@ -336,9 +345,9 @@ const DivList = styled.div`
     height: 42vh;
     max-height: 380px;
     background-image: linear-gradient(to top, white, white),
-      linear-gradient(to top, white, white),
-      linear-gradient(to top, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0)),
-      linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0));
+    linear-gradient(to top, white, white),
+    linear-gradient(to top, rgba(229, 142, 36, 0.25), rgba(248, 102, 102, 0)),
+    linear-gradient(to bottom, rgba(184, 108, 10, 0.25), rgba(255, 255, 255, 0));
     background-position: bottom center, top center, bottom center, top center;
     background-color: white;
     background-repeat: no-repeat;
@@ -359,7 +368,7 @@ const DivList = styled.div`
   .menus::-webkit-scrollbar-track {
     background-color: white;
   }
-  
+
   .menus_item {
     width: 250px;
     height: 50px;
@@ -373,7 +382,7 @@ const DivList = styled.div`
     font-size: 1.1rem;
     overFlow: auto;
   }
-  
+
   .menu::-webkit-scrollbar {
     display: none;
   }
