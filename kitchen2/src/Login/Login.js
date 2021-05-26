@@ -6,6 +6,7 @@ import {
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import loginInfo from './loginInfo.json';
+import socket from '../SocketInfo';
 
 function Login() {
   const history = useHistory();
@@ -30,6 +31,7 @@ function Login() {
             'userInfo',
             JSON.stringify({ userID: user.id, userName: user.name, userRole: user.role }),
           );
+          socket.emit('A', { userID: user.id, socketID: socket.id, role: user.role });
           history.push('/kitchen');
         }
       })
