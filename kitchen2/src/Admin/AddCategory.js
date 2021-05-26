@@ -44,7 +44,7 @@ function AddCategory() {
                       취소
                     </Button>
                     <b>
-                      새 카테고리 생성
+                      카테고리 생성
                     </b>
                     <Button type="primary" htmlType="submit" className="addSubmitBtn">
                       등록

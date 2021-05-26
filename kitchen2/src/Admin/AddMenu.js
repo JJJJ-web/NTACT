@@ -125,7 +125,7 @@ function AddMenu() {
                       취소
                     </Button>
                     <b>
-                      새 메뉴 생성
+                      메뉴 생성
                     </b>
                     <Button
                       className="addSubmitBtn"
