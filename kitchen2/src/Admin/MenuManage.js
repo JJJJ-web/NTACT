@@ -199,6 +199,7 @@ function MenuManage() {
             setSelectThisMenu(selectThisMenu.menu_kor = values.MenuNameKorean);
             setSelectThisMenu(selectThisMenu.menu_eng = values.MenuNameEnglish);
             setSelectThisMenu(selectThisMenu.price = Number(values.MenuPrice));
+            setSelectThisMenu(selectThisMenu.description = values.description);
 
             form.resetFields();
             editMenuClickHandler();
