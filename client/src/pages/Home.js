@@ -15,7 +15,7 @@ function Home() {
         <img height="30px" src="/logo40.png" alt="logo" />
       </div>
       <b className="store-name">
-        이디야 한성대점
+        이디야커피 한성대점
       </b>
       <div className="store-info-tel">
         02-747-9667
