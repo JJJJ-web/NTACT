@@ -60,10 +60,7 @@ const NonMemberLoginStyle = styled.button`
   align-items: center;
 
   #icon-img {
-    margin-left: 50px;
-    margin-right: 26px;
-    margin-top: 6px;
-    margin-bottom: 6px;
+    margin: 6px 34px 6px 58px;
   }
 `;
 
