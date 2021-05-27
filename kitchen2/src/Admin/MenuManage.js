@@ -174,12 +174,7 @@ function MenuManage() {
   }
 
   async function editMenuClickHandler() {
-    await axios.put('/api/menus/status',
-      {
-        headers: {
-          menu: selectThisMenu,
-        },
-      }).then((res) => {
+    await axios.put('/api/menus/status', { menu: selectThisMenu }).then((res) => {
       if (res.status === 200) {
         // window.alert('폼 전송 성공111');
       } else {
@@ -302,7 +297,7 @@ function MenuManage() {
             shouldUpdate={(
               prevValues, currentValues,
             ) => prevValues.MenuCategory
-              !== currentValues.MenuCategory}
+                    !== currentValues.MenuCategory}
           >
             {({ getFieldValue }) => (getFieldValue('MenuCategory') === '카테고리 추가' ? (
               <Form.Item
