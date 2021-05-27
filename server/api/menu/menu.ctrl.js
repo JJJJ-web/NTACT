@@ -102,7 +102,7 @@ exports.delayTime = async (ctx) => {
   // id 파라미터를 받아 해당 주문 DB 찾아오기 
   const { id } = ctx.params;
   const { delaytime } = ctx.request.body.headers;
-     
+
   try {
     menuModel.update({ delay_time: delaytime }, { where: { id } });
   } catch (e) {
@@ -113,26 +113,25 @@ exports.delayTime = async (ctx) => {
 
 exports.status = async (ctx) => {
   // menu Object를 받아 해당 메뉴의 stat을 수정
-  const { menu } = ctx.request.body.headers;
+  const { menu } = ctx.request.body;
   console.log(menu);
 
   try {
     // DB 에서 id로 해당 메뉴를 검색
     await menuModel.findOne({ where: { id: menu.id } })
       .then((findMenu) => {
-        // 프론트에서 받아온 menu stat으로 DB 수정 
+        // 프론트에서 받아온 menu stat으로 DB 수정
         findMenu.name_kor = `${menu.menu_kor}`;
         findMenu.name_eng = `${menu.menu_eng}`;
         findMenu.price = `${menu.price}`;
         findMenu.description = `${menu.description}`;
         findMenu.category_id = `${menu.category_id}`;
         findMenu.img_url = `${menu.img_url}`;
-        findMenu.save()
-          .then(() => {
-            ctx.status = 200;
-            console.log('메뉴수정성공');
-          });
+        findMenu.save().then(() => {
+          console.log('메뉴수정성공');
+        });
       });
+    ctx.status = 200;
   } catch (e) {
     ctx.throw(500, e);
   }
@@ -141,7 +140,7 @@ exports.status = async (ctx) => {
 // 프론트와 미연동 상태
 exports.delete = async (ctx) => {
   const { id } = ctx.params;
-    
+
   try {
     await menuModel.destroy({ where: { id } });
   } catch (e) {
