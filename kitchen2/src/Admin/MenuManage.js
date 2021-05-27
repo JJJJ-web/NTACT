@@ -318,7 +318,7 @@ function MenuManage() {
               </Form.Item>
             ) : null)}
           </Form.Item>
-          <Form.Item name="description" label="Description">
+          <Form.Item name="description" label="Description" initialValue={selectThisMenu.description}>
             <Input type="textarea" />
           </Form.Item>
         </Form>
