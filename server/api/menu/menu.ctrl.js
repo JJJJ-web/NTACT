@@ -148,7 +148,6 @@ exports.delete = async (ctx) => {
   }
 };
 
-// 프론트와 미연동 상태
 exports.create = async (ctx) => {
   const newMenu = ctx.request.body;
 
