@@ -57,6 +57,7 @@ function MenuManage() {
       .then((res) => {
         if (res.status === 200) {
           message.success(`[${menu.menu_kor}] 메뉴를 삭제했습니다.`, 10);
+          setTimeout(() => window.location.replace('/admin'), 5000);
         } else {
           console.log(res);
           message.error('메뉴 삭제 처리에 실패하였습니다.', 10);
