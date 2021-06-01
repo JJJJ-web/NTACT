@@ -11,13 +11,14 @@ import {
   Input,
   Select,
   InputNumber,
-  Table,
+  Table, message,
 } from 'antd';
-import { FormOutlined } from '@ant-design/icons';
+import { FormOutlined, DeleteOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import AddMenu from './AddMenu';
 
 const { Option } = Select;
+const { confirm } = Modal;
 
 function MenuManage() {
   const [products, setProducts] = useState([]);
@@ -48,6 +49,36 @@ function MenuManage() {
       } else {
         // window.alert('토글 실패111');
       }
+    });
+  }
+
+  function deleteMenu(menu) {
+    axios.delete(`/api/menus/${menu.id}`)
+      .then((res) => {
+        if (res.status === 200) {
+          message.success(`[${menu.menu_kor}] 메뉴를 삭제했습니다.`, 10);
+        } else {
+          console.log(res);
+          message.error('메뉴 삭제 처리에 실패하였습니다.', 10);
+        }
+      }).catch((error) => {
+        console.log(error);
+        message.error('메뉴 삭제 처리에 실패하였습니다.', 10);
+      });
+  }
+
+
+  function showDeleteConfirm(menu) {
+    confirm({
+      title: '실수 주의!',
+      icon: <DeleteOutlined />,
+      content: `[${menu.category_kor}] 카테고리에 속한 [${menu.menu_kor}] 메뉴를 삭제하겠습니까?`,
+      okText: '삭제',
+      okType: 'danger',
+      cancelText: '취소',
+      onOk() {
+        deleteMenu(menu);
+      },
     });
   }
 
@@ -143,6 +174,23 @@ function MenuManage() {
               setVisible(false);
             }}
           />
+        </>
+      ),
+      width: '5%',
+      align: 'center',
+    },
+    {
+      title: '메뉴 삭제',
+      dataIndex: 'delete',
+      render: (value, row) => (
+        <>
+          <Button
+            danger
+            onClick={() => showDeleteConfirm(row)}
+            size="small"
+          >
+            <DeleteOutlined style={{ fontSize: '15px', color: 'red' }} />
+          </Button>
         </>
       ),
       width: '5%',
