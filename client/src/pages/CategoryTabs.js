@@ -13,7 +13,7 @@ function CategoryTabs() {
   const [categories, setCategories] = useState([]);
   const { TabPane } = Tabs;
   // eslint-disable-next-line prefer-const
-  let [currentPage, setCurrentPage] = useState('100');
+  let [currentPage, setCurrentPage] = useState('1');
 
   const renderTabBar = (props, DefaultTabBar) => (
     <Sticky bottomOffset={80}>
@@ -35,18 +35,18 @@ function CategoryTabs() {
     });
   }, []);
 
-  function pageChange(e) {
+  function pageChange(e, key) {
     if(e.swipeDirection === 'next') {
-      if (currentPage >= '800') {
-        setCurrentPage(currentPage = '100');
+      if (Number(currentPage) >= '10') {
+        setCurrentPage(currentPage = '1');
       } else {
-        setCurrentPage(currentPage = (Number(currentPage) + 100).toString());
+        setCurrentPage(currentPage = (Number(currentPage) + 1).toString());
       }
     } else if(e.swipeDirection === 'prev') {
-      if (currentPage === '0' || currentPage === '100') {
-        setCurrentPage(currentPage = '800');
+      if (currentPage === '0' || currentPage === '1') {
+        setCurrentPage(currentPage = '10');
       } else {
-        setCurrentPage(currentPage = (Number(currentPage) - 100).toString());
+        setCurrentPage(currentPage = (Number(currentPage) - 1).toString());
       }
     }
   }
@@ -66,7 +66,7 @@ function CategoryTabs() {
     }}
     >
       <Tabs
-        defaultActiveKey="100"
+        defaultActiveKey="1"
         type="card"
         onChange={tabChange}
         activeKey={currentPage}
@@ -78,7 +78,7 @@ function CategoryTabs() {
         {categories.map((item) => (
           <TabPane tab={item.name_kor} key={item.id} style={{ marginTop: '-12px' }}>
             <Swiper
-              onSlideChange={(e) => pageChange(e)}
+              onSlideChange={(e) => pageChange(e, item.id)}
               loop="true"
               spaceBetween={3000}
               className="mySwiper"
