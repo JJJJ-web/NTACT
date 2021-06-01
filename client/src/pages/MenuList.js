@@ -31,7 +31,14 @@ function MenuList({ products }) {
 
   function delayTime(time) {
     if(time === 0) return null;
-    return `● 주문이 많아 ${time}분 지연 예상됩니다.`;
+    if(time <= 10) {
+      return `● 약간 지연 (${time}분)`;
+    } if(time <= 30) {
+      return `● 다소 지연 (${time}분)`;
+    } if(time <= 60) {
+      return `● 매우 지연 (${time}분)`;
+    }
+    return '';
   }
   function delayTimeColor(time) {
     if(time <= 10) {
