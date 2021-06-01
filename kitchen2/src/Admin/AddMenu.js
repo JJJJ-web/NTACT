@@ -22,11 +22,9 @@ function AddMenu() {
   const [form] = Form.useForm();
   const [categories, setCategories] = useState([]);
   let addCount = 0;
-  let addSuccess = false;
-  console.log(formRef, form);
+  const [addSuccess, setAddSuccess] = useState(false);
 
   function handleSubmit(formdata) {
-    console.log(formdata);
     const form = formdata.addMenus[0];
     const imageObj = form.image[form.image.length - 1].originFileObj;
     const image = form.image[form.image.length - 1].name.split('.');
@@ -51,9 +49,9 @@ function AddMenu() {
           };
           axios.put(data.signedRequest, imageObj, options)
             .then((result) => {
+              setAddSuccess(true);
               message.success(`${form.selectCategory}에 ${form.nameKor} 메뉴 등록을 완료했습니다.`, 10);
               setTimeout(() => window.location.replace('/admin'), 5000);
-              addSuccess = true;
             })
             .catch((error) => {
               console.log('Response from s3', error);
@@ -88,7 +86,10 @@ function AddMenu() {
     <Container>
       <AddCategory />
       <Form
-        onFinish={handleSubmit}
+        onFinish={(values) => {
+          addCount = 0;
+          handleSubmit(values);
+        }}
         ref={formRef}
         name="addMenuForm"
         autoComplete="off"
@@ -113,7 +114,7 @@ function AddMenu() {
                 </Button>
               </Form.Item>
               {fields.map((field) => (
-                <div className="addFields" key="add1">
+                <div className="addFields" key="add1" style={{ visibility: addSuccess ? 'hidden' : 'visible' }}>
                   <div className="addTop">
                     <Button
                       className="addDeleteBtn"
@@ -131,12 +132,6 @@ function AddMenu() {
                       className="addSubmitBtn"
                       type="primary"
                       htmlType="submit"
-                      onClick={() => {
-                        if(addSuccess) {
-                          setTimeout(() => remove(field.name), 500);
-                          addCount = 0;
-                        }
-                      }}
                     >
                       등록
                     </Button>
