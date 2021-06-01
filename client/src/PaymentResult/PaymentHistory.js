@@ -108,13 +108,17 @@ function PaymentHistory({ location }) {
     }
     return '';
   }
-  function colorStatType(stat) {
+  function colorStatType(stat, data) {
+    const elapsedTime = ((currentTime - new Date(data).getTime()) / 1000 / 60 / 60);
+    if(elapsedTime > 24 && stat === 'completed') {
+      return '#cbcbcb';
+    }
     if (stat === 'ready') {
-      return 'rgb(203 192 152)';
+      return '#e6c101';
     } if (stat === 'in-progress') {
-      return 'rgb(255 176 76)';
+      return '#f21a22';
     } if (stat === 'completed') {
-      return 'rgb(251 99 26)';
+      return '#7796ff';
     }
     return '';
   }
@@ -164,7 +168,9 @@ function PaymentHistory({ location }) {
                 <Badge
                   count={convertStatType(item.order_stat, item.date)}
                   offset={[-30, 70]}
-                  style={{ padding: '0 10px', backgroundColor: colorStatType(item.order_stat) }}
+                  style={{
+                    padding: '0 10px', backgroundColor: 'white', color: colorStatType(item.order_stat, item.date), fontWeight: 'bold',
+                  }}
                 >
                   <Avatar
                     shape="square"
