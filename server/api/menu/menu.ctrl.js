@@ -137,12 +137,12 @@ exports.status = async (ctx) => {
   }
 };
 
-// 프론트와 미연동 상태
 exports.delete = async (ctx) => {
   const { id } = ctx.params;
 
   try {
     await menuModel.destroy({ where: { id } });
+    ctx.status = 200;
   } catch (e) {
     ctx.throw(500, e);
   }
