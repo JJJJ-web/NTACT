@@ -11,3 +11,17 @@ exports.list = async (ctx) => {
   }
   ctx.body = categories;
 };
+
+exports.create = async (ctx) => {
+  const category = ctx.request.body;
+
+  try {
+    await categoryModel.create({
+      name_kor: category.name_kor,
+      name_eng: category.name_eng,
+    });
+    ctx.status = 201;
+  } catch (e) {
+    ctx.throw(500, e);
+  }
+};
