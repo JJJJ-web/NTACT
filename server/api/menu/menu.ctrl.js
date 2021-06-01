@@ -173,9 +173,9 @@ exports.create = async (ctx) => {
     try {
       await menuModel.create({
         name_kor: newMenu.name_kor,
-        name_eng: newMenu.name_eng,
+        name_eng: typeof newMenu.name_eng === 'undefined' ? null : newMenu.name_eng,
         price: newMenu.price,
-        description: newMenu.description,
+        description: typeof newMenu.description === 'undefined' ? null : newMenu.description,
         img_url: url,
         sales_stat: 1,
         category_id: categoryId,
