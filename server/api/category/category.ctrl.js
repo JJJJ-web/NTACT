@@ -25,3 +25,14 @@ exports.create = async (ctx) => {
     ctx.throw(500, e);
   }
 };
+
+exports.remove = async (ctx) => {
+  const { id } = ctx.params;
+
+  try {
+    await categoryModel.destroy({ where: { id } });
+    ctx.status = 204;
+  } catch (e) {
+    ctx.throw(500, e);
+  }
+};
