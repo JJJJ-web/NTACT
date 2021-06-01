@@ -4,7 +4,7 @@ const s3Config = require('../../config/s3-config.json');
 const menuModel = require('../../models').dev_menu;
 const categoryModel = require('../../models').dev_category;
 
-menuModel.belongsTo(categoryModel, { foreignKey: 'category_id', sourceKey: 'id' });
+menuModel.belongsTo(categoryModel, { foreignKey: 'category_id', sourceKey: 'id', onDelete: 'cascade' });
 categoryModel.hasMany(menuModel, { foreignKey: 'category_id', targetKey: 'id' });
 
 aws.config.update({
