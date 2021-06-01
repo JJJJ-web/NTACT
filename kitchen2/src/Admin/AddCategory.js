@@ -9,10 +9,38 @@ import axios from 'axios';
 
 function AddCategory() {
   let addCount = 0;
+  const [addSuccess, setAddSuccess] = useState(false);
+  
+  function handleSubmit(formdata) {
+    const form = formdata.newCaaddMenustegory[0];
+    console.log(form);
+    axios.post('/api/categories', {
+      name_kor: form.nameKor,
+      name_eng: form.nameEng,
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          message.success(`${form.selectCategory}에 ${form.nameKor} 카테고리 등록을 완료했습니다.`, 10);
+          setAddSuccess(true);
+          setTimeout(() => window.location.replace('/admin'), 5000);
+        }
+      })
+      .catch((error) => {
+        message.error('카테고리 등록에 실패하였습니다. 다시 시도해주세요.', 10);
+        console.log('카테고리 등록 실패', error);
+      });
+  }
 
   return(
     <>
-      <Form name="dynamic_form_nest_item" autoComplete="off">
+      <Form
+        onFinish={(values) => {
+          addCount = 0;
+          handleSubmit(values);
+        }}
+        name="dynamic_form_nest_item"
+        autoComplete="off"
+      >
         <Form.List name="newCaaddMenustegory">
           {(fields, { add, remove }) => (
             <>
@@ -32,7 +60,7 @@ function AddCategory() {
                 </Button>
               </Form.Item>
               {fields.map(({ key, name, fieldKey }) => (
-                <div className="addFields" key="add2">
+                <div className="addFields" key="add2" style={{ visibility: addSuccess ? 'hidden' : 'visible' }}>
                   <div className="addTop">
                     <Button
                       className="addDeleteBtn"
@@ -52,13 +80,13 @@ function AddCategory() {
                   </div>
 
                   <Form.Item
-                    name={[name, 'first']}
+                    name={[name, 'nameKor']}
                     rules={[{ required: true, message: '한글명은 필수입력입니다.' }]}
                   >
                     <Input style={{ flex: 'auto' }} placeholder="카테고리(한국어)" />
                   </Form.Item>
                   <Form.Item
-                    name={[name, 'last']}
+                    name={[name, 'nameEng']}
                     rules={[{ required: true, message: '영어명은 필수입력입니다' }]}
                   >
                     <Input style={{ flex: 'auto' }} placeholder="카테고리(영어)" />
