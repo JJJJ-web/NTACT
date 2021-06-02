@@ -8,6 +8,7 @@ import MenuList from './MenuList';
 import 'swiper/swiper.min.css';
 import socket from '../SocketInfo';
 
+let categoryLength;
 function CategoryTabs() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -28,23 +29,26 @@ function CategoryTabs() {
   );
 
   useEffect(() => {
-    axios.get('/api/categories').then((res) => setCategories(res.data));
+    axios.get('/api/categories').then((res) => {
+      setCategories(res.data);
+      categoryLength = res.data.length;
+    });
     axios.get('/api/menus').then((res) => setProducts(res.data));
     socket.on('E', () => {
       axios.get('/api/menus').then((res) => setProducts(res.data));
     });
   }, []);
 
-  function pageChange(e, key) {
+  function pageChange(e) {
     if(e.swipeDirection === 'next') {
-      if (Number(currentPage) >= '10') {
+      if (Number(currentPage) >= Number(categoryLength)) {
         setCurrentPage(currentPage = '1');
       } else {
         setCurrentPage(currentPage = (Number(currentPage) + 1).toString());
       }
     } else if(e.swipeDirection === 'prev') {
       if (currentPage === '0' || currentPage === '1') {
-        setCurrentPage(currentPage = '10');
+        setCurrentPage(currentPage = categoryLength.toString());
       } else {
         setCurrentPage(currentPage = (Number(currentPage) - 1).toString());
       }
@@ -52,6 +56,7 @@ function CategoryTabs() {
   }
 
   function tabChange(e) {
+    console.log('tabChange', e);
     setCurrentPage(currentPage = e);
   }
 
@@ -75,17 +80,18 @@ function CategoryTabs() {
         renderTabBar={renderTabBar}
         animated={{ inkBar: false, tabPane: true }}
       >
-        {categories.map((item) => (
-          <TabPane tab={item.name_kor} key={item.id} style={{ marginTop: '-12px' }}>
+        {categories.map((item, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <TabPane tab={item.name_kor} key={index + 1} style={{ marginTop: '-12px' }}>
             <Swiper
-              onSlideChange={(e) => pageChange(e, item.id)}
+              onSlideChange={(e) => pageChange(e)}
               loop="true"
               spaceBetween={3000}
               className="mySwiper"
               slidesPerView={1}
               style={{ minHeight: '100vh' }}
             >
-              <SwiperSlide virtualIndex={item.id}>
+              <SwiperSlide virtualIndex={index + 1}>
                 <MenuList products={filterProduct(item.id)} />
               </SwiperSlide>
             </Swiper>
