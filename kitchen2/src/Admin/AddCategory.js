@@ -19,14 +19,14 @@ function AddCategory() {
       name_eng: form.nameEng,
     })
       .then((res) => {
-        if (res.status === 200) {
-          message.success(`${form.selectCategory}에 ${form.nameKor} 카테고리 등록을 완료했습니다.`, 10);
+        if (res.status === 201) {
+          message.success(`[${form.nameKor}] 카테고리 생성을 완료했습니다.`, 10);
           setAddSuccess(true);
           setTimeout(() => window.location.replace('/admin'), 5000);
         }
       })
       .catch((error) => {
-        message.error('카테고리 등록에 실패하였습니다. 다시 시도해주세요.', 10);
+        message.error('카테고리 생성에 실패하였습니다. 다시 시도해주세요.', 10);
         console.log('카테고리 등록 실패', error);
       });
   }
