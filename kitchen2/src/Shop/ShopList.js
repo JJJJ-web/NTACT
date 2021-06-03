@@ -168,7 +168,7 @@ function ShopList(props) {
       const time = new Date(date);
       let h = time.getHours();
       const ampm = h >= 12 ? '오후 ' : '오전 ';
-      h = h >= 12 ? (h -= 12) : h;
+      h = h > 12 ? (h -= 12) : h;
       let m = time.getMinutes();
       m = m >= 10 ? m : `0${m}`;
       const s = time.getSeconds();
