@@ -25,7 +25,7 @@ function Header() {
         key: 'updatable',
         message: '알림',
         description:
-          '접수 전 주문이 고객에 의해 취소되었습니다.',
+          '접수 전 주문이 취소되었습니다.',
         icon: <NotificationTwoTone twoToneColor="#d50d1e" />,
       }, 10000);
     });
