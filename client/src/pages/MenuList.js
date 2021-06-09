@@ -1,80 +1,172 @@
-import React, {useState, useEffect} from 'react';
-import axios from 'axios';
-import {useDispatch} from 'react-redux';
-import {addCart} from '../store/actions';
-import {LazyImage} from 'react-lazy-images';
-import {LoadingOutlined} from '@ant-design/icons';
-import {Collapse, Space} from 'antd';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { LazyImage } from 'react-lazy-images';
+import { 
+  LoadingOutlined, ShoppingCartOutlined,
+} from '@ant-design/icons';
+import {
+  Collapse, Typography,
+} from 'antd';
+import QuantityButtons from './QuantityControl';
 
-function MenuList(props) {
-    const [products, setProducts] = useState([]);
-    const dispatch = useDispatch();
-    const {Panel} = Collapse;
+const { Text } = Typography;
+function MenuList({ products }) {
+  const { Panel } = Collapse;
+  const list2 = [];
 
-    useEffect(() => {
-        axios.get('/api/menus').then((res) => setProducts(res.data));
-    }, []);
+  for (let i = 0; i < products.length; i++) {
+    const json = Object.create(null);
+    json.Id = products[i].id;
+    json.Name = products[i].name_kor;
+    json.CategoryId = products[i].category_id;
+    json.Img = products[i].img_url;
+    json.Price = products[i].price;
+    json.Description = products[i].description;
+    json.Quantity = 0;
+    json.Status = products[i].sales_stat;
+    json.DelayTime = products[i].delay_time;
 
-    const list = products.filter((res) => {
-        return res.category_id === props.categoryId;
-    });
+    list2.push(json);
+  }
 
-    return (
-        <MenuListStyle>
-            {
-                list.map((item) => {
-                    return (
-                        <Space key={item.id} align="center" direction="vertical" wrap>
-                            <Collapse defaultActiveKey='0' expandIconPosition={'right'} className="site-collapse-custom-collapse" key={item.id}>
-                                <div className="menuItem" onClick={() => dispatch(addCart(item))}>
-                                    <LazyImage src={item.img_url} alt={item.name_kor} title={item.name_kor} width={'20%'}
-                                        placeholder={
-                                            ({imageProps, ref}) =>
-                                                <LoadingOutlined style={{color: 'orange', fontSize: '5rem'}} ref={ref} alt={imageProps.alt} />
-                                        }
-                                        actual={
-                                            ({imageProps}) =>
-                                                <img {...imageProps} />
-                                        }
-                                    />
-                                    <div className="itmeName">{item.name_kor}</div>
-                                    <div className="itmePrice">{item.price.toLocaleString()}원</div>
-                                </div>
+  function delayTime(time) {
+    if(time === 0) return null;
+    if(time <= 10) {
+      return `● 약간 지연 (${time}분)`;
+    } if(time <= 30) {
+      return `● 다소 지연 (${time}분)`;
+    } if(time <= 60) {
+      return `● 매우 지연 (${time}분)`;
+    }
+    return '';
+  }
+  function delayTimeColor(time) {
+    if(time <= 10) {
+      return 'success';
+    } if(time <= 30) {
+      return 'warning';
+    } if(time <= 60) {
+      return 'danger';
+    }
+    return '';
+  }
 
-                                <Panel header='설명보기' className="site-collapse-custom-panel">
-                                    <p>{item.description}</p>
-                                </Panel>
-                            </Collapse>
-                        </Space>
-                    );
-                })
-            }
-        </MenuListStyle>
-    );
+  return (
+    <MenuListStyle>
+      {list2.map((item, idx) => (
+        <div key={item.Id}>
+          <Collapse
+            bordered={false}
+            className="site-collapse-custom-collapse"
+            key={item.Id}
+          >
+            <Panel
+              showArrow={false}
+              className="site-collapse-custom-panel"
+              header={(
+                <div role="menu" tabIndex={idx} className="menuItem">
+                  <img className="soldout" width={item.Status ? '0' : '20%'} src="/soldout.png" alt="logo" />
+
+                  <Text className="delayTime" type={delayTimeColor(item.DelayTime)}>
+                    {delayTime(item.DelayTime)}
+                  </Text>
+
+                  <LazyImage
+                    src={item.Img}
+                    alt={item.Name}
+                    title={item.Name}
+                    width="20%"
+                    placeholder={({ imageProps, ref }) => (
+                      <LoadingOutlined
+                        style={{ color: 'orange', fontSize: '5rem' }}
+                        ref={ref}
+                        alt={imageProps.alt}
+                      />
+                    )}
+                    actual={
+                      // eslint-disable-next-line react/jsx-props-no-spreading
+                      ({ imageProps }) => <img {...imageProps} alt="img" />
+                    }
+                  />
+
+                  <div className="itmeName">
+                    {item.Name}
+                  </div>
+                  <b className="itmePrice">
+                    {item.Price.toLocaleString()}
+                    원
+                  </b>
+                </div>
+              )}
+            >
+              <div className="description">
+                {item.Description}
+              </div>
+              <QuantityButtons item={item} />
+            </Panel>
+          </Collapse>
+        </div>
+      ))}
+    </MenuListStyle>
+  );
 }
 
 const MenuListStyle = styled.div`
   display: inline-block;
+  width: 100vw;
+  margin-bottom: 120px;
 
-  .site-collapse-custom-collapse{
+  .site-collapse-custom-collapse {
     width: 100vw;
+    background-color: white;
+    border-bottom: 1px solid #e9e9e9;
   }
+
   .site-collapse-custom-panel {
+    width: 100vw;
+    max-width: 600px;
     display: inline-block;
-    background-color: lightgrey;
+    background-color: white;
+    border: 0px;
   }
   
-  .menuItem{
-    display: inline;
-    width: 100vh;
+  .soldout {
+    position: absolute;
+    top: 15%;
+    left: 1%;
   }
-  .itmePrice{
-    position: relative;
-    top: 3vh;
+
+  .delayTime {
+    position: absolute;
+    left: 18%;
+    font-size: 0.9em;
   }
-  .menuItem div{
+
+  .menuItem {
     display: inline;
+    width: 100vw;
+  }
+
+  .itmeName {
+    position: absolute;
+    top: 40%;
+    left: 22%;
+    width: 47vw;
+  }
+
+  .itmePrice {
+    position: absolute;
+    top: 40%;
+    right: 10%;
+  }
+
+  .menuItem div {
+    display: inline;
+  }
+
+  .description {
+    color: #9a9a9a;
+    margin-bottom: 20px;
   }
 `;
 export default MenuList;

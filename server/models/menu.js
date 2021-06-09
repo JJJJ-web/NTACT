@@ -27,14 +27,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TINYINT,
       allowNull: true,
       defaultValue: 1
-    },
-    category_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'category',
-        key: 'id'
-      }
     }
   }, {
     sequelize,
@@ -47,13 +39,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "id" },
-        ]
-      },
-      {
-        name: "fk_menu_category_idx",
-        using: "BTREE",
-        fields: [
-          { name: "category_id" },
         ]
       },
     ]

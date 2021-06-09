@@ -4,14 +4,17 @@ const ctrl = require('./user.ctrl');
 
 const users = new Router();
 
-// /users~ 뒤에 추가 된 경로
-users.get('/', ctrl.index);
 
-// 카카오 로그인
+// 고객 카카오 로그인
 users.post('/kakao', ctrl.kakao);
 
-// 구글 로그인
+// 고객 구글 로그인
 users.post('/google', ctrl.google);
 
+// 고객 비회원 로그인
+users.post('/anonymous', ctrl.anonymous);
+
+// 근무자 통합 로그인
+users.post('/staff', ctrl.staff);
 
 module.exports = users;

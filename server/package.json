@@ -5,6 +5,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "@koa/cors": "^3.1.0",
+    "aws-sdk": "^2.912.0",
     "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",
     "jsonwebtoken": "^8.5.1",
@@ -14,12 +15,17 @@
     "koa-static": "^5.0.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
+    "redis": "^3.1.2",
+    "redis-server": "^1.2.2",
     "sequelize": "^6.5.0",
-    "sequelize-auto": "^0.7.9"
+    "sequelize-auto": "^0.7.9",
+    "socket.io": "^4.0.0",
+    "uuid4": "^2.0.2"
   },
   "devDependencies": {
-    "eslint": "^7.18.0",
-    "eslint-config-google": "^0.14.0"
+    "eslint": "^7.24.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
   },
   "scripts": {
     "start": "node src/server.js",
