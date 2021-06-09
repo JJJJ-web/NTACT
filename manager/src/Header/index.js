@@ -83,7 +83,7 @@ function Tabs() {
   function content() {
     return (
       <div style={{ width: '180px', marginLeft: '-10px', fontSize: '1.3rem' }}>
-        <Button type="link" icon={<BellTwoTone twoToneColor="#ffb400" />} onClick={() => history.push('/kitchen')}>
+        <Button type="link" icon={<BellTwoTone twoToneColor="#ffb400" />} onClick={() => history.push('/kitchen3')}>
           주문 관리
         </Button>
         <Button type="link" icon={<ClockCircleTwoTone twoToneColor="#ffb400" />} onClick={() => history.push('/situation')}>
