@@ -12,14 +12,14 @@
     }
   },
   "test": {
-    "username": "put your password here",
+    "username": "put your username here",
     "password": "put your password here",
     "database": "put your database here",
     "host": "put your host name here",
     "dialect": "mysql"
   },
   "production": {
-    "username": "put your password here",
+    "username": "put your username here",
     "password": "put your password here",
     "database": "put your database here",
     "host": "put your host name here",
