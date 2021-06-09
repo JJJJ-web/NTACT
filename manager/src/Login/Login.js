@@ -34,7 +34,7 @@ function Login() {
             JSON.stringify({ userID: user.id, userName: user.name, userRole: user.role }),
           );
           socket.emit('A', { userID: user.id, socketID: socket.id, role: user.role });
-          history.push('/kitchen');
+          history.push('/kitchen3');
         }
       })
       .catch((error) => {

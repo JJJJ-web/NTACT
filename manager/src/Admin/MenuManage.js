@@ -25,7 +25,7 @@ const { Panel } = Collapse;
 function MenuManage() {
   useEffect(() => {
     if(sessionStorage.getItem('userInfo') !== null && JSON.parse(sessionStorage.getItem('userInfo')).userRole !== 'admin') {
-      window.location.replace('/kitchen');
+      window.location.replace('/kitchen3');
     }
   }, []);
 
