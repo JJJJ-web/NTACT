@@ -1,0 +1,11 @@
+.idea/
+node_modules/
+server/config/*-config.json
+server/models/dev_*.js
+server/sync-db.bat
+client/src/config
+*/.eslintcache
+*/yarn-error.log
+*/node_modules/
+*/src/containers/LogIn/loginInfo.json
+*/src/Login/loginInfo.json
