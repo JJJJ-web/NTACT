@@ -1,4 +1,4 @@
-<p style="text-align: center">
+<p align="center">
   <img src="https://github.com/coding-Benny/NTACT/blob/dev/client/public/logo40.png" alt="NTACT logo"><br><br>
   <img src="https://img.shields.io/badge/npm-v7.16.0-blue" alt="npm v7.16.0">&nbsp;<img src="https://img.shields.io/github/license/coding-Benny/NTACT" alt="license GPL-3.0">&nbsp;<img src="https://img.shields.io/badge/node-v14.16.0-brightgreen" alt="node v14.16.0">
 </p>
@@ -238,9 +238,9 @@
 
 <h2 id="maintainers">👩‍💻 Maintainers 👨‍💻</h2>
 
-<table style="text-align: center">
+<table>
     <tr>
-        <td>
+        <td align="center">
             <a href="https://github.com/truebliss">
                 <img src="https://avatars.githubusercontent.com/u/68186349?v=4" width="75px;" alt="YeonJi Kim"/><br />
                 <sub><b>김연지</b></sub>
@@ -251,7 +251,7 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td align="center">
             <a href="https://github.com/jokbalkiller">
                 <img src="https://avatars.githubusercontent.com/u/55704603?v=4" width="75px;" alt="JongGeun Park"/><br />
                 <sub><b>박종근</b></sub>
@@ -262,7 +262,7 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td align="center">
             <a href="https://github.com/Coding-Benny">
                 <img src="https://avatars.githubusercontent.com/u/51183274?v=4" width="75px;" alt="JeongHyeon Lee"/><br />
                 <sub><b>이정현</b></sub>
@@ -273,7 +273,7 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td align="center">
             <a href="https://github.com/reader-wh94">
                 <img src="https://avatars.githubusercontent.com/u/68210266?v=4" width="75px;" alt="SuJin Choi"/><br />
                 <sub><b>최수진</b></sub>
