@@ -200,40 +200,40 @@
 <h3 id="client">Client</h3>
 <ul>
     <li>로그인</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/login.png" alt="client-login">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/login.png" alt="client-login" width="300">
     <li>메뉴 페이지</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/menu.png" alt="menu">
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/add-menu.png" alt="add menu">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/menu.png" alt="menu" width="300">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/add-menu.png" alt="add menu" width="300">
     <li>장바구니</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/my-cart" alt="my cart">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/my-cart" alt="my cart" width="300">
     <li>결제</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/input-customer-info.png" alt="input customer's info">
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/payment.png" alt="payment">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/input-customer-info.png" alt="input customer's info" width="300">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/payment.png" alt="payment" width="300">
     <li>주문 처리 현황</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-accepted.png" alt="order accepted">
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-in-progress.png" alt="order in-progress">
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-completed.png" alt="order completed">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-accepted.png" alt="order accepted" width="300">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-in-progress.png" alt="order in-progress" width="300">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-completed.png" alt="order completed" width="300">
     <li>주문 취소</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/cancel-order.png" alt="cancel order">
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-canceled.png" alt="order canceled">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/cancel-order.png" alt="cancel order" width="300">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-canceled.png" alt="order canceled" width="300">
     <li>주문 내역</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-history.png" alt="order history">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-history.png" alt="order history" width="300">
 </ul>
 
 <h3 id="manager">Manager</h3>
 <ul>
     <li>로그인</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/login.jpg" alt="manager login">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/login.jpg" alt="manager login" width="700">
     <li>주문 접수 내역</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/order-list.jpg" alt="order list">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/order-list.jpg" alt="order list" width="700">
     <li>실시간 메뉴 상태 관리</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/realtime-menu-management.jpg" alt="realtime menu management">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/realtime-menu-management.jpg" alt="realtime menu management" width="700">
     <li>카테고리 & 메뉴 생성</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/create-category-and-menu.jpg" alt="create category and menu">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/create-category-and-menu.jpg" alt="create category and menu" width="700">
     <li>카테고리 관리</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/category-management.jpg" alt="category management">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/category-management.jpg" alt="category management" width="700">
     <li>메뉴 관리</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/menu-management.jpg" alt="menu management">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/menu-management.jpg" alt="menu management" width="700">
 </ul>
 
 <h2 id="maintainers">👩‍💻 Maintainers 👨‍💻</h2>
