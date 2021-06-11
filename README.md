@@ -197,33 +197,52 @@
 
 <h2 id="maintainers">👩‍💻 Maintainers 👨‍💻</h2>
 
-<table>
+<table style="text-align: center">
     <tr>
-    <td style="text-align: center"><a href="https://github.com/truebliss"><img src="https://avatars.githubusercontent.com/u/68186349?v=4" width="75px;" alt="YeonJi Kim"/><br /><sub><b>김연지</b></sub></a><br /> </td>
-    <td>
-    <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=truebliss" title="Code">📜 Commit Log</a>
-    </td>
+        <td>
+            <a href="https://github.com/truebliss">
+                <img src="https://avatars.githubusercontent.com/u/68186349?v=4" width="75px;" alt="YeonJi Kim"/><br />
+                <sub><b>김연지</b></sub>
+            </a>
+        </td>
+        <td>
+            <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=truebliss" title="Code">📜 Commit Log</a>
+        </td>
+    </tr>
     <tr>
-    <td style="text-align: center"><a href="https://github.com/jokbalkiller"><img src="https://avatars.githubusercontent.com/u/55704603?v=4" width="75px;" alt="JongGeun Park"/><br /><sub><b>박종근</b></sub></a><br /></td>
-    <td>
-    <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=jokbalkiller" title="Code">📜 Commit Log</a>
-    </td>
+        <td>
+            <a href="https://github.com/jokbalkiller">
+                <img src="https://avatars.githubusercontent.com/u/55704603?v=4" width="75px;" alt="JongGeun Park"/><br />
+                <sub><b>박종근</b></sub>
+            </a>
+        </td>
+        <td>
+            <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=jokbalkiller" title="Code">📜 Commit Log</a>
+        </td>
+    </tr>
     <tr>
-    <td style="text-align: center">
-    <a href="https://github.com/Coding-Benny"><img src="https://avatars.githubusercontent.com/u/51183274?v=4" width="75px;" alt="JeongHyeon Lee"/><br /><sub><b>이정현</b></sub></a><br />
-    </td>
-    <td>
-      <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=coding-Benny" title="Code">📜 Commit Log</a>
-    </td>
+        <td>
+            <a href="https://github.com/Coding-Benny">
+                <img src="https://avatars.githubusercontent.com/u/51183274?v=4" width="75px;" alt="JeongHyeon Lee"/><br />
+                <sub><b>이정현</b></sub>
+            </a>
+        </td>
+        <td>
+          <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=coding-Benny" title="Code">📜 Commit Log</a>
+        </td>
+    </tr>
     <tr>
-    <td style="text-align: center"><a href="https://github.com/reader-wh94"><img src="https://avatars.githubusercontent.com/u/68210266?v=4" width="75px;" alt="SuJin Choi"/><br /><sub><b>최수진</b></sub></a><br /></td>
-    <td>
-     <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=reader-wh94" title="Code">📜 Commit Log</a>       
-    </td>
-  </tr>
+        <td>
+            <a href="https://github.com/reader-wh94">
+                <img src="https://avatars.githubusercontent.com/u/68210266?v=4" width="75px;" alt="SuJin Choi"/><br />
+                <sub><b>최수진</b></sub>
+            </a>
+        </td>
+        <td>
+         <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=reader-wh94" title="Code">📜 Commit Log</a>       
+        </td>
+    </tr>
 </table>
-
-
 
 <h2 id="links">🔗 Links</h2>
 
@@ -232,7 +251,7 @@
   <li>NTACT client's homepage: https://ntact.site</li>
   <li>NTACT manager's homepage: https://manager.ntact.site</li>
   <li>Video</li>
-    <a href="https://www.youtube.com/watch?v=Jv8nx1BdveI&feature=youtu.be"><img src="http://img.youtube.com/vi/Jv8nx1BdveI/0.jpg" alt="NTACT's youtube thumbnail"></a>
+    <a href="https://www.youtube.com/watch?v=Jv8nx1BdveI&feature=youtu.be" target="_blank"><img src="http://img.youtube.com/vi/Jv8nx1BdveI/0.jpg" alt="NTACT's youtube thumbnail"></a>
 </ul>
 
 
