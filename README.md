@@ -8,7 +8,7 @@
 > 👩‍💼 비대면 시대에 적합한 매장 통합 관리 웹 애플리케이션 NTACT 👨‍💼
 
 기존 매장의 키오스크 사용은 고객에게 있어 긴 대기 줄과 위생 문제를 비롯하여 불편한 점이 많습니다. 애플리케이션을 사용하더라도 브랜드마다 자사 앱을 설치해야 하는 번거로움이 있습니다. 직원 입장에서는 종이 주문서와
-구두 소통은 착오를 일으키는 등의 어려운 점이 존재합니다. NTACT는 이러한 문제점을 해결하기 위해 웹 브라우저를 통한 간단한 주문 및 결제와 디지털화 된 주방 제어 서비스를 제공합니다:woman_cook:
+구두 소통은 착오를 일으키는 등의 어려운 점이 존재합니다. NTACT는 이러한 문제점을 해결하기 위해 웹 브라우저를 통한 간단한 주문 및 결제와 디지털화 된 주방 제어 서비스를 제공합니다👩‍🍳
 
 <details open>
   <summary><h2>📋 Table of Contents</h2></summary>
@@ -22,6 +22,10 @@
     <li><a href="#project-architecture">Project architecture</a></li>
     <li><a href="#flow-chart">Flow chart</a></li>
     <li><a href="#features">Features</a></li>
+    <ul>
+        <li><a href="#client">Client</a></li>
+        <li><a href="#manager">Manager</a></li>
+    </ul>
     <li><a href="#maintainers">Maintainers</a></li>
     <li><a href="#links">Links</a></li>
     <li><a href="#license">License</a></li>
@@ -193,7 +197,44 @@
 
 <h2 id="features">🎈 Features</h2>
 
-프로젝트 주요 기능 설명
+<h3 id="client">Client</h3>
+<ul>
+    <li>로그인</li>
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/login.png" alt="client-login">
+    <li>메뉴 페이지</li>
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/menu.png" alt="menu">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/add-menu.png" alt="add menu">
+    <li>장바구니</li>
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/my-cart" alt="my cart">
+    <li>결제</li>
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/input-customer-info.png" alt="input customer's info">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/payment.png" alt="payment">
+    <li>주문 처리 현황</li>
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-accepted.png" alt="order accepted">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-in-progress.png" alt="order in-progress">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-completed.png" alt="order completed">
+    <li>주문 취소</li>
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/cancel-order.png" alt="cancel order">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-canceled.png" alt="order canceled">
+    <li>주문 내역</li>
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-history.png" alt="order history">
+</ul>
+
+<h3 id="manager">Manager</h3>
+<ul>
+    <li>로그인</li>
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/login.jpg" alt="manager login">
+    <li>주문 접수 내역</li>
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/order-list.jpg" alt="order list">
+    <li>실시간 메뉴 상태 관리</li>
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/realtime-menu-management.jpg" alt="realtime menu management">
+    <li>카테고리 & 메뉴 생성</li>
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/create-category-and-menu.jpg" alt="create category and menu">
+    <li>카테고리 관리</li>
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/category-management.jpg" alt="category management">
+    <li>메뉴 관리</li>
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/menu-management.jpg" alt="menu management">
+</ul>
 
 <h2 id="maintainers">👩‍💻 Maintainers 👨‍💻</h2>
 
