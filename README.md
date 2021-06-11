@@ -1,4 +1,4 @@
-<p style="text-align: center">
+<p align="center">
   <img src="https://github.com/coding-Benny/NTACT/blob/dev/client/public/logo40.png" alt="NTACT logo"><br><br>
   <img src="https://img.shields.io/badge/npm-v7.16.0-blue" alt="npm v7.16.0">&nbsp;<img src="https://img.shields.io/github/license/coding-Benny/NTACT" alt="license GPL-3.0">&nbsp;<img src="https://img.shields.io/badge/node-v14.16.0-brightgreen" alt="node v14.16.0">
 </p>
@@ -200,24 +200,24 @@
 <h3 id="client">Client</h3>
 <ul>
     <li>로그인</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/login.png" alt="client-login" width="300">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/login.png" alt="client-login" width="250">
     <li>메뉴 페이지</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/menu.png" alt="menu" width="300">
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/add-menu.png" alt="add menu" width="300">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/menu.png" alt="menu" width="250">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/add-menu.png" alt="add menu" width="250">
     <li>장바구니</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/my-cart" alt="my cart" width="300">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/my-cart.png" alt="my cart" width="250">
     <li>결제</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/input-customer-info.png" alt="input customer's info" width="300">
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/payment.png" alt="payment" width="300">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/input-customer-info.png" alt="input customer's info" width="250">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/payment.png" alt="payment" width="250">
     <li>주문 처리 현황</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-accepted.png" alt="order accepted" width="300">
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-in-progress.png" alt="order in-progress" width="300">
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-completed.png" alt="order completed" width="300">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-accepted.png" alt="order accepted" width="250">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-in-progress.png" alt="order in-progress" width="250">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-completed.png" alt="order completed" width="250">
     <li>주문 취소</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/cancel-order.png" alt="cancel order" width="300">
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-canceled.png" alt="order canceled" width="300">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/cancel-order.png" alt="cancel order" width="250">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-canceled.png" alt="order canceled" width="250">
     <li>주문 내역</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-history.png" alt="order history" width="300">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/client/order-history.png" alt="order history" width="250">
 </ul>
 
 <h3 id="manager">Manager</h3>
@@ -227,9 +227,9 @@
     <li>주문 접수 내역</li>
         <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/order-list.jpg" alt="order list" width="700">
     <li>실시간 메뉴 상태 관리</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/realtime-menu-management.jpg" alt="realtime menu management" width="700">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/realtime-menu-management.jpg" alt="realtime menu management" width="550">
     <li>카테고리 & 메뉴 생성</li>
-        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/create-category-and-menu.jpg" alt="create category and menu" width="700">
+        <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/create-category-and-menu.jpg" alt="create category and menu" width="550">
     <li>카테고리 관리</li>
         <img src="https://github.com/coding-Benny/NTACT/blob/dev/images/manager/category-management.jpg" alt="category management" width="700">
     <li>메뉴 관리</li>
@@ -238,9 +238,9 @@
 
 <h2 id="maintainers">👩‍💻 Maintainers 👨‍💻</h2>
 
-<table style="text-align: center">
+<table>
     <tr>
-        <td>
+        <td align="center">
             <a href="https://github.com/truebliss">
                 <img src="https://avatars.githubusercontent.com/u/68186349?v=4" width="75px;" alt="YeonJi Kim"/><br />
                 <sub><b>김연지</b></sub>
@@ -251,7 +251,7 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td align="center">
             <a href="https://github.com/jokbalkiller">
                 <img src="https://avatars.githubusercontent.com/u/55704603?v=4" width="75px;" alt="JongGeun Park"/><br />
                 <sub><b>박종근</b></sub>
@@ -262,7 +262,7 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td align="center">
             <a href="https://github.com/Coding-Benny">
                 <img src="https://avatars.githubusercontent.com/u/51183274?v=4" width="75px;" alt="JeongHyeon Lee"/><br />
                 <sub><b>이정현</b></sub>
@@ -273,7 +273,7 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td align="center">
             <a href="https://github.com/reader-wh94">
                 <img src="https://avatars.githubusercontent.com/u/68210266?v=4" width="75px;" alt="SuJin Choi"/><br />
                 <sub><b>최수진</b></sub>
