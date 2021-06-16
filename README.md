@@ -246,7 +246,8 @@
                 <sub><b>김연지</b></sub>
             </a>
         </td>
-        <td>
+        <td align="center">
+            <a href="https://github.com/coding-Benny/NTACT/wiki/%5BMaintainer%5D-%EA%B9%80%EC%97%B0%EC%A7%80" title="role">📌 Role</a><br />
             <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=truebliss" title="Code">📜 Commit Log</a>
         </td>
     </tr>
@@ -269,7 +270,7 @@
             </a>
         </td>
         <td align="center">
-          <a href="https://github.com/coding-Benny/NTACT/wiki/%5BMaintainer%5D-%EC%9D%B4%EC%A0%95%ED%98%84" title="What Did I Do">📌 Role</a><br>
+          <a href="https://github.com/coding-Benny/NTACT/wiki/%5BMaintainer%5D-%EC%9D%B4%EC%A0%95%ED%98%84" title="role">📌 Role</a><br>
           <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=coding-Benny" title="Code">📜 Commit Log</a>
         </td>
     </tr>
@@ -280,7 +281,8 @@
                 <sub><b>최수진</b></sub>
             </a>
         </td>
-        <td>
+        <td align="center">
+         <a href="https://github.com/coding-Benny/NTACT/wiki/%5BMaintainer%5D-%EC%B5%9C%EC%88%98%EC%A7%84" title="role">📌 Role</a><br />
          <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=reader-wh94" title="Code">📜 Commit Log</a>       
         </td>
     </tr>
