@@ -268,7 +268,8 @@
                 <sub><b>이정현</b></sub>
             </a>
         </td>
-        <td>
+        <td align="center">
+          <a href="https://github.com/coding-Benny/NTACT/wiki/%5BMaintainer%5D-%EC%9D%B4%EC%A0%95%ED%98%84" title="What Did I Do">📌 Role</a><br>
           <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=coding-Benny" title="Code">📜 Commit Log</a>
         </td>
     </tr>
