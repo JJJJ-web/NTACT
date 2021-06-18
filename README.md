@@ -1,14 +1,16 @@
 <p align="center">
   <img src="https://github.com/coding-Benny/NTACT/blob/dev/client/public/logo40.png" alt="NTACT logo"><br><br>
-  <img src="https://img.shields.io/badge/npm-v7.16.0-blue" alt="npm v7.16.0">&nbsp;<img src="https://img.shields.io/github/license/coding-Benny/NTACT" alt="license GPL-3.0">&nbsp;<img src="https://img.shields.io/badge/node-v14.16.0-brightgreen" alt="node v14.16.0">
+  <img src="https://img.shields.io/badge/npm-v7.17.0-blue" alt="npm v7.16.0">&nbsp;<img src="https://img.shields.io/github/license/coding-Benny/NTACT" alt="license GPL-3.0">&nbsp;<img src="https://img.shields.io/badge/node-v14.16.0-brightgreen" alt="node v14.16.0">
 </p>
 
 # NTACT
 
 > 👩‍💼 비대면 시대에 적합한 매장 통합 관리 웹 애플리케이션 NTACT 👨‍💼
 
-기존 매장의 키오스크 사용은 고객에게 있어 긴 대기 줄과 위생 문제를 비롯하여 불편한 점이 많습니다. 애플리케이션을 사용하더라도 브랜드마다 자사 앱을 설치해야 하는 번거로움이 있습니다. 직원 입장에서는 종이 주문서와
+기존 매장의 키오스크 사용은 고객에게 있어 긴 대기 줄과 위생 문제, 애플리케이션을 사용하더라도 브랜드마다 자사 앱을 설치해야 하는 번거로움 등을 비롯하여 불편한 점이 많습니다. 또, 직원 입장에서는 종이 주문서와
 구두 소통은 착오를 일으키는 등의 어려운 점이 존재합니다. NTACT는 이러한 문제점을 해결하기 위해 웹 브라우저를 통한 간단한 주문 및 결제와 디지털화 된 주방 제어 서비스를 제공합니다👩‍🍳
+
+[📖 Wiki 보러가기](https://github.com/coding-Benny/NTACT/wiki)
 
 <details open>
   <summary><h2>📋 Table of Contents</h2></summary>
@@ -246,7 +248,8 @@
                 <sub><b>김연지</b></sub>
             </a>
         </td>
-        <td>
+        <td align="center">
+            <a href="https://github.com/coding-Benny/NTACT/wiki/%5BMaintainer%5D-%EA%B9%80%EC%97%B0%EC%A7%80" title="role">📌 Role</a><br />
             <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=truebliss" title="Code">📜 Commit Log</a>
         </td>
     </tr>
@@ -268,7 +271,8 @@
                 <sub><b>이정현</b></sub>
             </a>
         </td>
-        <td>
+        <td align="center">
+          <a href="https://github.com/coding-Benny/NTACT/wiki/%5BMaintainer%5D-%EC%9D%B4%EC%A0%95%ED%98%84" title="role">📌 Role</a><br>
           <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=coding-Benny" title="Code">📜 Commit Log</a>
         </td>
     </tr>
@@ -279,7 +283,8 @@
                 <sub><b>최수진</b></sub>
             </a>
         </td>
-        <td>
+        <td align="center">
+         <a href="https://github.com/coding-Benny/NTACT/wiki/%5BMaintainer%5D-%EC%B5%9C%EC%88%98%EC%A7%84" title="role">📌 Role</a><br />
          <a href="https://github.com/coding-Benny/NTACT/commits/dev?author=reader-wh94" title="Code">📜 Commit Log</a>       
         </td>
     </tr>
