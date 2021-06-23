@@ -44,6 +44,15 @@
   ```
   npm install npm@latest -g
   ```
+- redis
+  ```shell
+  # Windows
+  Download from https://github.com/tporadowski/redis
+  # Mac
+  brew install redis
+  # Ubuntu
+  sudo apt-get install redis-server
+  ```
 
 <h3 id="installation-and-run">Installation & Run</h3>
 
@@ -57,7 +66,7 @@
 
     - 📱 client
 
-      ```
+      ```shell
       cd client
       npm install
       npm run start
@@ -65,7 +74,7 @@
 
     - 👔 manager
 
-      ```
+      ```shell
       cd manager
       npm install
       npm run start
@@ -73,7 +82,7 @@
 
     - 💻 server
 
-      ```
+      ```shell
       cd server
       npm install
       npm run start
@@ -86,15 +95,19 @@
     <ul>
       <li>loginInfo.json</li>
 
-    {
-      "jwt_password": "Put your JWT password"
-    }
+```json
+{
+  "jwt_password": "Put your JWT password"
+}
+```
 
   <li>payment.json</li>
 
-    {
-      "imp_user_code": "Put your I'mport; franchisee identification code"
-    }
+```json
+{
+  "imp_user_code": "Put your I'mport; franchisee identification code"
+}
+```
 
 </ul>
 
@@ -102,7 +115,7 @@
 
 - loginInfo.json
 
-  ```
+  ```json
   {
     "jwt_password": "Put your JWT password"
   }
@@ -112,7 +125,7 @@
 
 - db-config.json
 
-  ```
+  ```json
   {
     "development": {    
       "username": "Put your user name here",
@@ -145,7 +158,7 @@
 
 - password-config.json
 
-  ```
+  ```json
   {
     "jwt_password" : "Put your JWT password"
   }
@@ -153,7 +166,7 @@
 
 - payment-config.json
 
-  ```
+  ```json
   {
     "imp_key": "Put your REST API key",
     "imp_secret": "Put your REST API Secret key"
@@ -162,7 +175,7 @@
 
 - s3-config.json
 
-  ```
+  ```json
   {  
     "AWSAccessKeyId": "Put your AWS access key ID",
     "AWSSecretKey": "Put your AWS Secret key",
@@ -174,16 +187,26 @@
 
     1. Create `server/sync-db.bat` file
 
-       ```
+       ```shell
        start cmd /c "npx sequelize-auto -h YOUR_HOST_NAME -d YOUR_DATABASE_NAME -u YOUR_USERNAME -x YOUR_PASSWORD -p YOUR_PORT_NUMBER -c YOUR_CONFIG_FILE_PATH -o YOUR_OUTPUT_DIRECTORY -C"
        @ECHO DB Sync Done!
+       
+       # Mac or Linux
+       npx sequelize-auto -h ntactdb.c8obj2inxx2r.ap-northeast-2.rds.amazonaws.com -d ntactDB -u ntact -x qlalfqjsgh -p 3306 -c ./config/db-config.json -o ./models -C
+       echo DB Sync Done!
        ```
 
     2. Run batch file
 
-       ````
-       cd serversync-db.bat# if you're a Mac user...cd serverchmod u+x ./sync-db.bat./sync-db.bat
-       ````
+       ```shell
+       cd server
+       sync-db.bat
+       
+       # Mac or Linux
+       cd server
+       chmod u+x ./sync-db.bat
+       ./sync-db.bat
+       ```
     </ul>
 
 </details>
