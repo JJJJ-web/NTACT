@@ -44,6 +44,15 @@
   ```
   npm install npm@latest -g
   ```
+- redis
+  ```shell
+  # Windows
+  Download from https://github.com/tporadowski/redis
+  # Mac
+  brew install redis
+  # Ubuntu
+  sudo apt-get install redis-server
+  ```
 
 <h3 id="installation-and-run">Installation & Run</h3>
 
@@ -181,6 +190,10 @@
        ```shell
        start cmd /c "npx sequelize-auto -h YOUR_HOST_NAME -d YOUR_DATABASE_NAME -u YOUR_USERNAME -x YOUR_PASSWORD -p YOUR_PORT_NUMBER -c YOUR_CONFIG_FILE_PATH -o YOUR_OUTPUT_DIRECTORY -C"
        @ECHO DB Sync Done!
+       
+       # Mac or Linux
+       npx sequelize-auto -h ntactdb.c8obj2inxx2r.ap-northeast-2.rds.amazonaws.com -d ntactDB -u ntact -x qlalfqjsgh -p 3306 -c ./config/db-config.json -o ./models -C
+       echo DB Sync Done!
        ```
 
     2. Run batch file
@@ -188,7 +201,8 @@
        ```shell
        cd server
        sync-db.bat
-       # if you're a Mac user...
+       
+       # Mac or Linux
        cd server
        chmod u+x ./sync-db.bat
        ./sync-db.bat
