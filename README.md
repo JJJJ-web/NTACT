@@ -316,7 +316,7 @@
 <h2 id="links">🔗 Links</h2>
 
 <ul>
-  <li>Repository: https://github.com/coding-Benny/NTACT</li>
+  <li>Repository: https://github.com/JJJJ-web/NTACT</li>
   <li>NTACT client's homepage: https://ntact.site</li>
   <li>NTACT manager's homepage: https://manager.ntact.site</li>
   <li>Video</li>
