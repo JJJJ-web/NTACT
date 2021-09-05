@@ -317,8 +317,8 @@
 
 <ul>
   <li>Repository: https://github.com/JJJJ-web/NTACT</li>
-  <li>NTACT client's homepage: https://ntact.site</li>
-  <li>NTACT manager's homepage: https://manager.ntact.site</li>
+  <li>NTACT client's homepage: https://ntact.site ⛔</li>
+  <li>NTACT manager's homepage: https://manager.ntact.site ⛔</li>
   <li>Video</li>
     <a href="https://www.youtube.com/watch?v=Jv8nx1BdveI&feature=youtu.be" target="_blank"><img src="http://img.youtube.com/vi/Jv8nx1BdveI/0.jpg" alt="NTACT's youtube thumbnail"></a>
 </ul>
